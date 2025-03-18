@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.melodiousplayer.mapper.PlayMapper">
+  <resultMap id="BaseResultMap" type="com.melodiousplayer.model.Play">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="thumbnail_pic" jdbcType="VARCHAR" property="thumbnailPic" />
+    <result column="play_list_pic" jdbcType="VARCHAR" property="playListPic" />
+    <result column="play_list_big_pic" jdbcType="VARCHAR" property="playListBigPic" />
+    <result column="video_count" jdbcType="INTEGER" property="videoCount" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="total_views" jdbcType="INTEGER" property="totalViews" />
+    <result column="total_favorites" jdbcType="INTEGER" property="totalFavorites" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="week_integral" jdbcType="INTEGER" property="weekIntegral" />
+    <result column="total_user" jdbcType="INTEGER" property="totalUser" />
+    <result column="rank" jdbcType="INTEGER" property="rank" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from play
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.melodiousplayer.model.Play">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into play (id, title, thumbnail_pic, 
+      play_list_pic, play_list_big_pic, video_count, 
+      description, category, status, 
+      total_views, total_favorites, update_time, 
+      created_time, integral, week_integral, 
+      total_user, rank)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{thumbnailPic,jdbcType=VARCHAR}, 
+      #{playListPic,jdbcType=VARCHAR}, #{playListBigPic,jdbcType=VARCHAR}, #{videoCount,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{totalViews,jdbcType=INTEGER}, #{totalFavorites,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{integral,jdbcType=INTEGER}, #{weekIntegral,jdbcType=INTEGER}, 
+      #{totalUser,jdbcType=INTEGER}, #{rank,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.melodiousplayer.model.Play">
+    update play
+    set title = #{title,jdbcType=VARCHAR},
+      thumbnail_pic = #{thumbnailPic,jdbcType=VARCHAR},
+      play_list_pic = #{playListPic,jdbcType=VARCHAR},
+      play_list_big_pic = #{playListBigPic,jdbcType=VARCHAR},
+      video_count = #{videoCount,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      total_views = #{totalViews,jdbcType=INTEGER},
+      total_favorites = #{totalFavorites,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      integral = #{integral,jdbcType=INTEGER},
+      week_integral = #{weekIntegral,jdbcType=INTEGER},
+      total_user = #{totalUser,jdbcType=INTEGER},
+      rank = #{rank,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, title, thumbnail_pic, play_list_pic, play_list_big_pic, video_count, description, 
+    category, status, total_views, total_favorites, update_time, created_time, integral, 
+    week_integral, total_user, rank
+    from play
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, title, thumbnail_pic, play_list_pic, play_list_big_pic, video_count, description, 
+    category, status, total_views, total_favorites, update_time, created_time, integral, 
+    week_integral, total_user, rank
+    from play
+  </select>
+</mapper>

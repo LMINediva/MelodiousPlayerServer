@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.melodiousplayer.mapper.HomeItemMapper">
+
+    <resultMap id="BaseResultMap" type="com.melodiousplayer.model.HomeItem">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="poster_pic" jdbcType="VARCHAR" property="posterPic"/>
+        <result column="thumbnail_pic" jdbcType="VARCHAR" property="thumbnailPic"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="hd_url" jdbcType="VARCHAR" property="hdUrl"/>
+        <result column="uhd_url" jdbcType="VARCHAR" property="uhdUrl"/>
+        <result column="video_size" jdbcType="INTEGER" property="videoSize"/>
+        <result column="hd_video_size" jdbcType="INTEGER" property="hdVideoSize"/>
+        <result column="uhd_video_size" jdbcType="INTEGER" property="uhdVideoSize"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="trace_url" jdbcType="VARCHAR" property="traceUrl"/>
+        <result column="click_url" jdbcType="VARCHAR" property="clickUrl"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from home_item
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.melodiousplayer.model.HomeItem">
+        <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into home_item (id, type, title,
+        description, poster_pic, thumbnail_pic,
+        url, hd_url, uhd_url,
+        video_size, hd_video_size, uhd_video_size,
+        status, trace_url, click_url
+        )
+        values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR},
+        #{description,jdbcType=VARCHAR}, #{posterPic,jdbcType=VARCHAR}, #{thumbnailPic,jdbcType=VARCHAR},
+        #{url,jdbcType=VARCHAR}, #{hdUrl,jdbcType=VARCHAR}, #{uhdUrl,jdbcType=VARCHAR},
+        #{videoSize,jdbcType=INTEGER}, #{hdVideoSize,jdbcType=INTEGER}, #{uhdVideoSize,jdbcType=INTEGER},
+        #{status,jdbcType=INTEGER}, #{traceUrl,jdbcType=VARCHAR}, #{clickUrl,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.melodiousplayer.model.HomeItem">
+        update home_item
+        set type           = #{type,jdbcType=VARCHAR},
+            title          = #{title,jdbcType=VARCHAR},
+            description    = #{description,jdbcType=VARCHAR},
+            poster_pic     = #{posterPic,jdbcType=VARCHAR},
+            thumbnail_pic  = #{thumbnailPic,jdbcType=VARCHAR},
+            url            = #{url,jdbcType=VARCHAR},
+            hd_url         = #{hdUrl,jdbcType=VARCHAR},
+            uhd_url        = #{uhdUrl,jdbcType=VARCHAR},
+            video_size     = #{videoSize,jdbcType=INTEGER},
+            hd_video_size  = #{hdVideoSize,jdbcType=INTEGER},
+            uhd_video_size = #{uhdVideoSize,jdbcType=INTEGER},
+            status         = #{status,jdbcType=INTEGER},
+            trace_url      = #{traceUrl,jdbcType=VARCHAR},
+            click_url      = #{clickUrl,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select id,
+               type,
+               title,
+               description,
+               poster_pic,
+               thumbnail_pic,
+               url,
+               hd_url,
+               uhd_url,
+               video_size,
+               hd_video_size,
+               uhd_video_size,
+               status,
+               trace_url,
+               click_url
+        from home_item
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,
+               type,
+               title,
+               description,
+               poster_pic,
+               thumbnail_pic,
+               url,
+               hd_url,
+               uhd_url,
+               video_size,
+               hd_video_size,
+               uhd_video_size,
+               status,
+               trace_url,
+               click_url
+        from home_item
+    </select>
+
+</mapper>

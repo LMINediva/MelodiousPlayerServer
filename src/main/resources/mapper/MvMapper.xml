@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.melodiousplayer.mapper.MvMapper">
+  <resultMap id="BaseResultMap" type="com.melodiousplayer.model.Mv">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="artist_name" jdbcType="VARCHAR" property="artistName" />
+    <result column="poster_pic" jdbcType="VARCHAR" property="posterPic" />
+    <result column="thumbnail_pic" jdbcType="VARCHAR" property="thumbnailPic" />
+    <result column="album_img" jdbcType="VARCHAR" property="albumImg" />
+    <result column="regdate" jdbcType="TIMESTAMP" property="regdate" />
+    <result column="video_source_type_name" jdbcType="VARCHAR" property="videoSourceTypeName" />
+    <result column="total_views" jdbcType="INTEGER" property="totalViews" />
+    <result column="total_pc_views" jdbcType="INTEGER" property="totalPcViews" />
+    <result column="total_mobile_views" jdbcType="INTEGER" property="totalMobileViews" />
+    <result column="total_comments" jdbcType="INTEGER" property="totalComments" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="hd_url" jdbcType="VARCHAR" property="hdUrl" />
+    <result column="uhd_url" jdbcType="VARCHAR" property="uhdUrl" />
+    <result column="shd_url" jdbcType="VARCHAR" property="shdUrl" />
+    <result column="video_size" jdbcType="INTEGER" property="videoSize" />
+    <result column="hd_video_size" jdbcType="INTEGER" property="hdVideoSize" />
+    <result column="uhd_video_size" jdbcType="INTEGER" property="uhdVideoSize" />
+    <result column="shd_video_size" jdbcType="INTEGER" property="shdVideoSize" />
+    <result column="duration" jdbcType="INTEGER" property="duration" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="link_id" jdbcType="INTEGER" property="linkId" />
+    <result column="play_list_pic" jdbcType="VARCHAR" property="playListPic" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mv
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.melodiousplayer.model.Mv">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into mv (id, title, description, 
+      artist_name, poster_pic, thumbnail_pic, 
+      album_img, regdate, video_source_type_name, 
+      total_views, total_pc_views, total_mobile_views, 
+      total_comments, url, hd_url, 
+      uhd_url, shd_url, video_size, 
+      hd_video_size, uhd_video_size, shd_video_size, 
+      duration, status, link_id, 
+      play_list_pic)
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{artistName,jdbcType=VARCHAR}, #{posterPic,jdbcType=VARCHAR}, #{thumbnailPic,jdbcType=VARCHAR}, 
+      #{albumImg,jdbcType=VARCHAR}, #{regdate,jdbcType=TIMESTAMP}, #{videoSourceTypeName,jdbcType=VARCHAR}, 
+      #{totalViews,jdbcType=INTEGER}, #{totalPcViews,jdbcType=INTEGER}, #{totalMobileViews,jdbcType=INTEGER}, 
+      #{totalComments,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{hdUrl,jdbcType=VARCHAR}, 
+      #{uhdUrl,jdbcType=VARCHAR}, #{shdUrl,jdbcType=VARCHAR}, #{videoSize,jdbcType=INTEGER}, 
+      #{hdVideoSize,jdbcType=INTEGER}, #{uhdVideoSize,jdbcType=INTEGER}, #{shdVideoSize,jdbcType=INTEGER}, 
+      #{duration,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{linkId,jdbcType=INTEGER}, 
+      #{playListPic,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.melodiousplayer.model.Mv">
+    update mv
+    set title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      artist_name = #{artistName,jdbcType=VARCHAR},
+      poster_pic = #{posterPic,jdbcType=VARCHAR},
+      thumbnail_pic = #{thumbnailPic,jdbcType=VARCHAR},
+      album_img = #{albumImg,jdbcType=VARCHAR},
+      regdate = #{regdate,jdbcType=TIMESTAMP},
+      video_source_type_name = #{videoSourceTypeName,jdbcType=VARCHAR},
+      total_views = #{totalViews,jdbcType=INTEGER},
+      total_pc_views = #{totalPcViews,jdbcType=INTEGER},
+      total_mobile_views = #{totalMobileViews,jdbcType=INTEGER},
+      total_comments = #{totalComments,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      hd_url = #{hdUrl,jdbcType=VARCHAR},
+      uhd_url = #{uhdUrl,jdbcType=VARCHAR},
+      shd_url = #{shdUrl,jdbcType=VARCHAR},
+      video_size = #{videoSize,jdbcType=INTEGER},
+      hd_video_size = #{hdVideoSize,jdbcType=INTEGER},
+      uhd_video_size = #{uhdVideoSize,jdbcType=INTEGER},
+      shd_video_size = #{shdVideoSize,jdbcType=INTEGER},
+      duration = #{duration,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      link_id = #{linkId,jdbcType=INTEGER},
+      play_list_pic = #{playListPic,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, title, description, artist_name, poster_pic, thumbnail_pic, album_img, 
+    regdate, video_source_type_name, total_views, total_pc_views, total_mobile_views, 
+    total_comments, url, hd_url, uhd_url, shd_url, video_size, hd_video_size, uhd_video_size, 
+    shd_video_size, duration, status, link_id, play_list_pic
+    from mv
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, title, description, artist_name, poster_pic, thumbnail_pic, album_img, 
+    regdate, video_source_type_name, total_views, total_pc_views, total_mobile_views, 
+    total_comments, url, hd_url, uhd_url, shd_url, video_size, hd_video_size, uhd_video_size, 
+    shd_video_size, duration, status, link_id, play_list_pic
+    from mv
+  </select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.melodiousplayer.mapper.CreatorMapper">
+  <resultMap id="BaseResultMap" type="com.melodiousplayer.model.Creator">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="small_avatar" jdbcType="VARCHAR" property="smallAvatar" />
+    <result column="large_avatar" jdbcType="VARCHAR" property="largeAvatar" />
+    <result column="vip_level" jdbcType="INTEGER" property="vipLevel" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from creator
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.melodiousplayer.model.Creator">
+    <selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into creator (id, nick_name, small_avatar, 
+      large_avatar, vip_level)
+    values (#{id,jdbcType=INTEGER}, #{nickName,jdbcType=VARCHAR}, #{smallAvatar,jdbcType=VARCHAR}, 
+      #{largeAvatar,jdbcType=VARCHAR}, #{vipLevel,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.melodiousplayer.model.Creator">
+    update creator
+    set nick_name = #{nickName,jdbcType=VARCHAR},
+      small_avatar = #{smallAvatar,jdbcType=VARCHAR},
+      large_avatar = #{largeAvatar,jdbcType=VARCHAR},
+      vip_level = #{vipLevel,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, nick_name, small_avatar, large_avatar, vip_level
+    from creator
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, nick_name, small_avatar, large_avatar, vip_level
+    from creator
+  </select>
+</mapper>
