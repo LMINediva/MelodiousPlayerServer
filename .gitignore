@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+!**/src/resources/static/images/
+!**/src/resources/static/lrc/
+!**/src/resources/static/mp3/
+!**/src/resources/static/mp4/
