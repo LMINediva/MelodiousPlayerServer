@@ -1,16 +1,18 @@
 package com.melodiousplayer.mapper;
 
-import com.melodiousplayer.model.Music;
-import java.util.List;
+import com.melodiousplayer.entity.Music;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-public interface MusicMapper {
-    int deleteByPrimaryKey(Integer id);
+/**
+* @author 24240
+* @description 针对表【music(悦单界面)】的数据库操作Mapper
+* @createDate 2025-06-23 12:57:09
+* @Entity com.melodiousplayer.entity.Music
+*/
+public interface MusicMapper extends BaseMapper<Music> {
 
-    int insert(Music record);
-
-    Music selectByPrimaryKey(Integer id);
-
-    List<Music> selectAll();
-
-    int updateByPrimaryKey(Music record);
 }
+
+
+
+

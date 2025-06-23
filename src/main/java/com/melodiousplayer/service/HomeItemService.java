@@ -1,24 +1,13 @@
 package com.melodiousplayer.service;
 
-import com.melodiousplayer.mapper.HomeItemMapper;
-import com.melodiousplayer.model.HomeItem;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import com.melodiousplayer.entity.HomeItem;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
- * @author Mike
- * @date 2025/03/18
- */
-@Service
-public class HomeItemService {
-
-    @Autowired
-    private HomeItemMapper homeItemMapper;
-
-    public List<HomeItem> selectAll() {
-        return homeItemMapper.selectAll();
-    }
+* @author 24240
+* @description 针对表【home_item(首页数据项)】的数据库操作Service
+* @createDate 2025-06-23 12:57:09
+*/
+public interface HomeItemService extends IService<HomeItem> {
 
 }

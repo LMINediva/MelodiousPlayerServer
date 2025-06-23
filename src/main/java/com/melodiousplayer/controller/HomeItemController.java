@@ -1,6 +1,6 @@
 package com.melodiousplayer.controller;
 
-import com.melodiousplayer.model.HomeItem;
+import com.melodiousplayer.entity.HomeItem;
 import com.melodiousplayer.service.HomeItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +20,7 @@ public class HomeItemController {
 
     @RequestMapping("/front_page.json")
     public List<HomeItem> selectAll() {
-        return homeItemService.selectAll();
+        return homeItemService.list();
     }
 
 }

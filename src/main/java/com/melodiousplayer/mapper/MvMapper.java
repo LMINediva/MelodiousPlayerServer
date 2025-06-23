@@ -1,16 +1,18 @@
 package com.melodiousplayer.mapper;
 
-import com.melodiousplayer.model.Mv;
-import java.util.List;
+import com.melodiousplayer.entity.Mv;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-public interface MvMapper {
-    int deleteByPrimaryKey(Integer id);
+/**
+* @author 24240
+* @description 针对表【mv(MV)】的数据库操作Mapper
+* @createDate 2025-06-23 12:57:09
+* @Entity com.melodiousplayer.entity.Mv
+*/
+public interface MvMapper extends BaseMapper<Mv> {
 
-    int insert(Mv record);
-
-    Mv selectByPrimaryKey(Integer id);
-
-    List<Mv> selectAll();
-
-    int updateByPrimaryKey(Mv record);
 }
+
+
+
+

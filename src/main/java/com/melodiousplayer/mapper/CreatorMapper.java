@@ -1,16 +1,18 @@
 package com.melodiousplayer.mapper;
 
-import com.melodiousplayer.model.Creator;
-import java.util.List;
+import com.melodiousplayer.entity.Creator;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-public interface CreatorMapper {
-    int deleteByPrimaryKey(Integer id);
+/**
+* @author 24240
+* @description 针对表【creator(创作者)】的数据库操作Mapper
+* @createDate 2025-06-23 12:57:09
+* @Entity com.melodiousplayer.entity.Creator
+*/
+public interface CreatorMapper extends BaseMapper<Creator> {
 
-    int insert(Creator record);
-
-    Creator selectByPrimaryKey(Integer id);
-
-    List<Creator> selectAll();
-
-    int updateByPrimaryKey(Creator record);
 }
+
+
+
+
