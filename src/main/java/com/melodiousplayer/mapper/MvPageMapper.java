@@ -2,6 +2,7 @@ package com.melodiousplayer.mapper;
 
 import com.melodiousplayer.entity.MvPage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author 24240
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2025-06-23 12:57:09
 * @Entity com.melodiousplayer.entity.MvPage
 */
+@Mapper
 public interface MvPageMapper extends BaseMapper<MvPage> {
 
 }

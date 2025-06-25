@@ -2,6 +2,7 @@ package com.melodiousplayer.mapper;
 
 import com.melodiousplayer.entity.Music;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author 24240
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2025-06-23 12:57:09
 * @Entity com.melodiousplayer.entity.Music
 */
+@Mapper
 public interface MusicMapper extends BaseMapper<Music> {
 
 }

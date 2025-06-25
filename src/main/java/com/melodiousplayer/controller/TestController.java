@@ -6,6 +6,7 @@ import com.melodiousplayer.service.SysUserService;
 import com.melodiousplayer.util.JwtUtils;
 import com.melodiousplayer.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,7 @@ public class TestController {
      * @return 所有用户信息
      */
     @RequestMapping("/user/list")
+    @PreAuthorize("hasAuthority('system:user2:list')")
     public R userList(@RequestHeader(required = false) String token) {
         if (StringUtil.isNotEmpty(token)) {
             Map<String, Object> resultMap = new HashMap<>();
