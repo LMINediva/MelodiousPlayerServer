@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 登录成功处理器
@@ -64,6 +65,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 menuSet.add(sysMenu);
             }
         }
+        // 返回以逗号隔开的字符串
+        currentUser.setRoles(roleList.stream().map(SysRole::getName).collect(Collectors.joining(",")));
         List<SysMenu> sysMenuList = new ArrayList<>(menuSet);
         // 排序
         sysMenuList.sort(Comparator.comparing(SysMenu::getOrderNum));
