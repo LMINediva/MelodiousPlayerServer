@@ -5,17 +5,17 @@ DROP TABLE IF EXISTS `sys_user`;
 
 CREATE TABLE `sys_user`
 (
-    `id`           bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-    `username`     varchar(100) DEFAULT NULL COMMENT '用户名',
-    `password`     varchar(100) DEFAULT NULL COMMENT '密码',
-    `avatar`       varchar(255) DEFAULT 'default.jpg' COMMENT '用户头像',
-    `email`        varchar(100) DEFAULT '' COMMENT '用户邮箱',
-    `phone_number` varchar(11)  DEFAULT '' COMMENT '手机号码',
-    `login_date`   datetime     DEFAULT NULL COMMENT '最后登录时间',
-    `status`       char(1)      DEFAULT '0' COMMENT '帐号状态（0正常 1停用）',
-    `create_time`  datetime     DEFAULT NULL COMMENT '创建时间',
-    `update_time`  datetime     DEFAULT NULL COMMENT '更新时间',
-    `remark`       varchar(500) DEFAULT NULL COMMENT '备注',
+    `id`          bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+    `username`    varchar(100) DEFAULT NULL COMMENT '用户名',
+    `password`    varchar(100) DEFAULT NULL COMMENT '密码',
+    `avatar`      varchar(255) DEFAULT 'default.jpg' COMMENT '用户头像',
+    `email`       varchar(100) DEFAULT '' COMMENT '用户邮箱',
+    `phonenumber` varchar(11)  DEFAULT '' COMMENT '手机号码',
+    `login_date`  datetime     DEFAULT NULL COMMENT '最后登录时间',
+    `status`      char(1)      DEFAULT '0' COMMENT '帐号状态（0正常 1停用）',
+    `create_time` datetime     DEFAULT NULL COMMENT '创建时间',
+    `update_time` datetime     DEFAULT NULL COMMENT '更新时间',
+    `remark`      varchar(500) DEFAULT NULL COMMENT '备注',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 31
@@ -23,7 +23,7 @@ CREATE TABLE `sys_user`
 
 /*Data for the table `sys_user` */
 
-insert into `sys_user`(`id`, `username`, `password`, `avatar`, `email`, `phone_number`, `login_date`, `status`,
+insert into `sys_user`(`id`, `username`, `password`, `avatar`, `email`, `phonenumber`, `login_date`, `status`,
                        `create_time`, `update_time`, `remark`)
 values (1, 'java1234', '$2a$10$Kib4zuVhTzg3I1CoqJfd0unuY9G9ysI7cfbhyT3fi7k7Z/4pr3bGW', '20220727112556000000325.jpg',
         'caofeng4017@126.com', '18862857417', '2022-08-29 22:10:52', '0', '2022-06-09 08:47:52', '2022-06-22 08:47:54',

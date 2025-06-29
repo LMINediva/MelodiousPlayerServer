@@ -5,8 +5,8 @@
 <mapper namespace="com.melodiousplayer.mapper.MusicMapper">
 
     <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.Music">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="totalCount" column="total_count" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="totalCount" column="total_count" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

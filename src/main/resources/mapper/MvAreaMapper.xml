@@ -5,9 +5,9 @@
 <mapper namespace="com.melodiousplayer.mapper.MvAreaMapper">
 
     <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.MvArea">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="code" column="code" jdbcType="VARCHAR"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

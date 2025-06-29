@@ -5,11 +5,11 @@
 <mapper namespace="com.melodiousplayer.mapper.CreatorMapper">
 
     <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.Creator">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
-            <result property="smallAvatar" column="small_avatar" jdbcType="VARCHAR"/>
-            <result property="largeAvatar" column="large_avatar" jdbcType="VARCHAR"/>
-            <result property="vipLevel" column="vip_level" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+        <result property="smallAvatar" column="small_avatar" jdbcType="VARCHAR"/>
+        <result property="largeAvatar" column="large_avatar" jdbcType="VARCHAR"/>
+        <result property="vipLevel" column="vip_level" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

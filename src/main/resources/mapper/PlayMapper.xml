@@ -5,23 +5,23 @@
 <mapper namespace="com.melodiousplayer.mapper.PlayMapper">
 
     <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.Play">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="title" column="title" jdbcType="VARCHAR"/>
-            <result property="thumbnailPic" column="thumbnail_pic" jdbcType="VARCHAR"/>
-            <result property="playListPic" column="play_list_pic" jdbcType="VARCHAR"/>
-            <result property="playListBigPic" column="play_list_big_pic" jdbcType="VARCHAR"/>
-            <result property="videoCount" column="video_count" jdbcType="INTEGER"/>
-            <result property="description" column="description" jdbcType="VARCHAR"/>
-            <result property="category" column="category" jdbcType="VARCHAR"/>
-            <result property="status" column="status" jdbcType="INTEGER"/>
-            <result property="totalViews" column="total_views" jdbcType="INTEGER"/>
-            <result property="totalFavorites" column="total_favorites" jdbcType="INTEGER"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-            <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
-            <result property="integral" column="integral" jdbcType="INTEGER"/>
-            <result property="weekIntegral" column="week_integral" jdbcType="INTEGER"/>
-            <result property="totalUser" column="total_user" jdbcType="INTEGER"/>
-            <result property="rank" column="rank" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="thumbnailPic" column="thumbnail_pic" jdbcType="VARCHAR"/>
+        <result property="playListPic" column="play_list_pic" jdbcType="VARCHAR"/>
+        <result property="playListBigPic" column="play_list_big_pic" jdbcType="VARCHAR"/>
+        <result property="videoCount" column="video_count" jdbcType="INTEGER"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="category" column="category" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="totalViews" column="total_views" jdbcType="INTEGER"/>
+        <result property="totalFavorites" column="total_favorites" jdbcType="INTEGER"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="integral" column="integral" jdbcType="INTEGER"/>
+        <result property="weekIntegral" column="week_integral" jdbcType="INTEGER"/>
+        <result property="totalUser" column="total_user" jdbcType="INTEGER"/>
+        <result property="rank" column="rank" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

@@ -42,8 +42,8 @@ public class SysUser extends BaseEntity implements Serializable {
     /**
      * 手机号码
      */
-    @TableField(value = "phone_number")
-    private String phoneNumber;
+    @TableField(value = "phonenumber")
+    private String phonenumber;
 
     /**
      * 最后登录时间
