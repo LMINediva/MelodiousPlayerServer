@@ -5,6 +5,7 @@ import com.melodiousplayer.entity.SysUser;
 import com.melodiousplayer.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,9 @@ public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * 添加或者修改
      *
@@ -41,6 +45,26 @@ public class SysUserController {
             sysUserService.updateById(sysUser);
         }
         return R.ok();
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param sysUser
+     * @return 页面响应entity
+     */
+    @PostMapping("/updateUserPwd")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public R updateUserPwd(@RequestBody SysUser sysUser) {
+        SysUser currentUser = sysUserService.getById(sysUser.getId());
+        if (bCryptPasswordEncoder.matches(sysUser.getOldPassword(), currentUser.getPassword())) {
+            currentUser.setPassword(bCryptPasswordEncoder.encode(sysUser.getNewPassword()));
+            currentUser.setUpdateTime(new Date());
+            sysUserService.updateById(currentUser);
+            return R.ok();
+        } else {
+            return R.error("输入旧密码错误！");
+        }
     }
 
 }
