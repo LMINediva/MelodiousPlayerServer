@@ -1,5 +1,7 @@
 package com.melodiousplayer.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.melodiousplayer.entity.PageBean;
 import com.melodiousplayer.entity.R;
 import com.melodiousplayer.entity.SysUser;
 import com.melodiousplayer.service.SysUserService;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -118,6 +121,23 @@ public class SysUserController {
         currentUser.setAvatar(sysUser.getAvatar());
         sysUserService.updateById(currentUser);
         return R.ok();
+    }
+
+    /**
+     * 根据条件分页查询用户信息
+     *
+     * @param pageBean
+     * @return
+     */
+    @PostMapping("/list")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R list(@RequestBody PageBean pageBean) {
+        Page<SysUser> pageResult = sysUserService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()));
+        List<SysUser> userList = pageResult.getRecords();
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("userList", userList);
+        resultMap.put("total", pageResult.getTotal());
+        return R.ok(resultMap);
     }
 
 }
