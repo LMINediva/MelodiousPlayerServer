@@ -1,11 +1,15 @@
 package com.melodiousplayer.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.PageBean;
 import com.melodiousplayer.entity.R;
+import com.melodiousplayer.entity.SysRole;
 import com.melodiousplayer.entity.SysUser;
+import com.melodiousplayer.service.SysRoleService;
 import com.melodiousplayer.service.SysUserService;
 import com.melodiousplayer.util.DateUtil;
+import com.melodiousplayer.util.StringUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,6 +39,9 @@ public class SysUserController {
 
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private SysRoleService sysRoleService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -132,8 +139,15 @@ public class SysUserController {
     @PostMapping("/list")
     @PreAuthorize("hasAuthority('system:user:query')")
     public R list(@RequestBody PageBean pageBean) {
-        Page<SysUser> pageResult = sysUserService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()));
+        String query = pageBean.getQuery().trim();
+        Page<SysUser> pageResult = sysUserService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
+                new QueryWrapper<SysUser>().like(StringUtil.isNotEmpty(query), "username", query));
         List<SysUser> userList = pageResult.getRecords();
+        for (SysUser user : userList) {
+            List<SysRole> roleList = sysRoleService.list(new QueryWrapper<SysRole>().inSql(
+                    "id", "select role_id from sys_user_role where user_id = " + user.getId()));
+            user.setSysRoleList(roleList);
+        }
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("userList", userList);
         resultMap.put("total", pageResult.getTotal());
