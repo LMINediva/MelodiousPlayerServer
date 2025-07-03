@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -52,14 +49,16 @@ public class SysUserController {
     /**
      * 添加或者修改
      *
-     * @param sysUser
+     * @param sysUser 用户信息
      * @return 页面响应entity
      */
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('system:user:add')" + "||" + "hasAuthority('system:user:edit')")
     public R save(@RequestBody SysUser sysUser) {
         if (sysUser.getId() == null || sysUser.getId() == -1) {
-
+            sysUser.setCreateTime(new Date());
+            sysUser.setPassword(bCryptPasswordEncoder.encode(sysUser.getPassword()));
+            sysUserService.save(sysUser);
         } else {
             sysUser.setUpdateTime(new Date());
             sysUserService.updateById(sysUser);
@@ -70,7 +69,7 @@ public class SysUserController {
     /**
      * 修改密码
      *
-     * @param sysUser
+     * @param sysUser 用户信息
      * @return 页面响应entity
      */
     @PostMapping("/updateUserPwd")
@@ -90,9 +89,9 @@ public class SysUserController {
     /**
      * 上传用户头像图片
      *
-     * @param file
-     * @return
-     * @throws Exception
+     * @param file 用户头像图片
+     * @return 页面响应entity
+     * @throws Exception 用户头像图片上传异常
      */
     @RequestMapping("/uploadImage")
     @PreAuthorize("hasAuthority('system:user:edit')")
@@ -117,8 +116,8 @@ public class SysUserController {
     /**
      * 修改用户头像
      *
-     * @param sysUser
-     * @return
+     * @param sysUser 用户信息
+     * @return 页面响应entity
      */
     @RequestMapping("/updateAvatar")
     @PreAuthorize("hasAuthority('system:user:edit')")
@@ -133,8 +132,8 @@ public class SysUserController {
     /**
      * 根据条件分页查询用户信息
      *
-     * @param pageBean
-     * @return
+     * @param pageBean 分页信息
+     * @return 页面响应entity
      */
     @PostMapping("/list")
     @PreAuthorize("hasAuthority('system:user:query')")
@@ -152,6 +151,37 @@ public class SysUserController {
         resultMap.put("userList", userList);
         resultMap.put("total", pageResult.getTotal());
         return R.ok(resultMap);
+    }
+
+    /**
+     * 根据id查询用户
+     *
+     * @param id 用户id
+     * @return 页面响应entity
+     */
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R findById(@PathVariable(value = "id") Integer id) {
+        SysUser sysUser = sysUserService.getById(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("sysUser", sysUser);
+        return R.ok(map);
+    }
+
+    /**
+     * 验证用户名是否存在
+     *
+     * @param sysUser 用户信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/checkUserName")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R checkUserName(@RequestBody SysUser sysUser) {
+        if (sysUserService.getByUsername(sysUser.getUsername()) == null) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
     }
 
 }
