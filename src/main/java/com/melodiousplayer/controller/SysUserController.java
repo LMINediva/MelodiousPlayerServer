@@ -2,11 +2,9 @@ package com.melodiousplayer.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.melodiousplayer.entity.PageBean;
-import com.melodiousplayer.entity.R;
-import com.melodiousplayer.entity.SysRole;
-import com.melodiousplayer.entity.SysUser;
+import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.SysRoleService;
+import com.melodiousplayer.service.SysUserRoleService;
 import com.melodiousplayer.service.SysUserService;
 import com.melodiousplayer.util.DateUtil;
 import com.melodiousplayer.util.StringUtil;
@@ -15,14 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用户Controller控制器
@@ -39,6 +35,9 @@ public class SysUserController {
 
     @Autowired
     private SysRoleService sysRoleService;
+
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -182,6 +181,21 @@ public class SysUserController {
         } else {
             return R.error();
         }
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param ids 用户id
+     * @return 页面响应entity
+     */
+    @Transactional
+    @PostMapping("/delete")
+    @PreAuthorize("hasAuthority('system:user:delete')")
+    public R delete(@RequestBody Long[] ids) {
+        sysUserService.removeByIds(Arrays.asList(ids));
+        sysUserRoleService.remove(new QueryWrapper<SysUserRole>().in("user_id", ids));
+        return R.ok();
     }
 
 }
