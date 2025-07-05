@@ -232,4 +232,28 @@ public class SysUserController {
         return R.ok();
     }
 
+    /**
+     * 用户授予角色权限
+     *
+     * @param userId  用户id
+     * @param roleIds 角色权限
+     * @return 页面响应entity
+     */
+    @Transactional
+    @PostMapping("/grantRole/{userId}")
+    @PreAuthorize("hasAuthority('system:user:role')")
+    public R grantRole(@PathVariable("userId") Long userId,
+                       @RequestBody Long[] roleIds) {
+        List<SysUserRole> userRoleList = new ArrayList<>();
+        Arrays.stream(roleIds).forEach(r -> {
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setRoleId(r);
+            sysUserRole.setUserId(userId);
+            userRoleList.add(sysUserRole);
+        });
+        sysUserRoleService.remove(new QueryWrapper<SysUserRole>().eq("user_id", userId));
+        sysUserRoleService.saveBatch(userRoleList);
+        return R.ok();
+    }
+
 }
