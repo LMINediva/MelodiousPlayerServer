@@ -2,6 +2,7 @@ package com.melodiousplayer.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.melodiousplayer.common.constant.Constant;
 import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.SysRoleService;
 import com.melodiousplayer.service.SysUserRoleService;
@@ -195,6 +196,39 @@ public class SysUserController {
     public R delete(@RequestBody Long[] ids) {
         sysUserService.removeByIds(Arrays.asList(ids));
         sysUserRoleService.remove(new QueryWrapper<SysUserRole>().in("user_id", ids));
+        return R.ok();
+    }
+
+    /**
+     * 重置用户密码
+     *
+     * @param id 用户id
+     * @return 页面响应entity
+     */
+    @GetMapping("/resetPassword/{id}")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public R resetPassword(@PathVariable(value = "id") Integer id) {
+        SysUser sysUser = sysUserService.getById(id);
+        sysUser.setPassword(bCryptPasswordEncoder.encode(Constant.DEFAULT_PASSWORD));
+        sysUser.setUpdateTime(new Date());
+        sysUserService.updateById(sysUser);
+        return R.ok();
+    }
+
+    /**
+     * 更新用户状态
+     *
+     * @param id     用户id
+     * @param status 用户状态
+     * @return 页面响应entity
+     */
+    @GetMapping("/updateStatus/{id}/status/{status}")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public R updateStatus(@PathVariable(value = "id") Integer id,
+                          @PathVariable(value = "status") String status) {
+        SysUser sysUser = sysUserService.getById(id);
+        sysUser.setStatus(status);
+        sysUserService.saveOrUpdate(sysUser);
         return R.ok();
     }
 
