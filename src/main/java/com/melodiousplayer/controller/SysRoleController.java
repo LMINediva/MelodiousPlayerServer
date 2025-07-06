@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,40 @@ public class SysRoleController {
         resultMap.put("roleList", roleList);
         resultMap.put("total", pageResult.getTotal());
         return R.ok(resultMap);
+    }
+
+    /**
+     * 添加或者修改
+     *
+     * @param sysRole 用户角色
+     * @return 页面响应entity
+     */
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('system:role:add')" + "||" + "hasAuthority('system:role:edit')")
+    public R save(@RequestBody SysRole sysRole) {
+        if (sysRole.getId() == null || sysRole.getId() == -1) {
+            sysRole.setCreateTime(new Date());
+            sysRoleService.save(sysRole);
+        } else {
+            sysRole.setUpdateTime(new Date());
+            sysRoleService.updateById(sysRole);
+        }
+        return R.ok();
+    }
+
+    /**
+     * 根据id查询角色
+     *
+     * @param id 角色id
+     * @return 页面响应entity
+     */
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('system:role:query')")
+    public R findById(@PathVariable(value = "id") Integer id) {
+        SysRole sysRole = sysRoleService.getById(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("sysRole", sysRole);
+        return R.ok(map);
     }
 
 }
