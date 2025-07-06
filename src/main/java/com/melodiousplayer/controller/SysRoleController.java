@@ -5,16 +5,16 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.PageBean;
 import com.melodiousplayer.entity.R;
 import com.melodiousplayer.entity.SysRole;
+import com.melodiousplayer.entity.SysUserRole;
 import com.melodiousplayer.service.SysRoleService;
+import com.melodiousplayer.service.SysUserRoleService;
 import com.melodiousplayer.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统角色Controller控制器
@@ -28,6 +28,9 @@ public class SysRoleController {
 
     @Autowired
     private SysRoleService sysRoleService;
+
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
 
     @GetMapping("/listAll")
     @PreAuthorize("hasAuthority('system:role:query')")
@@ -89,6 +92,21 @@ public class SysRoleController {
         Map<String, Object> map = new HashMap<>();
         map.put("sysRole", sysRole);
         return R.ok(map);
+    }
+
+    /**
+     * 删除角色
+     *
+     * @param ids 角色id
+     * @return 页面响应entity
+     */
+    @Transactional
+    @PostMapping("/delete")
+    @PreAuthorize("hasAuthority('system:role:delete')")
+    public R delete(@RequestBody Long[] ids) {
+        sysRoleService.removeByIds(Arrays.asList(ids));
+        sysUserRoleService.remove(new QueryWrapper<SysUserRole>().in("role_id", ids));
+        return R.ok();
     }
 
 }
