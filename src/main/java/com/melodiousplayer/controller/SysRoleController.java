@@ -2,10 +2,8 @@ package com.melodiousplayer.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.melodiousplayer.entity.PageBean;
-import com.melodiousplayer.entity.R;
-import com.melodiousplayer.entity.SysRole;
-import com.melodiousplayer.entity.SysUserRole;
+import com.melodiousplayer.entity.*;
+import com.melodiousplayer.service.SysRoleMenuService;
 import com.melodiousplayer.service.SysRoleService;
 import com.melodiousplayer.service.SysUserRoleService;
 import com.melodiousplayer.util.StringUtil;
@@ -15,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 系统角色Controller控制器
@@ -31,6 +30,9 @@ public class SysRoleController {
 
     @Autowired
     private SysUserRoleService sysUserRoleService;
+
+    @Autowired
+    private SysRoleMenuService sysRoleMenuService;
 
     @GetMapping("/listAll")
     @PreAuthorize("hasAuthority('system:role:query')")
@@ -106,6 +108,44 @@ public class SysRoleController {
     public R delete(@RequestBody Long[] ids) {
         sysRoleService.removeByIds(Arrays.asList(ids));
         sysUserRoleService.remove(new QueryWrapper<SysUserRole>().in("role_id", ids));
+        return R.ok();
+    }
+
+    /**
+     * 获取当前角色的权限菜单ID集合
+     *
+     * @param id 菜单ID
+     * @return 页面响应entity
+     */
+    @GetMapping("/menus/{id}")
+    @PreAuthorize("hasAuthority('system:role:menu')")
+    public R menus(@PathVariable(value = "id") Integer id) {
+        List<SysRoleMenu> roleMenuList = sysRoleMenuService.list(
+                new QueryWrapper<SysRoleMenu>().eq("role_id", id));
+        List<Long> menuIdList = roleMenuList.stream().map(p -> p.getMenuId()).collect(Collectors.toList());
+        return R.ok().put("menuIdList", menuIdList);
+    }
+
+    /**
+     * 更新角色权限信息
+     *
+     * @param id      角色ID
+     * @param menuIds 菜单ID
+     * @return 页面响应entity
+     */
+    @Transactional
+    @PostMapping("/updateMenus/{id}")
+    @PreAuthorize("hasAuthority('system:role:menu')")
+    public R updateMenus(@PathVariable(value = "id") Long id, @RequestBody Long[] menuIds) {
+        sysRoleMenuService.remove(new QueryWrapper<SysRoleMenu>().eq("role_id", id));
+        List<SysRoleMenu> sysRoleMenuList = new ArrayList<>();
+        Arrays.stream(menuIds).forEach(menuId -> {
+            SysRoleMenu roleMenu = new SysRoleMenu();
+            roleMenu.setRoleId(id);
+            roleMenu.setMenuId(menuId);
+            sysRoleMenuList.add(roleMenu);
+        });
+        sysRoleMenuService.saveBatch(sysRoleMenuList);
         return R.ok();
     }
 
