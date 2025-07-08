@@ -6,10 +6,12 @@ import com.melodiousplayer.entity.SysMenu;
 import com.melodiousplayer.service.SysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统菜单Controller控制器
@@ -34,6 +36,40 @@ public class SysMenuController {
     public R treeList() {
         List<SysMenu> menuList = sysMenuService.list(new QueryWrapper<SysMenu>().orderByAsc("order_num"));
         return R.ok().put("treeMenu", sysMenuService.buildTreeMenu(menuList));
+    }
+
+    /**
+     * 添加或者修改
+     *
+     * @param sysMenu 菜单
+     * @return 页面响应entity
+     */
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('system:menu:add')" + "||" + "hasAuthority('system:menu:edit')")
+    public R save(@RequestBody SysMenu sysMenu) {
+        if (sysMenu.getId() == null || sysMenu.getId() == -1) {
+            sysMenu.setCreateTime(new Date());
+            sysMenuService.save(sysMenu);
+        } else {
+            sysMenu.setUpdateTime(new Date());
+            sysMenuService.updateById(sysMenu);
+        }
+        return R.ok();
+    }
+
+    /**
+     * 根据id查询菜单
+     *
+     * @param id 菜单id
+     * @return 页面响应entity
+     */
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('system:menu:query')")
+    public R findById(@PathVariable(value = "id") Integer id) {
+        SysMenu sysMenu = sysMenuService.getById(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("sysMenu", sysMenu);
+        return R.ok(map);
     }
 
 }
