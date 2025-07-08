@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 系统菜单Controller控制器
@@ -65,11 +62,28 @@ public class SysMenuController {
      */
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('system:menu:query')")
-    public R findById(@PathVariable(value = "id") Integer id) {
+    public R findById(@PathVariable(value = "id") Long id) {
         SysMenu sysMenu = sysMenuService.getById(id);
         Map<String, Object> map = new HashMap<>();
         map.put("sysMenu", sysMenu);
         return R.ok(map);
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param id 菜单id
+     * @return 页面响应entity
+     */
+    @GetMapping("/delete/{id}")
+    @PreAuthorize("hasAuthority('system:menu:delete')")
+    public R delete(@PathVariable(value = "id") Long id) {
+        Long count = sysMenuService.count(new QueryWrapper<SysMenu>().eq("parent_id", id));
+        if (count > 0) {
+            return R.error("请先删除子菜单！");
+        }
+        sysMenuService.removeById(id);
+        return R.ok();
     }
 
 }
