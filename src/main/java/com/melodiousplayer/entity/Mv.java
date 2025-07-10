@@ -4,15 +4,19 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 import lombok.Data;
 
 /**
  * MV
+ *
  * @TableName mv
  */
-@TableName(value ="mv")
+@TableName(value = "mv")
 @Data
 public class Mv implements Serializable {
     /**
@@ -121,31 +125,31 @@ public class Mv implements Serializable {
      * 视频大小
      */
     @TableField(value = "video_size")
-    private Integer videoSize;
+    private Double videoSize;
 
     /**
      * 高清视频大小
      */
     @TableField(value = "hd_video_size")
-    private Integer hdVideoSize;
+    private Double hdVideoSize;
 
     /**
      * 超高清视频大小
      */
     @TableField(value = "uhd_video_size")
-    private Integer uhdVideoSize;
+    private Double uhdVideoSize;
 
     /**
      * 极高清视频大小
      */
     @TableField(value = "shd_video_size")
-    private Integer shdVideoSize;
+    private Double shdVideoSize;
 
     /**
      * 时长
      */
     @TableField(value = "duration")
-    private Integer duration;
+    private Date duration;
 
     /**
      * 状态
@@ -164,6 +168,12 @@ public class Mv implements Serializable {
      */
     @TableField(value = "play_list_pic")
     private String playListPic;
+
+    /**
+     * 一部MV对应的所有艺术家集合
+     */
+    @TableField(exist = false)
+    private List<Artist> artists;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

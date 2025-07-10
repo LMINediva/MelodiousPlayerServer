@@ -5,31 +5,31 @@
 <mapper namespace="com.melodiousplayer.mapper.MvMapper">
 
     <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.Mv">
-        <id property="id" column="id" jdbcType="INTEGER"/>
-        <result property="title" column="title" jdbcType="VARCHAR"/>
-        <result property="description" column="description" jdbcType="VARCHAR"/>
-        <result property="artistName" column="artist_name" jdbcType="VARCHAR"/>
-        <result property="posterPic" column="poster_pic" jdbcType="VARCHAR"/>
-        <result property="thumbnailPic" column="thumbnail_pic" jdbcType="VARCHAR"/>
-        <result property="albumImg" column="album_img" jdbcType="VARCHAR"/>
-        <result property="regdate" column="regdate" jdbcType="TIMESTAMP"/>
-        <result property="videoSourceTypeName" column="video_source_type_name" jdbcType="VARCHAR"/>
-        <result property="totalViews" column="total_views" jdbcType="INTEGER"/>
-        <result property="totalPcViews" column="total_pc_views" jdbcType="INTEGER"/>
-        <result property="totalMobileViews" column="total_mobile_views" jdbcType="INTEGER"/>
-        <result property="totalComments" column="total_comments" jdbcType="INTEGER"/>
-        <result property="url" column="url" jdbcType="VARCHAR"/>
-        <result property="hdUrl" column="hd_url" jdbcType="VARCHAR"/>
-        <result property="uhdUrl" column="uhd_url" jdbcType="VARCHAR"/>
-        <result property="shdUrl" column="shd_url" jdbcType="VARCHAR"/>
-        <result property="videoSize" column="video_size" jdbcType="INTEGER"/>
-        <result property="hdVideoSize" column="hd_video_size" jdbcType="INTEGER"/>
-        <result property="uhdVideoSize" column="uhd_video_size" jdbcType="INTEGER"/>
-        <result property="shdVideoSize" column="shd_video_size" jdbcType="INTEGER"/>
-        <result property="duration" column="duration" jdbcType="INTEGER"/>
-        <result property="status" column="status" jdbcType="INTEGER"/>
-        <result property="linkId" column="link_id" jdbcType="INTEGER"/>
-        <result property="playListPic" column="play_list_pic" jdbcType="VARCHAR"/>
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="artistName" column="artist_name" jdbcType="VARCHAR"/>
+            <result property="posterPic" column="poster_pic" jdbcType="VARCHAR"/>
+            <result property="thumbnailPic" column="thumbnail_pic" jdbcType="VARCHAR"/>
+            <result property="albumImg" column="album_img" jdbcType="VARCHAR"/>
+            <result property="regdate" column="regdate" jdbcType="TIMESTAMP"/>
+            <result property="videoSourceTypeName" column="video_source_type_name" jdbcType="VARCHAR"/>
+            <result property="totalViews" column="total_views" jdbcType="INTEGER"/>
+            <result property="totalPcViews" column="total_pc_views" jdbcType="INTEGER"/>
+            <result property="totalMobileViews" column="total_mobile_views" jdbcType="INTEGER"/>
+            <result property="totalComments" column="total_comments" jdbcType="INTEGER"/>
+            <result property="url" column="url" jdbcType="VARCHAR"/>
+            <result property="hdUrl" column="hd_url" jdbcType="VARCHAR"/>
+            <result property="uhdUrl" column="uhd_url" jdbcType="VARCHAR"/>
+            <result property="shdUrl" column="shd_url" jdbcType="VARCHAR"/>
+            <result property="videoSize" column="video_size" jdbcType="FLOAT"/>
+            <result property="hdVideoSize" column="hd_video_size" jdbcType="FLOAT"/>
+            <result property="uhdVideoSize" column="uhd_video_size" jdbcType="FLOAT"/>
+            <result property="shdVideoSize" column="shd_video_size" jdbcType="FLOAT"/>
+            <result property="duration" column="duration" jdbcType="TIME"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="linkId" column="link_id" jdbcType="INTEGER"/>
+            <result property="playListPic" column="play_list_pic" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">

@@ -39,7 +39,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/captcha",
             "/password",
             "/image/**",
-            "/front_page.json"
+            "/front_page",
+            "/get_mv_list",
+            "/get_mv_areas"
     };
 
     @Bean
