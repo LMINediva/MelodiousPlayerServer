@@ -41,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/image/**",
             "/front_page",
             "/get_mv_list",
-            "/get_mv_areas"
+            "/get_mv_areas",
+            "/list"
     };
 
     @Bean

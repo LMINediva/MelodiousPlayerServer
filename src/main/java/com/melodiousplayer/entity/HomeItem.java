@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
  * 首页数据项
+ *
  * @TableName home_item
  */
-@TableName(value ="home_item")
+@TableName(value = "home_item")
 @Data
 public class HomeItem implements Serializable {
     /**
