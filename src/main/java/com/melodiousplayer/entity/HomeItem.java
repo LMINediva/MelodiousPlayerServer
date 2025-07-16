@@ -4,21 +4,18 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import java.io.Serializable;
-
 import lombok.Data;
 
 /**
- * 首页数据项
- *
+ * 首页在线音乐数据项
  * @TableName home_item
  */
-@TableName(value = "home_item")
+@TableName(value ="home_item")
 @Data
 public class HomeItem implements Serializable {
     /**
-     * 视频ID
+     * 音乐ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -54,40 +51,40 @@ public class HomeItem implements Serializable {
     private String thumbnailPic;
 
     /**
-     * 视频链接
+     * 音乐链接
      */
     @TableField(value = "url")
     private String url;
 
     /**
-     * 高清视频链接
+     * 高品质音乐链接
      */
     @TableField(value = "hd_url")
     private String hdUrl;
 
     /**
-     * 超高清视频链接
+     * 超高品质音乐链接
      */
     @TableField(value = "uhd_url")
     private String uhdUrl;
 
     /**
-     * 视频大小
+     * 音乐大小
      */
-    @TableField(value = "video_size")
-    private Integer videoSize;
+    @TableField(value = "music_size")
+    private Integer musicSize;
 
     /**
-     * 高清视频大小
+     * 高品质音乐大小
      */
-    @TableField(value = "hd_video_size")
-    private Integer hdVideoSize;
+    @TableField(value = "hd_music_size")
+    private Integer hdMusicSize;
 
     /**
-     * 超高清视频大小
+     * 超高品质音乐大小
      */
-    @TableField(value = "uhd_video_size")
-    private Integer uhdVideoSize;
+    @TableField(value = "uhd_music_size")
+    private Integer uhdMusicSize;
 
     /**
      * 状态

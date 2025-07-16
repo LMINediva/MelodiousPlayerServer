@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 /**
 * @author 24240
-* @description 针对表【home_item(首页数据项)】的数据库操作Service实现
-* @createDate 2025-06-23 12:57:09
+* @description 针对表【home_item(首页在线音乐数据项)】的数据库操作Service实现
+* @createDate 2025-07-16 13:08:33
 */
 @Service
 public class HomeItemServiceImpl extends ServiceImpl<HomeItemMapper, HomeItem>
