@@ -33,6 +33,12 @@ public class HomeItem implements Serializable {
     private String title;
 
     /**
+     * 艺术家姓名
+     */
+    @TableField(value = "artist_name")
+    private String artistName;
+
+    /**
      * 描述
      */
     @TableField(value = "description")
