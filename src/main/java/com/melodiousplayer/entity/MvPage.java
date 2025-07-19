@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
  * MV数据项
+ *
  * @TableName mv_page
  */
-@TableName(value ="mv_page")
+@TableName(value = "mv_page")
 @Data
 public class MvPage implements Serializable {
     /**

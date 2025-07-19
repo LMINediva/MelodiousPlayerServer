@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
  * 悦单界面
+ *
  * @TableName music
  */
-@TableName(value ="music")
+@TableName(value = "music")
 @Data
 public class Music implements Serializable {
     /**

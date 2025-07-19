@@ -39,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/captcha",
             "/password",
             "/image/**",
-            "/front_page",
+            "/data/music/front_page",
+            "/data/music/front_page2",
             "/get_mv_list",
             "/get_mv_areas",
             "/list"

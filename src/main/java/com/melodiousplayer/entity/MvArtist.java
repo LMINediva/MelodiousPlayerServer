@@ -4,14 +4,15 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
- * 
  * @TableName mv_artist
  */
-@TableName(value ="mv_artist")
+@TableName(value = "mv_artist")
 @Data
 public class MvArtist implements Serializable {
     /**

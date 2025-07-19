@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
  * 创作者
+ *
  * @TableName creator
  */
-@TableName(value ="creator")
+@TableName(value = "creator")
 @Data
 public class Creator implements Serializable {
     /**

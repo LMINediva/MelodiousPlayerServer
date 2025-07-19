@@ -7,13 +7,13 @@ import com.melodiousplayer.mapper.MusicMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author 24240
-* @description 针对表【music(悦单界面)】的数据库操作Service实现
-* @createDate 2025-06-23 12:57:09
-*/
+ * @author 24240
+ * @description 针对表【music(悦单界面)】的数据库操作Service实现
+ * @createDate 2025-06-23 12:57:09
+ */
 @Service
 public class MusicServiceImpl extends ServiceImpl<MusicMapper, Music>
-    implements MusicService{
+        implements MusicService {
 
 }
 

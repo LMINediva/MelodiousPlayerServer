@@ -5,9 +5,9 @@
 <mapper namespace="com.melodiousplayer.mapper.PlayCreatorMapper">
 
     <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.PlayCreator">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="playId" column="play_id" jdbcType="INTEGER"/>
-            <result property="creatorId" column="creator_id" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="playId" column="play_id" jdbcType="INTEGER"/>
+        <result property="creatorId" column="creator_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

@@ -5,9 +5,9 @@
 <mapper namespace="com.melodiousplayer.mapper.MvArtistMapper">
 
     <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.MvArtist">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="mvId" column="mv_id" jdbcType="INTEGER"/>
-            <result property="artistId" column="artist_id" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="mvId" column="mv_id" jdbcType="INTEGER"/>
+        <result property="artistId" column="artist_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">

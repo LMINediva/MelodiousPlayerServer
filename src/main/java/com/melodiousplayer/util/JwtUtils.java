@@ -11,6 +11,7 @@ import java.util.Date;
 
 /**
  * jwt加密和解密的工具类
+ *
  * @author java1234_小锋
  * @site www.java1234.com
  * @company Java知识分享网
@@ -20,8 +21,9 @@ public class JwtUtils {
 
     /**
      * 签发JWT
+     *
      * @param id
-     * @param subject 可以是JSON数据 尽可能少
+     * @param subject   可以是JSON数据 尽可能少
      * @param ttlMillis
      * @return
      */
@@ -46,15 +48,17 @@ public class JwtUtils {
 
     /**
      * 生成jwt token
+     *
      * @param username
      * @return
      */
-    public static String genJwtToken(String username){
-        return createJWT(username,username,60*60*1000);
+    public static String genJwtToken(String username) {
+        return createJWT(username, username, 60 * 60 * 1000);
     }
 
     /**
      * 验证JWT
+     *
      * @param jwtStr
      * @return
      */
@@ -80,6 +84,7 @@ public class JwtUtils {
 
     /**
      * 生成加密Key
+     *
      * @return
      */
     public static SecretKey generalKey() {
@@ -91,6 +96,7 @@ public class JwtUtils {
 
     /**
      * 解析JWT字符串
+     *
      * @param jwt
      * @return
      * @throws Exception
@@ -105,7 +111,7 @@ public class JwtUtils {
 
     public static void main(String[] args) throws InterruptedException {
         //小明失效 10s
-        String sc = createJWT("1","小明", 60 * 60 * 1000);
+        String sc = createJWT("1", "小明", 60 * 60 * 1000);
         System.out.println(sc);
         System.out.println(validateJWT(sc).getErrCode());
         System.out.println(validateJWT(sc).getClaims().getId());
@@ -113,7 +119,7 @@ public class JwtUtils {
         //Thread.sleep(3000);
         System.out.println(validateJWT(sc).getClaims());
         Claims claims = validateJWT(sc).getClaims();
-        String sc2 = createJWT(claims.getId(),claims.getSubject(), JwtConstant.JWT_TTL);
+        String sc2 = createJWT(claims.getId(), claims.getSubject(), JwtConstant.JWT_TTL);
         System.out.println(sc2);
     }
 

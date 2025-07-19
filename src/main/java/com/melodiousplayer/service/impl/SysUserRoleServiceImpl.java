@@ -7,13 +7,13 @@ import com.melodiousplayer.mapper.SysUserRoleMapper;
 import org.springframework.stereotype.Service;
 
 /**
-* @author 24240
-* @description 针对表【sys_user_role】的数据库操作Service实现
-* @createDate 2025-06-25 10:31:09
-*/
+ * @author 24240
+ * @description 针对表【sys_user_role】的数据库操作Service实现
+ * @createDate 2025-06-25 10:31:09
+ */
 @Service
 public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleMapper, SysUserRole>
-    implements SysUserRoleService{
+        implements SysUserRoleService {
 
 }
 

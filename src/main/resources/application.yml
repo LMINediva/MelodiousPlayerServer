@@ -31,4 +31,5 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
 
-avatarImagesFilePath: F:\Projects\Android\GraduationProject\MelodiousPlayerUserAvatar\
+avatarImagesFilePath: F:\Projects\Android\GraduationProject\UserAvatar\
+musicImagesFilePath: F:\Projects\Android\GraduationProject\MusicPicture\
