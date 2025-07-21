@@ -1,5 +1,6 @@
 package com.melodiousplayer.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.melodiousplayer.entity.HomeItem;
 import com.melodiousplayer.service.HomeItemService;
@@ -15,6 +16,10 @@ import org.springframework.stereotype.Service;
 public class HomeItemServiceImpl extends ServiceImpl<HomeItemMapper, HomeItem>
         implements HomeItemService {
 
+    @Override
+    public HomeItem getByTitle(String title) {
+        return getOne(new QueryWrapper<HomeItem>().eq("title", title));
+    }
 }
 
 

@@ -10,4 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface HomeItemService extends IService<HomeItem> {
 
+    HomeItem getByTitle(String title);
+
 }

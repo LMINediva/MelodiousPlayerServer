@@ -33,6 +33,9 @@ public class HomeItemController {
     @Value("${musicImagesFilePath}")
     private String musicImagesFilePath;
 
+    @Value("${audiosFilePath}")
+    private String audiosFilePath;
+
     /**
      * 分页查询首页列表信息menuList
      *
@@ -140,6 +143,33 @@ public class HomeItemController {
     }
 
     /**
+     * 上传音乐文件
+     *
+     * @param file 音乐文件
+     * @return 页面响应entity
+     * @throws Exception 音乐文件上传异常
+     */
+    @RequestMapping("/uploadAudio")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public Map<String, Object> uploadAudio(MultipartFile file) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        if (!file.isEmpty()) {
+            // 获取文件名
+            String originalFilename = file.getOriginalFilename();
+            String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(audiosFilePath + newFileName));
+            resultMap.put("code", 0);
+            resultMap.put("msg", "上传成功");
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("title", newFileName);
+            dataMap.put("src", "audio/music/" + newFileName);
+            resultMap.put("data", dataMap);
+        }
+        return resultMap;
+    }
+
+    /**
      * 修改在线音乐海报图
      *
      * @param homeItem 在线音乐信息
@@ -166,6 +196,59 @@ public class HomeItemController {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
         currentHomeItem.setThumbnailPic(homeItem.getThumbnailPic());
         homeItemService.updateById(currentHomeItem);
+        return R.ok();
+    }
+
+    /**
+     * 修改在线音乐音频（一般品质、高品质和超高品质）
+     *
+     * @param homeItem 在线音乐信息
+     * @return 页面响应entity
+     */
+    @RequestMapping("/updateAudio")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public R updateAudio(@RequestBody HomeItem homeItem) {
+        HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
+        currentHomeItem.setUrl(homeItem.getUrl());
+        currentHomeItem.setHdUrl(homeItem.getUrl());
+        currentHomeItem.setUhdUrl(homeItem.getUrl());
+        currentHomeItem.setMusicSize(homeItem.getMusicSize());
+        currentHomeItem.setHdMusicSize(homeItem.getMusicSize());
+        currentHomeItem.setUhdMusicSize(homeItem.getMusicSize());
+        homeItemService.updateById(currentHomeItem);
+        return R.ok();
+    }
+
+    /**
+     * 验证在线音乐名是否存在
+     *
+     * @param homeItem 在线音乐信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/checkTitle")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R checkTitle(@RequestBody HomeItem homeItem) {
+        if (homeItemService.getByTitle(homeItem.getTitle()) == null) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
+    }
+
+    /**
+     * 添加或者修改在线音乐
+     *
+     * @param homeItem 在线音乐信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('system:user:add')" + "||" + "hasAuthority('system:user:edit')")
+    public R save(@RequestBody HomeItem homeItem) {
+        if (homeItem.getId() == null || homeItem.getId() == -1) {
+            homeItemService.save(homeItem);
+        } else {
+            homeItemService.updateById(homeItem);
+        }
         return R.ok();
     }
 
