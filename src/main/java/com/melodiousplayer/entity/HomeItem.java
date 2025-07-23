@@ -4,17 +4,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
 import java.io.Serializable;
-
 import lombok.Data;
 
 /**
  * 首页在线音乐数据项
- *
  * @TableName home_item
  */
-@TableName(value = "home_item")
+@TableName(value ="home_item")
 @Data
 public class HomeItem implements Serializable {
     /**
@@ -58,6 +55,12 @@ public class HomeItem implements Serializable {
      */
     @TableField(value = "thumbnail_pic")
     private String thumbnailPic;
+
+    /**
+     * 歌词
+     */
+    @TableField(value = "lyric")
+    private String lyric;
 
     /**
      * 音乐链接

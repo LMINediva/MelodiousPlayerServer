@@ -26,10 +26,11 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/image/userAvatar/**", "/image/musicPicture/**",
-                        "/audio/music/**")
+                        "/audio/music/**", "/audio/lyric/**")
                 .addResourceLocations("file:F:\\Projects\\Android\\GraduationProject\\UserAvatar\\",
                         "file:F:\\Projects\\Android\\GraduationProject\\MusicPicture\\",
-                        "file:F:\\Projects\\Android\\GraduationProject\\Audio\\");
+                        "file:F:\\Projects\\Android\\GraduationProject\\Audio\\",
+                        "file:F:\\Projects\\Android\\GraduationProject\\Lyric\\");
     }
 
 }

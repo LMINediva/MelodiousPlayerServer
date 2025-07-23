@@ -12,6 +12,7 @@
         <result property="description" column="description" jdbcType="VARCHAR"/>
         <result property="posterPic" column="poster_pic" jdbcType="VARCHAR"/>
         <result property="thumbnailPic" column="thumbnail_pic" jdbcType="VARCHAR"/>
+        <result property="lyric" column="lyric" jdbcType="VARCHAR"/>
         <result property="url" column="url" jdbcType="VARCHAR"/>
         <result property="hdUrl" column="hd_url" jdbcType="VARCHAR"/>
         <result property="uhdUrl" column="uhd_url" jdbcType="VARCHAR"/>
@@ -24,8 +25,8 @@
     <sql id="Base_Column_List">
         id,type,title,
         artist_name,description,poster_pic,
-        thumbnail_pic,url,hd_url,
-        uhd_url,music_size,hd_music_size,
-        uhd_music_size,status
+        thumbnail_pic,lyric,url,
+        hd_url,uhd_url,music_size,
+        hd_music_size,uhd_music_size,status
     </sql>
 </mapper>
