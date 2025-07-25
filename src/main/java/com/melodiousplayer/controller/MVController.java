@@ -8,6 +8,7 @@ import com.melodiousplayer.service.ArtistService;
 import com.melodiousplayer.service.MvService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,7 @@ import java.util.Map;
  * @date 2025/07/09
  */
 @RestController
+@RequestMapping("/data/mv")
 public class MVController {
 
     @Autowired

@@ -33,8 +33,11 @@ public class HomeItemController {
     @Value("${musicImagesFilePath}")
     private String musicImagesFilePath;
 
-    @Value("${audiosFilePath}")
-    private String audiosFilePath;
+    @Value("${audioFilePath}")
+    private String audioFilePath;
+
+    @Value("${lyricFilePath}")
+    private String lyricFilePath;
 
     /**
      * 分页查询首页列表信息menuList
@@ -143,6 +146,33 @@ public class HomeItemController {
     }
 
     /**
+     * 上传歌词文件
+     *
+     * @param file 歌词文件
+     * @return 页面响应entity
+     * @throws Exception 歌词文件上传异常
+     */
+    @RequestMapping("/uploadLyric")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public Map<String, Object> uploadLyric(MultipartFile file) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        if (!file.isEmpty()) {
+            // 获取文件名
+            String originalFilename = file.getOriginalFilename();
+            String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(lyricFilePath + newFileName));
+            resultMap.put("code", 0);
+            resultMap.put("msg", "上传成功");
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("title", newFileName);
+            dataMap.put("src", "audio/lyric/" + newFileName);
+            resultMap.put("data", dataMap);
+        }
+        return resultMap;
+    }
+
+    /**
      * 上传音乐文件
      *
      * @param file 音乐文件
@@ -158,7 +188,7 @@ public class HomeItemController {
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
             String newFileName = DateUtil.getCurrentDateStr() + suffixName;
-            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(audiosFilePath + newFileName));
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(audioFilePath + newFileName));
             resultMap.put("code", 0);
             resultMap.put("msg", "上传成功");
             Map<String, Object> dataMap = new HashMap<>();
@@ -195,6 +225,21 @@ public class HomeItemController {
     public R updateThumbnailPicture(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
         currentHomeItem.setThumbnailPic(homeItem.getThumbnailPic());
+        homeItemService.updateById(currentHomeItem);
+        return R.ok();
+    }
+
+    /**
+     * 修改在线音乐歌词文件
+     *
+     * @param homeItem 在线音乐信息
+     * @return 页面响应entity
+     */
+    @RequestMapping("/updateLyric")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public R updateLyric(@RequestBody HomeItem homeItem) {
+        HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
+        currentHomeItem.setLyric(homeItem.getLyric());
         homeItemService.updateById(currentHomeItem);
         return R.ok();
     }

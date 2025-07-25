@@ -37,4 +37,5 @@ mybatis-plus:
 
 avatarImagesFilePath: F:\Projects\Android\GraduationProject\UserAvatar\
 musicImagesFilePath: F:\Projects\Android\GraduationProject\MusicPicture\
-audiosFilePath: F:\Projects\Android\GraduationProject\Audio\
+audioFilePath: F:\Projects\Android\GraduationProject\Audio\
+lyricFilePath: F:\Projects\Android\GraduationProject\Lyric\
