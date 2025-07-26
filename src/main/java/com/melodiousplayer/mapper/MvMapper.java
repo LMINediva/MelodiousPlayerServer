@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * @author 24240
  * @description 针对表【mv(MV)】的数据库操作Mapper
- * @createDate 2025-07-09 11:54:21
+ * @createDate 2025-07-26 12:47:21
  * @Entity com.melodiousplayer.entity.Mv
  */
 @Mapper

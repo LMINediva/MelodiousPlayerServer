@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/password",
             "/image/**",
             "/audio/**",
+            "/video/**",
             "/data/music/front_page",
             "/data/music/front_page2",
             "/get_mv_list",

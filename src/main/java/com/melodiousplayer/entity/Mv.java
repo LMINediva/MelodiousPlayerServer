@@ -56,12 +56,6 @@ public class Mv implements Serializable {
     private String thumbnailPic;
 
     /**
-     * 专辑图片
-     */
-    @TableField(value = "album_img")
-    private String albumImg;
-
-    /**
      * 发行时间
      */
     @TableField(value = "regdate")
@@ -116,12 +110,6 @@ public class Mv implements Serializable {
     private String uhdUrl;
 
     /**
-     * 极高清视频链接
-     */
-    @TableField(value = "shd_url")
-    private String shdUrl;
-
-    /**
      * 视频大小
      */
     @TableField(value = "video_size")
@@ -140,12 +128,6 @@ public class Mv implements Serializable {
     private Double uhdVideoSize;
 
     /**
-     * 极高清视频大小
-     */
-    @TableField(value = "shd_video_size")
-    private Double shdVideoSize;
-
-    /**
      * 时长
      */
     @TableField(value = "duration")
@@ -156,18 +138,6 @@ public class Mv implements Serializable {
      */
     @TableField(value = "status")
     private Integer status;
-
-    /**
-     * 链接ID
-     */
-    @TableField(value = "link_id")
-    private Integer linkId;
-
-    /**
-     * 视频列表图片
-     */
-    @TableField(value = "play_list_pic")
-    private String playListPic;
 
     /**
      * 一部MV对应的所有艺术家集合
