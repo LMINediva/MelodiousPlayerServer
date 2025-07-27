@@ -1,5 +1,6 @@
 package com.melodiousplayer.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.melodiousplayer.entity.Mv;
 import com.melodiousplayer.service.MvService;
@@ -14,6 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class MvServiceImpl extends ServiceImpl<MvMapper, Mv>
         implements MvService {
+
+    @Override
+    public Mv getByTitle(String title) {
+        return getOne(new QueryWrapper<Mv>().eq("title", title));
+    }
 
 }
 

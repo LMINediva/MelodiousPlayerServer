@@ -10,4 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface MvService extends IService<Mv> {
 
+    Mv getByTitle(String title);
+
 }
