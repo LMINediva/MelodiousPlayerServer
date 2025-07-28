@@ -50,11 +50,6 @@ public class MVController {
                                          @RequestParam("size") Integer size) {
         Page<Mv> pageResult = mvService.page(new Page<>(offset, size));
         List<Mv> mvList = pageResult.getRecords();
-        for (Mv mv : mvList) {
-            List<Artist> artistList = artistService.list(new QueryWrapper<Artist>().inSql(
-                    "id", "select artist_id from mv_artist where mv_id = " + mv.getId()));
-            mv.setArtists(artistList);
-        }
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("videos", mvList);
         return resultMap;

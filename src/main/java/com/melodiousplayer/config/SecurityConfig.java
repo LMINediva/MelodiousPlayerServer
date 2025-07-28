@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/video/**",
             "/data/music/front_page",
             "/data/music/front_page2",
-            "/get_mv_list",
+            "/data/mv/get_mv_list",
             "/get_mv_areas",
             "/list"
     };

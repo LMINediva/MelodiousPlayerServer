@@ -141,12 +141,6 @@ public class Mv implements Serializable {
     @TableField(value = "status")
     private Integer status;
 
-    /**
-     * 一部MV对应的所有艺术家集合
-     */
-    @TableField(exist = false)
-    private List<Artist> artists;
-
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }
