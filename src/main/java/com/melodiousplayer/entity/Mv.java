@@ -141,6 +141,12 @@ public class Mv implements Serializable {
     @TableField(value = "status")
     private Integer status;
 
+    /**
+     * 一部在线MV对应的一个区域
+     */
+    @TableField(exist = false)
+    private MvArea mvArea;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

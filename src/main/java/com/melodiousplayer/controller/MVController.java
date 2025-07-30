@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.ArtistService;
+import com.melodiousplayer.service.MvAreaService;
 import com.melodiousplayer.service.MvService;
 import com.melodiousplayer.util.DateUtil;
 import com.melodiousplayer.util.StringUtil;
@@ -34,6 +35,9 @@ public class MVController {
     @Autowired
     private ArtistService artistService;
 
+    @Autowired
+    private MvAreaService mvAreaService;
+
     @Value("${mvImagesFilePath}")
     private String mvImagesFilePath;
 
@@ -47,8 +51,13 @@ public class MVController {
      */
     @GetMapping("/get_mv_list")
     public Map<String, Object> selectAll(@RequestParam("offset") Integer offset,
-                                         @RequestParam("size") Integer size) {
-        Page<Mv> pageResult = mvService.page(new Page<>(offset, size));
+                                         @RequestParam("size") Integer size,
+                                         @RequestParam("area") String area) {
+        Page<Mv> pageResult = mvService.page(new Page<>(offset, size),
+                new QueryWrapper<Mv>().inSql(
+                        "id", "select mv_id from mv_area_code where " +
+                                "mv_area_id in (select id from mv_area where code = \"" + area + "\")"
+                ));
         List<Mv> mvList = pageResult.getRecords();
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("videos", mvList);
