@@ -3,6 +3,7 @@ package com.melodiousplayer.controller;
 import com.melodiousplayer.entity.MvArea;
 import com.melodiousplayer.service.MvAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,12 @@ public class MVAreaController {
     public List<MvArea> selectAll() {
         List<MvArea> mvAreaList = mvAreaService.list();
         return mvAreaList;
+    }
+
+    @GetMapping("/mv_areas")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public List<MvArea> selectAllAreas() {
+        return mvAreaService.list();
     }
 
 }

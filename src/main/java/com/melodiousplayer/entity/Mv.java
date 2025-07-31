@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -146,6 +145,12 @@ public class Mv implements Serializable {
      */
     @TableField(exist = false)
     private MvArea mvArea;
+
+    /**
+     * 旧的MV所属区域ID
+     */
+    @TableField(exist = false)
+    private Integer oldMvAreaId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

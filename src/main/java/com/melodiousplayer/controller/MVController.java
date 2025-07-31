@@ -3,7 +3,7 @@ package com.melodiousplayer.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
-import com.melodiousplayer.service.ArtistService;
+import com.melodiousplayer.service.MvAreaCodeService;
 import com.melodiousplayer.service.MvAreaService;
 import com.melodiousplayer.service.MvService;
 import com.melodiousplayer.util.DateUtil;
@@ -33,10 +33,10 @@ public class MVController {
     private MvService mvService;
 
     @Autowired
-    private ArtistService artistService;
+    private MvAreaService mvAreaService;
 
     @Autowired
-    private MvAreaService mvAreaService;
+    private MvAreaCodeService mvAreaCodeService;
 
     @Value("${mvImagesFilePath}")
     private String mvImagesFilePath;
@@ -77,6 +77,12 @@ public class MVController {
         Page<Mv> pageResult = mvService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
                 new QueryWrapper<Mv>().like(StringUtil.isNotEmpty(query), "title", query));
         List<Mv> mvList = pageResult.getRecords();
+        for (Mv mv : mvList) {
+            MvArea mvArea = mvAreaService.getOne(new QueryWrapper<MvArea>().inSql(
+                    "id", "select mv_area_id from mv_area_code where mv_id = " + mv.getId()
+            ));
+            mv.setMvArea(mvArea);
+        }
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("mvList", mvList);
         resultMap.put("total", pageResult.getTotal());
@@ -107,6 +113,10 @@ public class MVController {
     @PreAuthorize("hasAuthority('system:user:query')")
     public R findById(@PathVariable(value = "id") Integer id) {
         Mv mvItem = mvService.getById(id);
+        MvArea mvArea = mvAreaService.getOne(new QueryWrapper<MvArea>().inSql(
+                "id", "select mv_area_id from mv_area_code where mv_id = " + mvItem.getId()
+        ));
+        mvItem.setMvArea(mvArea);
         Map<String, Object> map = new HashMap<>();
         map.put("mvItem", mvItem);
         return R.ok(map);
@@ -244,8 +254,14 @@ public class MVController {
     public R save(@RequestBody Mv mv) {
         if (mv.getId() == null || mv.getId() == -1) {
             mvService.save(mv);
+            Integer id = mv.getId();
+            MvAreaCode mvAreaCode = new MvAreaCode();
+            mvAreaCode.setMvId(id);
+            mvAreaCode.setMvAreaId(mv.getMvArea().getId());
+            mvAreaCodeService.save(mvAreaCode);
         } else {
             mvService.updateById(mv);
+            mvAreaCodeService.updateByMVIDAndMVAreaID(mv.getId(), mv.getOldMvAreaId(), mv.getMvArea().getId());
         }
         return R.ok();
     }

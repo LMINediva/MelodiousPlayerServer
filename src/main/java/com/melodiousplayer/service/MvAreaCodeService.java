@@ -10,4 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface MvAreaCodeService extends IService<MvAreaCode> {
 
+    Boolean updateByMVIDAndMVAreaID(Integer mvId, Integer oldMvAreaId, Integer mvAreaId);
+
 }
