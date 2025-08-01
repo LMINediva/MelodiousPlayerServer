@@ -27,13 +27,13 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/image/userAvatar/**", "/image/musicPicture/**",
                         "/audio/music/**", "/audio/lyric/**", "/image/mvPicture/**",
-                        "/video/mv/**")
+                        "/video/mv/**", "/image/listPicture/**")
                 .addResourceLocations("file:F:\\Projects\\Android\\GraduationProject\\UserAvatar\\",
                         "file:F:\\Projects\\Android\\GraduationProject\\MusicPicture\\",
                         "file:F:\\Projects\\Android\\GraduationProject\\Audio\\",
                         "file:F:\\Projects\\Android\\GraduationProject\\Lyric\\",
                         "file:F:\\Projects\\Android\\GraduationProject\\MVPicture\\",
-                        "file:F:\\Projects\\Android\\GraduationProject\\MV\\");
+                        "file:F:\\Projects\\Android\\GraduationProject\\ListPicture\\");
     }
 
 }

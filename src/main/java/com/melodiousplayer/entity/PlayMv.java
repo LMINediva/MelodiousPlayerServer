@@ -10,13 +10,13 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * @TableName play_creator
+ * @TableName play_mv
  */
-@TableName(value = "play_creator")
+@TableName(value = "play_mv")
 @Data
-public class PlayCreator implements Serializable {
+public class PlayMv implements Serializable {
     /**
-     * 音乐清单创作者主键ID
+     * 音乐清单MV主键ID
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -28,10 +28,10 @@ public class PlayCreator implements Serializable {
     private Integer playId;
 
     /**
-     * 创作者ID
+     * MVID
      */
-    @TableField(value = "creator_id")
-    private Integer creatorId;
+    @TableField(value = "mv_id")
+    private Integer mvId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

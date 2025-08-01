@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -35,18 +36,6 @@ public class Play implements Serializable {
      */
     @TableField(value = "thumbnail_pic")
     private String thumbnailPic;
-
-    /**
-     * 图片
-     */
-    @TableField(value = "play_list_pic")
-    private String playListPic;
-
-    /**
-     * 大图片
-     */
-    @TableField(value = "play_list_big_pic")
-    private String playListBigPic;
 
     /**
      * 视频数量
@@ -121,10 +110,16 @@ public class Play implements Serializable {
     private Integer rank;
 
     /**
-     * 一条音乐清单对应的一位创作者
+     * 一条音乐清单对应的一位创作者（系统用户）
      */
     @TableField(exist = false)
-    private Creator creator;
+    private SysUser sysUser;
+
+    /**
+     * 一条音乐清单对应的多部MV
+     */
+    @TableField(exist = false)
+    private List<Mv> mvList;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

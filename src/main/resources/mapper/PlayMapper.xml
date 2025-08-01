@@ -8,8 +8,6 @@
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="thumbnailPic" column="thumbnail_pic" jdbcType="VARCHAR"/>
-        <result property="playListPic" column="play_list_pic" jdbcType="VARCHAR"/>
-        <result property="playListBigPic" column="play_list_big_pic" jdbcType="VARCHAR"/>
         <result property="videoCount" column="video_count" jdbcType="INTEGER"/>
         <result property="description" column="description" jdbcType="VARCHAR"/>
         <result property="category" column="category" jdbcType="VARCHAR"/>
@@ -26,10 +24,9 @@
 
     <sql id="Base_Column_List">
         id,title,thumbnail_pic,
-        play_list_pic,play_list_big_pic,video_count,
-        description,category,status,
-        total_views,total_favorites,update_time,
-        created_time,integral,week_integral,
-        total_user,rank
+        video_count,description,category,
+        status,total_views,total_favorites,
+        update_time,created_time,integral,
+        week_integral,total_user,rank
     </sql>
 </mapper>
