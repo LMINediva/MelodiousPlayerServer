@@ -33,6 +33,7 @@ public class WebAppConfigurer implements WebMvcConfigurer {
                         "file:F:\\Projects\\Android\\GraduationProject\\Audio\\",
                         "file:F:\\Projects\\Android\\GraduationProject\\Lyric\\",
                         "file:F:\\Projects\\Android\\GraduationProject\\MVPicture\\",
+                        "file:F:\\Projects\\Android\\GraduationProject\\MV\\",
                         "file:F:\\Projects\\Android\\GraduationProject\\ListPicture\\");
     }
 

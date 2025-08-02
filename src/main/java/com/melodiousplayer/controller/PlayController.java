@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.MvService;
+import com.melodiousplayer.service.PlayMvService;
 import com.melodiousplayer.service.SysUserService;
 import com.melodiousplayer.service.PlayService;
 import com.melodiousplayer.util.StringUtil;
@@ -35,6 +36,9 @@ public class PlayController {
 
     @Autowired
     private MvService mvService;
+
+    @Autowired
+    private PlayMvService playMvService;
 
     /**
      * 查询所有音乐清单信息
@@ -93,8 +97,27 @@ public class PlayController {
     @PostMapping("/delete")
     @PreAuthorize("hasAuthority('system:user:delete')")
     public R delete(@RequestBody Long[] ids) {
-        mvService.removeByIds(Arrays.asList(ids));
+        playService.removeByIds(Arrays.asList(ids));
+        playMvService.remove(new QueryWrapper<PlayMv>().in("play_id", Arrays.asList(ids)));
         return R.ok();
+    }
+
+    /**
+     * 根据id查询在线悦单
+     *
+     * @param id 在线悦单的id
+     * @return 页面响应entity
+     */
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R findById(@PathVariable(value = "id") Integer id) {
+        Play play = playService.getById(id);
+        List<Mv> mvList = mvService.list(new QueryWrapper<Mv>().inSql(
+                "id", "select mv_id from play_mv where play_id = " + play.getId()));
+        play.setMvList(mvList);
+        Map<String, Object> map = new HashMap<>();
+        map.put("playItem", play);
+        return R.ok(map);
     }
 
 }
