@@ -97,6 +97,49 @@ public class HomeItemController {
     @PostMapping("/delete")
     @PreAuthorize("hasAuthority('system:user:delete')")
     public R delete(@RequestBody Long[] ids) {
+        for (Long id : ids) {
+            HomeItem homeItem = homeItemService.getById(id);
+            String posterImagePath = musicImagesFilePath + homeItem.getPosterPic();
+            String thumbnailImagePath = musicImagesFilePath + homeItem.getThumbnailPic();
+            String audioPath = audioFilePath + homeItem.getUrl();
+            String lyricPath = lyricFilePath + homeItem.getLyric();
+            File posterImageFile = new File(posterImagePath);
+            File thumbnailImageFile = new File(thumbnailImagePath);
+            File audioFile = new File(audioPath);
+            File lyricFile = new File(lyricPath);
+            if (posterImageFile.exists()) {
+                boolean deleted = posterImageFile.delete();
+                if (!deleted) {
+                    return R.error("海报图片删除失败");
+                }
+            } else {
+                return R.error("海报图片不存在：" + homeItem.getPosterPic());
+            }
+            if (thumbnailImageFile.exists()) {
+                boolean deleted = thumbnailImageFile.delete();
+                if (!deleted) {
+                    return R.error("缩略图图片删除失败");
+                }
+            } else {
+                return R.error("缩略图图片不存在：" + homeItem.getThumbnailPic());
+            }
+            if (audioFile.exists()) {
+                boolean deleted = audioFile.delete();
+                if (!deleted) {
+                    return R.error("音乐文件删除失败");
+                }
+            } else {
+                return R.error("音乐文件不存在：" + homeItem.getUrl());
+            }
+            if (lyricFile.exists()) {
+                boolean deleted = lyricFile.delete();
+                if (!deleted) {
+                    return R.error("歌词文件删除失败");
+                }
+            } else {
+                return R.error("歌词文件不存在：" + homeItem.getLyric());
+            }
+        }
         homeItemService.removeByIds(Arrays.asList(ids));
         return R.ok();
     }

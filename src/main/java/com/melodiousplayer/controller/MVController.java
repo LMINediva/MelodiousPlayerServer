@@ -99,7 +99,41 @@ public class MVController {
     @PostMapping("/delete")
     @PreAuthorize("hasAuthority('system:user:delete')")
     public R delete(@RequestBody Long[] ids) {
+        for (Long id : ids) {
+            Mv mv = mvService.getById(id);
+            String posterImagePath = mvImagesFilePath + mv.getPosterPic();
+            String thumbnailImagePath = mvImagesFilePath + mv.getThumbnailPic();
+            String mvPath = mvFilePath + mv.getUrl();
+            File posterImageFile = new File(posterImagePath);
+            File thumbnailImageFile = new File(thumbnailImagePath);
+            File mvFile = new File(mvPath);
+            if (posterImageFile.exists()) {
+                boolean deleted = posterImageFile.delete();
+                if (!deleted) {
+                    return R.error("海报图片删除失败");
+                }
+            } else {
+                return R.error("海报图片不存在：" + mv.getPosterPic());
+            }
+            if (thumbnailImageFile.exists()) {
+                boolean deleted = thumbnailImageFile.delete();
+                if (!deleted) {
+                    return R.error("缩略图图片删除失败");
+                }
+            } else {
+                return R.error("缩略图图片不存在：" + mv.getThumbnailPic());
+            }
+            if (mvFile.exists()) {
+                boolean deleted = mvFile.delete();
+                if (!deleted) {
+                    return R.error("MV文件删除失败");
+                }
+            } else {
+                return R.error("MV文件不存在：" + mv.getUrl());
+            }
+        }
         mvService.removeByIds(Arrays.asList(ids));
+        mvAreaCodeService.remove(new QueryWrapper<MvAreaCode>().in("mv_id", Arrays.asList(ids)));
         return R.ok();
     }
 
