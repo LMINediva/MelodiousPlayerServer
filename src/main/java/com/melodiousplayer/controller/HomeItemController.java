@@ -252,6 +252,16 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updatePosterPicture(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
+        String posterImagePath = musicImagesFilePath + homeItem.getPosterPic();
+        File posterImageFile = new File(posterImagePath);
+        if (posterImageFile.exists()) {
+            boolean deleted = posterImageFile.delete();
+            if (!deleted) {
+                return R.error("海报图片删除失败");
+            }
+        } else {
+            return R.error("海报图片不存在：" + homeItem.getPosterPic());
+        }
         currentHomeItem.setPosterPic(homeItem.getPosterPic());
         homeItemService.updateById(currentHomeItem);
         return R.ok();
@@ -267,6 +277,16 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateThumbnailPicture(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
+        String thumbnailImagePath = musicImagesFilePath + homeItem.getThumbnailPic();
+        File thumbnailImageFile = new File(thumbnailImagePath);
+        if (thumbnailImageFile.exists()) {
+            boolean deleted = thumbnailImageFile.delete();
+            if (!deleted) {
+                return R.error("缩略图图片删除失败");
+            }
+        } else {
+            return R.error("缩略图图片不存在：" + homeItem.getThumbnailPic());
+        }
         currentHomeItem.setThumbnailPic(homeItem.getThumbnailPic());
         homeItemService.updateById(currentHomeItem);
         return R.ok();
@@ -282,6 +302,16 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateLyric(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
+        String lyricPath = lyricFilePath + homeItem.getLyric();
+        File lyricFile = new File(lyricPath);
+        if (lyricFile.exists()) {
+            boolean deleted = lyricFile.delete();
+            if (!deleted) {
+                return R.error("歌词文件删除失败");
+            }
+        } else {
+            return R.error("歌词文件不存在：" + homeItem.getLyric());
+        }
         currentHomeItem.setLyric(homeItem.getLyric());
         homeItemService.updateById(currentHomeItem);
         return R.ok();
@@ -297,6 +327,16 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateAudio(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
+        String audioPath = audioFilePath + homeItem.getUrl();
+        File audioFile = new File(audioPath);
+        if (audioFile.exists()) {
+            boolean deleted = audioFile.delete();
+            if (!deleted) {
+                return R.error("音乐文件删除失败");
+            }
+        } else {
+            return R.error("音乐文件不存在：" + homeItem.getUrl());
+        }
         currentHomeItem.setUrl(homeItem.getUrl());
         currentHomeItem.setHdUrl(homeItem.getUrl());
         currentHomeItem.setUhdUrl(homeItem.getUrl());

@@ -7,12 +7,17 @@ import com.melodiousplayer.service.MvService;
 import com.melodiousplayer.service.PlayMvService;
 import com.melodiousplayer.service.SysUserService;
 import com.melodiousplayer.service.PlayService;
+import com.melodiousplayer.util.DateUtil;
 import com.melodiousplayer.util.StringUtil;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +44,9 @@ public class PlayController {
 
     @Autowired
     private PlayMvService playMvService;
+
+    @Value("${listImagesFilePath}")
+    private String listImagesFilePath;
 
     /**
      * 查询所有音乐清单信息
@@ -118,6 +126,81 @@ public class PlayController {
         Map<String, Object> map = new HashMap<>();
         map.put("playItem", play);
         return R.ok(map);
+    }
+
+    /**
+     * 验证在线悦单名是否存在
+     *
+     * @param play 在线悦单信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/checkTitle")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R checkTitle(@RequestBody Play play) {
+        if (playService.getByTitle(play.getTitle()) == null) {
+            return R.ok();
+        } else {
+            return R.error();
+        }
+    }
+
+    /**
+     * 上传在线悦单缩略图
+     *
+     * @param file 在线悦单缩略图
+     * @return 页面响应entity
+     * @throws Exception 在线悦单缩略图上传异常
+     */
+    @RequestMapping("/uploadImage")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public Map<String, Object> uploadImage(MultipartFile file) throws Exception {
+        Map<String, Object> resultMap = new HashMap<>();
+        if (!file.isEmpty()) {
+            // 获取文件名
+            String originalFilename = file.getOriginalFilename();
+            String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            FileUtils.copyInputStreamToFile(file.getInputStream(), new File(listImagesFilePath + newFileName));
+            resultMap.put("code", 0);
+            resultMap.put("msg", "上传成功");
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("title", newFileName);
+            dataMap.put("src", "image/mvPicture/" + newFileName);
+            resultMap.put("data", dataMap);
+        }
+        return resultMap;
+    }
+
+    /**
+     * 修改在线悦单缩略图
+     *
+     * @param play 在线音乐信息
+     * @return 页面响应entity
+     */
+    @RequestMapping("/updateThumbnailPicture")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public R updateThumbnailPicture(@RequestBody Play play) {
+        Play currentPlay = playService.getById(play.getId());
+        currentPlay.setThumbnailPic(play.getThumbnailPic());
+        playService.updateById(currentPlay);
+        return R.ok();
+    }
+
+    /**
+     * 添加或者修改在线悦单
+     *
+     * @param play 在线悦单信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('system:user:add')" + "||" + "hasAuthority('system:user:edit')")
+    public R save(@RequestBody Play play) {
+        if (play.getId() == null || play.getId() == -1) {
+            playService.save(play);
+        } else {
+            playService.updateById(play);
+        }
+        return R.ok();
     }
 
 }
