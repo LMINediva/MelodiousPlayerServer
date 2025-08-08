@@ -55,6 +55,12 @@ public class DateUtil {
         return sdf.format(date);
     }
 
+    public static String getCurrentDate() {
+        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(currentDate);
+    }
+
     public static void main(String[] args) {
         try {
             System.out.println(getCurrentDateStr());

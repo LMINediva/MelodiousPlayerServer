@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 音乐清单页面Controller控制器
@@ -194,11 +191,21 @@ public class PlayController {
      */
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('system:user:add')" + "||" + "hasAuthority('system:user:edit')")
-    public R save(@RequestBody Play play) {
+    public R save(@RequestBody Play play) throws Exception {
         if (play.getId() == null || play.getId() == -1) {
             playService.save(play);
         } else {
+            play.setUpdateTime(DateUtil.formatString(DateUtil.getCurrentDate(), "yyyy-MM-dd HH:mm:ss"));
             playService.updateById(play);
+            playMvService.remove(new QueryWrapper<PlayMv>().eq("play_id", play.getId()));
+            List<PlayMv> playMvList = new ArrayList<>();
+            play.getMvList().forEach(mv -> {
+                PlayMv playMv = new PlayMv();
+                playMv.setPlayId(play.getId());
+                playMv.setMvId(mv.getId());
+                playMvList.add(playMv);
+            });
+            playMvService.saveBatch(playMvList);
         }
         return R.ok();
     }
