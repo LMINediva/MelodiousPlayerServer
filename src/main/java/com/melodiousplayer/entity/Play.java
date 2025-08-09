@@ -110,7 +110,7 @@ public class Play implements Serializable {
     private Integer rank;
 
     /**
-     * 一条音乐清单对应的一位创作者（系统用户）
+     * 一条音乐清单对应的一位创作者ID（系统用户）
      */
     @TableField(exist = false)
     private SysUser sysUser;

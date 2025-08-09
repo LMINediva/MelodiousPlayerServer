@@ -3,10 +3,7 @@ package com.melodiousplayer.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
-import com.melodiousplayer.service.MvService;
-import com.melodiousplayer.service.PlayMvService;
-import com.melodiousplayer.service.SysUserService;
-import com.melodiousplayer.service.PlayService;
+import com.melodiousplayer.service.*;
 import com.melodiousplayer.util.DateUtil;
 import com.melodiousplayer.util.StringUtil;
 import org.apache.commons.io.FileUtils;
@@ -41,6 +38,9 @@ public class PlayController {
 
     @Autowired
     private PlayMvService playMvService;
+
+    @Autowired
+    private PlayUserService playUserService;
 
     @Value("${listImagesFilePath}")
     private String listImagesFilePath;
@@ -194,6 +194,19 @@ public class PlayController {
     public R save(@RequestBody Play play) throws Exception {
         if (play.getId() == null || play.getId() == -1) {
             playService.save(play);
+            Integer id = play.getId();
+            PlayUser playUser = new PlayUser();
+            playUser.setPlayId(id);
+            playUser.setUserId(play.getSysUser().getId());
+            playUserService.save(playUser);
+            List<PlayMv> playMvList = new ArrayList<>();
+            play.getMvList().forEach(mv -> {
+                PlayMv playMv = new PlayMv();
+                playMv.setPlayId(id);
+                playMv.setMvId(mv.getId());
+                playMvList.add(playMv);
+            });
+            playMvService.saveBatch(playMvList);
         } else {
             play.setUpdateTime(DateUtil.formatString(DateUtil.getCurrentDate(), "yyyy-MM-dd HH:mm:ss"));
             playService.updateById(play);
