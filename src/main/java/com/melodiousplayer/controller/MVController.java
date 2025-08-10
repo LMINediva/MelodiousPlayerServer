@@ -236,8 +236,18 @@ public class MVController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updatePosterPicture(@RequestBody Mv mv) {
         Mv currentMV = mvService.getById(mv.getId());
+        String posterImagePath = mvImagesFilePath + mv.getPosterPic();
+        File posterImageFile = new File(posterImagePath);
+        if (posterImageFile.exists()) {
+            boolean deleted = posterImageFile.delete();
+            if (!deleted) {
+                return R.error("MV海报图片删除失败");
+            }
+        } else {
+            return R.error("MV海报图片不存在：" + mv.getPosterPic());
+        }
         currentMV.setPosterPic(mv.getPosterPic());
-        mvService.updateById(mv);
+        mvService.updateById(currentMV);
         return R.ok();
     }
 
@@ -251,6 +261,16 @@ public class MVController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateThumbnailPicture(@RequestBody Mv mv) {
         Mv currentMV = mvService.getById(mv.getId());
+        String thumbnailImagePath = mvImagesFilePath + mv.getThumbnailPic();
+        File thumbnailImageFile = new File(thumbnailImagePath);
+        if (thumbnailImageFile.exists()) {
+            boolean deleted = thumbnailImageFile.delete();
+            if (!deleted) {
+                return R.error("MV缩略图图片删除失败");
+            }
+        } else {
+            return R.error("MV缩略图图片不存在：" + mv.getThumbnailPic());
+        }
         currentMV.setThumbnailPic(mv.getThumbnailPic());
         mvService.updateById(currentMV);
         return R.ok();

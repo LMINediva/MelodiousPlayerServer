@@ -252,15 +252,15 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updatePosterPicture(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
-        String posterImagePath = musicImagesFilePath + homeItem.getPosterPic();
+        String posterImagePath = musicImagesFilePath + currentHomeItem.getPosterPic();
         File posterImageFile = new File(posterImagePath);
         if (posterImageFile.exists()) {
             boolean deleted = posterImageFile.delete();
             if (!deleted) {
-                return R.error("海报图片删除失败");
+                return R.error("音乐海报图片删除失败");
             }
         } else {
-            return R.error("海报图片不存在：" + homeItem.getPosterPic());
+            return R.error("音乐海报图片不存在：" + currentHomeItem.getPosterPic());
         }
         currentHomeItem.setPosterPic(homeItem.getPosterPic());
         homeItemService.updateById(currentHomeItem);
@@ -277,15 +277,15 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateThumbnailPicture(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
-        String thumbnailImagePath = musicImagesFilePath + homeItem.getThumbnailPic();
+        String thumbnailImagePath = musicImagesFilePath + currentHomeItem.getThumbnailPic();
         File thumbnailImageFile = new File(thumbnailImagePath);
         if (thumbnailImageFile.exists()) {
             boolean deleted = thumbnailImageFile.delete();
             if (!deleted) {
-                return R.error("缩略图图片删除失败");
+                return R.error("音乐缩略图图片删除失败");
             }
         } else {
-            return R.error("缩略图图片不存在：" + homeItem.getThumbnailPic());
+            return R.error("音乐缩略图图片不存在：" + currentHomeItem.getThumbnailPic());
         }
         currentHomeItem.setThumbnailPic(homeItem.getThumbnailPic());
         homeItemService.updateById(currentHomeItem);
@@ -302,7 +302,7 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateLyric(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
-        String lyricPath = lyricFilePath + homeItem.getLyric();
+        String lyricPath = lyricFilePath + currentHomeItem.getLyric();
         File lyricFile = new File(lyricPath);
         if (lyricFile.exists()) {
             boolean deleted = lyricFile.delete();
@@ -310,7 +310,7 @@ public class HomeItemController {
                 return R.error("歌词文件删除失败");
             }
         } else {
-            return R.error("歌词文件不存在：" + homeItem.getLyric());
+            return R.error("歌词文件不存在：" + currentHomeItem.getLyric());
         }
         currentHomeItem.setLyric(homeItem.getLyric());
         homeItemService.updateById(currentHomeItem);
@@ -327,7 +327,7 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateAudio(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
-        String audioPath = audioFilePath + homeItem.getUrl();
+        String audioPath = audioFilePath + currentHomeItem.getUrl();
         File audioFile = new File(audioPath);
         if (audioFile.exists()) {
             boolean deleted = audioFile.delete();
@@ -335,7 +335,7 @@ public class HomeItemController {
                 return R.error("音乐文件删除失败");
             }
         } else {
-            return R.error("音乐文件不存在：" + homeItem.getUrl());
+            return R.error("音乐文件不存在：" + currentHomeItem.getUrl());
         }
         currentHomeItem.setUrl(homeItem.getUrl());
         currentHomeItem.setHdUrl(homeItem.getUrl());
@@ -375,6 +375,61 @@ public class HomeItemController {
         if (homeItem.getId() == null || homeItem.getId() == -1) {
             homeItemService.save(homeItem);
         } else {
+            HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
+            if (!currentHomeItem.getPosterPic().equals(homeItem.getPosterPic())) {
+                String posterImagePath = musicImagesFilePath + currentHomeItem.getPosterPic();
+                File posterImageFile = new File(posterImagePath);
+                if (posterImageFile.exists()) {
+                    boolean deleted = posterImageFile.delete();
+                    if (!deleted) {
+                        return R.error("音乐海报图片删除失败");
+                    }
+                } else {
+                    return R.error("音乐海报图片不存在：" + currentHomeItem.getPosterPic());
+                }
+            }
+            if (!currentHomeItem.getThumbnailPic().equals(homeItem.getThumbnailPic())) {
+                String thumbnailImagePath = musicImagesFilePath + currentHomeItem.getThumbnailPic();
+                File thumbnailImageFile = new File(thumbnailImagePath);
+                if (thumbnailImageFile.exists()) {
+                    boolean deleted = thumbnailImageFile.delete();
+                    if (!deleted) {
+                        return R.error("音乐缩略图图片删除失败");
+                    }
+                } else {
+                    return R.error("音乐缩略图图片不存在：" + currentHomeItem.getThumbnailPic());
+                }
+            }
+            if (!currentHomeItem.getUrl().equals(homeItem.getUrl())) {
+                String audioPath = audioFilePath + currentHomeItem.getUrl();
+                File audioFile = new File(audioPath);
+                if (audioFile.exists()) {
+                    boolean deleted = audioFile.delete();
+                    if (!deleted) {
+                        return R.error("音乐文件删除失败");
+                    }
+                } else {
+                    return R.error("音乐文件不存在：" + currentHomeItem.getUrl());
+                }
+                homeItem.setUrl(homeItem.getUrl());
+                homeItem.setHdUrl(homeItem.getUrl());
+                homeItem.setUhdUrl(homeItem.getUrl());
+                homeItem.setMusicSize(homeItem.getMusicSize());
+                homeItem.setHdMusicSize(homeItem.getMusicSize());
+                homeItem.setUhdMusicSize(homeItem.getMusicSize());
+            }
+            if (!currentHomeItem.getLyric().equals(homeItem.getLyric())) {
+                String lyricPath = lyricFilePath + currentHomeItem.getLyric();
+                File lyricFile = new File(lyricPath);
+                if (lyricFile.exists()) {
+                    boolean deleted = lyricFile.delete();
+                    if (!deleted) {
+                        return R.error("歌词文件删除失败");
+                    }
+                } else {
+                    return R.error("歌词文件不存在：" + currentHomeItem.getLyric());
+                }
+            }
             homeItemService.updateById(homeItem);
         }
         return R.ok();
