@@ -236,7 +236,7 @@ public class MVController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updatePosterPicture(@RequestBody Mv mv) {
         Mv currentMV = mvService.getById(mv.getId());
-        String posterImagePath = mvImagesFilePath + mv.getPosterPic();
+        String posterImagePath = mvImagesFilePath + currentMV.getPosterPic();
         File posterImageFile = new File(posterImagePath);
         if (posterImageFile.exists()) {
             boolean deleted = posterImageFile.delete();
@@ -244,7 +244,7 @@ public class MVController {
                 return R.error("MV海报图片删除失败");
             }
         } else {
-            return R.error("MV海报图片不存在：" + mv.getPosterPic());
+            return R.error("MV海报图片不存在：" + currentMV.getPosterPic());
         }
         currentMV.setPosterPic(mv.getPosterPic());
         mvService.updateById(currentMV);
@@ -261,7 +261,7 @@ public class MVController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateThumbnailPicture(@RequestBody Mv mv) {
         Mv currentMV = mvService.getById(mv.getId());
-        String thumbnailImagePath = mvImagesFilePath + mv.getThumbnailPic();
+        String thumbnailImagePath = mvImagesFilePath + currentMV.getThumbnailPic();
         File thumbnailImageFile = new File(thumbnailImagePath);
         if (thumbnailImageFile.exists()) {
             boolean deleted = thumbnailImageFile.delete();
@@ -269,7 +269,7 @@ public class MVController {
                 return R.error("MV缩略图图片删除失败");
             }
         } else {
-            return R.error("MV缩略图图片不存在：" + mv.getThumbnailPic());
+            return R.error("MV缩略图图片不存在：" + currentMV.getThumbnailPic());
         }
         currentMV.setThumbnailPic(mv.getThumbnailPic());
         mvService.updateById(currentMV);
@@ -286,6 +286,16 @@ public class MVController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateVideo(@RequestBody Mv mv) {
         Mv currentMV = mvService.getById(mv.getId());
+        String videoPath = mvFilePath + currentMV.getUrl();
+        File lyricFile = new File(videoPath);
+        if (lyricFile.exists()) {
+            boolean deleted = lyricFile.delete();
+            if (!deleted) {
+                return R.error("MV文件删除失败");
+            }
+        } else {
+            return R.error("MV文件不存在：" + currentMV.getUrl());
+        }
         currentMV.setUrl(mv.getUrl());
         currentMV.setHdUrl(mv.getUrl());
         currentMV.setUhdUrl(mv.getUrl());
@@ -314,6 +324,47 @@ public class MVController {
             mvAreaCode.setMvAreaId(mv.getMvArea().getId());
             mvAreaCodeService.save(mvAreaCode);
         } else {
+            Mv currentMV = mvService.getById(mv.getId());
+            if (!currentMV.getPosterPic().equals(mv.getPosterPic())) {
+                String posterImagePath = mvImagesFilePath + currentMV.getPosterPic();
+                File posterImageFile = new File(posterImagePath);
+                if (posterImageFile.exists()) {
+                    boolean deleted = posterImageFile.delete();
+                    if (!deleted) {
+                        return R.error("MV海报图片删除失败");
+                    }
+                } else {
+                    return R.error("MV海报图片不存在：" + currentMV.getPosterPic());
+                }
+            }
+            if (!currentMV.getThumbnailPic().equals(mv.getThumbnailPic())) {
+                String thumbnailImagePath = mvImagesFilePath + currentMV.getThumbnailPic();
+                File thumbnailImageFile = new File(thumbnailImagePath);
+                if (thumbnailImageFile.exists()) {
+                    boolean deleted = thumbnailImageFile.delete();
+                    if (!deleted) {
+                        return R.error("MV缩略图图片删除失败");
+                    }
+                } else {
+                    return R.error("MV缩略图图片不存在：" + currentMV.getThumbnailPic());
+                }
+            }
+            if (!currentMV.getUrl().equals(mv.getUrl())) {
+                String videoPath = mvFilePath + currentMV.getUrl();
+                File lyricFile = new File(videoPath);
+                if (lyricFile.exists()) {
+                    boolean deleted = lyricFile.delete();
+                    if (!deleted) {
+                        return R.error("MV文件删除失败");
+                    }
+                } else {
+                    return R.error("MV文件不存在：" + currentMV.getUrl());
+                }
+                mv.setHdUrl(mv.getUrl());
+                mv.setUhdUrl(mv.getUrl());
+                mv.setHdVideoSize(mv.getVideoSize());
+                mv.setUhdVideoSize(mv.getVideoSize());
+            }
             mvService.updateById(mv);
             mvAreaCodeService.updateByMVIDAndMVAreaID(mv.getId(), mv.getOldMvAreaId(), mv.getMvArea().getId());
         }
