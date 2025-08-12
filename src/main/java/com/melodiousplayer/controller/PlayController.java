@@ -178,6 +178,16 @@ public class PlayController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateThumbnailPicture(@RequestBody Play play) {
         Play currentPlay = playService.getById(play.getId());
+        String thumbnailImagePath = listImagesFilePath + currentPlay.getThumbnailPic();
+        File thumbnailImageFile = new File(thumbnailImagePath);
+        if (thumbnailImageFile.exists()) {
+            boolean deleted = thumbnailImageFile.delete();
+            if (!deleted) {
+                return R.error("悦单缩略图图片删除失败");
+            }
+        } else {
+            return R.error("悦单缩略图图片不存在：" + currentPlay.getThumbnailPic());
+        }
         currentPlay.setThumbnailPic(play.getThumbnailPic());
         playService.updateById(currentPlay);
         return R.ok();
@@ -208,6 +218,19 @@ public class PlayController {
             });
             playMvService.saveBatch(playMvList);
         } else {
+            Play currentPlay = playService.getById(play.getId());
+            if (!currentPlay.getThumbnailPic().equals(play.getThumbnailPic())) {
+                String thumbnailImagePath = listImagesFilePath + currentPlay.getThumbnailPic();
+                File thumbnailImageFile = new File(thumbnailImagePath);
+                if (thumbnailImageFile.exists()) {
+                    boolean deleted = thumbnailImageFile.delete();
+                    if (!deleted) {
+                        return R.error("悦单缩略图图片删除失败");
+                    }
+                } else {
+                    return R.error("悦单缩略图图片不存在：" + currentPlay.getThumbnailPic());
+                }
+            }
             play.setUpdateTime(DateUtil.formatString(DateUtil.getCurrentDate(), "yyyy-MM-dd HH:mm:ss"));
             playService.updateById(play);
             playMvService.remove(new QueryWrapper<PlayMv>().eq("play_id", play.getId()));
