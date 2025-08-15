@@ -10,4 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface SysNoticeService extends IService<SysNotice> {
 
+    SysNotice getByTitle(String title);
+
 }
