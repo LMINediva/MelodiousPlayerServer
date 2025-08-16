@@ -246,4 +246,18 @@ public class PlayController {
         return R.ok();
     }
 
+    /**
+     * 查询悦单总数
+     *
+     * @return 页面响应entity
+     */
+    @GetMapping("/total")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R total() {
+        Long total = playService.count();
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("total", total);
+        return R.ok(resultMap);
+    }
+
 }

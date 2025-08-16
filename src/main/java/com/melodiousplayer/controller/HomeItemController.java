@@ -446,4 +446,18 @@ public class HomeItemController {
         return R.ok(map);
     }
 
+    /**
+     * 查询在线音乐总数
+     *
+     * @return 页面响应entity
+     */
+    @GetMapping("/total")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R total() {
+        Long total = homeItemService.count();
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("total", total);
+        return R.ok(resultMap);
+    }
+
 }

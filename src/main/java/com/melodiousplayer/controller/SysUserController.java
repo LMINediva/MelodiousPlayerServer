@@ -256,4 +256,41 @@ public class SysUserController {
         return R.ok();
     }
 
+    /**
+     * 查询用户总数
+     *
+     * @return 页面响应entity
+     */
+    @GetMapping("/total")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R total() {
+        Long total = sysUserService.count();
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("total", total);
+        return R.ok(resultMap);
+    }
+
+    /**
+     * 查询过去近7年每年的用户注册数量
+     *
+     * @return 页面响应entity
+     */
+    @GetMapping("/pastUserQuantity")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R pastData() {
+        Date date = new Date();
+        int year = Integer.parseInt(DateUtil.formatDate(date, "YYYY"));
+        int[] pastYear = new int[7];
+        Long[] pastUserQuantity = new Long[7];
+        for (int i = 0; i < 7; i++) {
+            pastYear[i] = year - 6 + i;
+            pastUserQuantity[i] = sysUserService.count(
+                    new QueryWrapper<SysUser>().eq("YEAR(create_time)", year - 6 + i));
+        }
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("pastYear", pastYear);
+        resultMap.put("pastUserQuantity", pastUserQuantity);
+        return R.ok(resultMap);
+    }
+
 }

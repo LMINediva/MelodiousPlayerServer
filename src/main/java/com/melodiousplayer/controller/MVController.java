@@ -371,4 +371,18 @@ public class MVController {
         return R.ok();
     }
 
+    /**
+     * 查询在线MV总数
+     *
+     * @return 页面响应entity
+     */
+    @GetMapping("/total")
+    @PreAuthorize("hasAuthority('system:user:query')")
+    public R total() {
+        Long total = mvService.count();
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("total", total);
+        return R.ok(resultMap);
+    }
+
 }
