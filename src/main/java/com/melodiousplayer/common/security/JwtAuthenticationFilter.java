@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -69,6 +70,12 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                 case JwtConstant.JWT_ERRCODE_EXPIRE:
                     throw new JwtException("Token过期");
             }
+        }
+        String kaptcha = request.getParameter("kaptcha");
+        String sessionKaptcha = (String) request.getSession().getAttribute("kaptcha");
+        if (StringUtils.isEmpty(kaptcha) && StringUtils.isEmpty(sessionKaptcha)
+                && !kaptcha.equalsIgnoreCase(sessionKaptcha)) {
+            throw new JwtException("验证码输入错误");
         }
         Claims claims = JwtUtils.parseJWT(token);
         String username = claims.getSubject();
