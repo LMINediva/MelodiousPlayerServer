@@ -12,7 +12,7 @@ spring:
   redis: # redis 配置
     host: 127.0.0.1 # IP
     port: 6379 # 端口
-    password: 13879640liu # 密码
+    password: ENC(viwiDApGQQrWf1E6N9xMKfYR4z7cTEyOiTGh4lXfv1nJyh1yrDUctOgvsAPFF1pF) # 密码
     timeout: 10s # 连接超时时间
     lettuce: # lettuce redis 客户端配置
       pool: # 连接池配置

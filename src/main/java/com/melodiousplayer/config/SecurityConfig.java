@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/login",
             "/logout",
             "/captcha",
+            "/compareCode",
             "/password",
             "/image/**",
             "/audio/**",
