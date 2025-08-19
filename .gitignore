@@ -40,3 +40,10 @@ out/
 !**/src/resources/static/lrc/
 !**/src/resources/static/mp3/
 !**/src/resources/static/mp4/
+UserAvatar/
+ListPicture/
+Lyric/
+MusicPicture/
+MV/
+MVPicture/
+Audio/
