@@ -40,7 +40,7 @@ public class HomeItemController {
     private String lyricFilePath;
 
     /**
-     * 分页查询首页列表信息menuList
+     * 分页查询首页列表信息
      *
      * @param offset 第几页
      * @param size   每页记录数

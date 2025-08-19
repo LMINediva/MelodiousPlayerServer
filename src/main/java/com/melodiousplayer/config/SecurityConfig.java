@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private MyUserDetailsServiceImpl myUserDetailsService;
 
     private static final String URL_WHITE_LIST[] = {
+            "/",
             "/login",
             "/logout",
             "/captcha",
@@ -46,7 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/data/music/front_page2",
             "/data/mv/get_mv_list",
             "/get_mv_areas",
-            "/data/list/get_list"
+            "/data/list/get_list",
+            "/js/**",
+            "/css/**",
+            "/img/**",
+            "/favicon.ico"
     };
 
     @Bean

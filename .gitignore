@@ -47,3 +47,8 @@ MusicPicture/
 MV/
 MVPicture/
 Audio/
+/src/main/resources/static/css/
+/src/main/resources/static/img/
+/src/main/resources/static/js/
+/src/main/resources/static/favicon.ico
+/src/main/resources/static/index.html

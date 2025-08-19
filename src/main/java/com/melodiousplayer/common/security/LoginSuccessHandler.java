@@ -20,6 +20,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -73,7 +74,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         // 转菜单树
         List<SysMenu> menuList = sysMenuService.buildTreeMenu(sysMenuList);
         outputStream.write(JSONUtil.toJsonStr(R.ok("登录成功").put("authorization", token)
-                .put("currentUser", currentUser).put("menuList", menuList)).getBytes());
+                .put("currentUser", currentUser).put("menuList", menuList)).getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
         outputStream.close();
     }

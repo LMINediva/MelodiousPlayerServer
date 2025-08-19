@@ -36,12 +36,17 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     private MyUserDetailsServiceImpl myUserDetailsService;
 
     private static final String URL_WHITE_LIST[] = {
+            "/",
             "/login",
             "/logout",
             "/captcha",
             "/compareCode",
             "/password",
-            "/image/**"
+            "/image/**",
+            "/js/**",
+            "/css/**",
+            "/img/**",
+            "/favicon.ico"
     };
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
