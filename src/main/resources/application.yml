@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8082
   servlet:
     context-path: /
     encoding:
@@ -39,10 +39,10 @@ mybatis-plus:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   mapper-locations: classpath:mapper/*.xml
 
-avatarImagesFilePath: ${user.dir}\UserAvatar\
-musicImagesFilePath: ${user.dir}\MusicPicture\
-audioFilePath: ${user.dir}\Audio\
-lyricFilePath: ${user.dir}\Lyric\
-mvImagesFilePath: ${user.dir}\MVPicture\
-mvFilePath: ${user.dir}\MV\
-listImagesFilePath: ${user.dir}\ListPicture\
+avatarImagesFilePath: ${user.dir}${file.separator}UserAvatar${file.separator}
+musicImagesFilePath: ${user.dir}${file.separator}MusicPicture${file.separator}
+audioFilePath: ${user.dir}${file.separator}Audio${file.separator}
+lyricFilePath: ${user.dir}${file.separator}Lyric${file.separator}
+mvImagesFilePath: ${user.dir}${file.separator}MVPicture${file.separator}
+mvFilePath: ${user.dir}${file.separator}MV${file.separator}
+listImagesFilePath: ${user.dir}${file.separator}ListPicture${file.separator}

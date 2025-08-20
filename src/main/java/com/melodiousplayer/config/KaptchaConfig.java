@@ -34,8 +34,6 @@ public class KaptchaConfig {
         properties.setProperty("kaptcha.textproducer.char.length", "4");
         // 字体大小
         properties.setProperty("kaptcha.textproducer.font.size", "40");
-        // 字体
-        properties.setProperty("kaptcha.textproducer.font.names", "宋体,楷体,微软雅黑");
         Config config = new Config(properties);
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         defaultKaptcha.setConfig(config);
