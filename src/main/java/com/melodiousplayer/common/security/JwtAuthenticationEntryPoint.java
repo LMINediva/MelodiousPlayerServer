@@ -2,7 +2,6 @@ package com.melodiousplayer.common.security;
 
 import cn.hutool.json.JSONUtil;
 import com.melodiousplayer.entity.R;
-import com.melodiousplayer.util.JwtUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
