@@ -123,6 +123,16 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateAvatar(@RequestBody SysUser sysUser) {
         SysUser currentUser = sysUserService.getById(sysUser.getId());
+        String avatarPath = avatarImagesFilePath + currentUser.getAvatar();
+        File avatarFile = new File(avatarPath);
+        if (avatarFile.exists()) {
+            boolean deleted = avatarFile.delete();
+            if (!deleted) {
+                return R.error("用户头像删除失败");
+            }
+        } else {
+            return R.error("用户头像不存在：" + currentUser.getAvatar());
+        }
         currentUser.setUpdateTime(new Date());
         currentUser.setAvatar(sysUser.getAvatar());
         sysUserService.updateById(currentUser);
