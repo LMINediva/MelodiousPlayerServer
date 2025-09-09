@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.melodiousplayer.entity.R;
 import com.melodiousplayer.entity.SysRole;
 import com.melodiousplayer.entity.SysUser;
+import com.melodiousplayer.entity.SysUserRole;
 import com.melodiousplayer.service.SysRoleService;
+import com.melodiousplayer.service.SysUserRoleService;
 import com.melodiousplayer.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -36,18 +38,27 @@ public class IndexController {
     @Autowired
     private SysRoleService sysRoleService;
 
+    @Autowired
+    private SysUserRoleService sysUserRoleService;
+
     /**
-     * 添加用户
+     * 用户注册
      *
      * @param sysUser 用户信息
      * @return 页面响应entity
      */
-    @PostMapping("/addUser")
+    @PostMapping("/register")
     public R save(@RequestBody SysUser sysUser) {
         if (sysUserService.getByUsername(sysUser.getUsername()) == null) {
             sysUser.setCreateTime(new Date());
             sysUser.setPassword(bCryptPasswordEncoder.encode(sysUser.getPassword()));
             sysUserService.save(sysUser);
+            List<SysUserRole> userRoleList = new ArrayList<>();
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setUserId(sysUser.getId());
+            sysUserRole.setRoleId(2L);
+            userRoleList.add(sysUserRole);
+            sysUserRoleService.saveBatch(userRoleList);
             return R.ok();
         } else {
             return R.error(501, "用户名已存在");
