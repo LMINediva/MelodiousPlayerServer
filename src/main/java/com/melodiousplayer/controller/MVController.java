@@ -71,7 +71,7 @@ public class MVController {
      * @return 页面响应entity
      */
     @PostMapping("/list")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:mv:query')")
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<Mv> pageResult = mvService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
@@ -97,7 +97,7 @@ public class MVController {
      */
     @Transactional
     @PostMapping("/delete")
-    @PreAuthorize("hasAuthority('system:user:delete')")
+    @PreAuthorize("hasAuthority('data:mv:delete')")
     public R delete(@RequestBody Long[] ids) {
         for (Long id : ids) {
             Mv mv = mvService.getById(id);
@@ -144,7 +144,7 @@ public class MVController {
      * @return 页面响应entity
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:mv:query')")
     public R findById(@PathVariable(value = "id") Integer id) {
         Mv mvItem = mvService.getById(id);
         MvArea mvArea = mvAreaService.getOne(new QueryWrapper<MvArea>().inSql(
@@ -164,7 +164,7 @@ public class MVController {
      * @throws Exception 在线MV海报图或缩略图上传异常
      */
     @RequestMapping("/uploadImage")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:mv:edit')")
     public Map<String, Object> uploadImage(MultipartFile file) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         if (!file.isEmpty()) {
@@ -191,7 +191,7 @@ public class MVController {
      * @throws Exception 音乐文件上传异常
      */
     @RequestMapping("/uploadVideo")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:mv:edit')")
     public Map<String, Object> uploadVideo(MultipartFile file) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         if (!file.isEmpty()) {
@@ -217,7 +217,7 @@ public class MVController {
      * @return 页面响应entity
      */
     @PostMapping("/checkTitle")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:mv:query')")
     public R checkTitle(@RequestBody Mv mv) {
         if (mvService.getByTitle(mv.getTitle()) == null) {
             return R.ok();
@@ -233,7 +233,7 @@ public class MVController {
      * @return 页面响应entity
      */
     @RequestMapping("/updatePosterPicture")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:mv:edit')")
     public R updatePosterPicture(@RequestBody Mv mv) {
         Mv currentMV = mvService.getById(mv.getId());
         String posterImagePath = mvImagesFilePath + currentMV.getPosterPic();
@@ -258,7 +258,7 @@ public class MVController {
      * @return 页面响应entity
      */
     @RequestMapping("/updateThumbnailPicture")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:mv:edit')")
     public R updateThumbnailPicture(@RequestBody Mv mv) {
         Mv currentMV = mvService.getById(mv.getId());
         String thumbnailImagePath = mvImagesFilePath + currentMV.getThumbnailPic();
@@ -283,7 +283,7 @@ public class MVController {
      * @return 页面响应entity
      */
     @RequestMapping("/updateVideo")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:mv:edit')")
     public R updateVideo(@RequestBody Mv mv) {
         Mv currentMV = mvService.getById(mv.getId());
         String videoPath = mvFilePath + currentMV.getUrl();
@@ -314,7 +314,7 @@ public class MVController {
      * @return 页面响应entity
      */
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('system:user:add')" + "||" + "hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:mv:add')" + "||" + "hasAuthority('data:mv:edit')")
     public R save(@RequestBody Mv mv) {
         if (mv.getId() == null || mv.getId() == -1) {
             mvService.save(mv);
@@ -377,7 +377,7 @@ public class MVController {
      * @return 页面响应entity
      */
     @GetMapping("/total")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:mv:query')")
     public R total() {
         Long total = mvService.count();
         Map<String, Object> resultMap = new HashMap<>();

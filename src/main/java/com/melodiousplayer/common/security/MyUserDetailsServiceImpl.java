@@ -43,7 +43,10 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
          * ROLE_admin,ROLE_common,system:user:resetPwd,system:role:delete,system:user:list,
          * system:menu:query,system:menu:list,system:menu:add,system:user:delete,system:role:list,
          * system:role:menu,system:user:edit,system:user:query,system:role:edit,system:user:add,
-         * system:user:role,system:menu:delete,system:role:add,system:role:query,system:menu:edit
+         * system:user:role,system:menu:delete,system:role:add,system:role:query,system:menu:edit,
+         * data:music:list,data:music:query,data:music:add,data:music:edit,data:music:delete,
+         * data:mv:list,data:mv:query,data:mv:add,data:mv:edit,data:mv:delete,
+         * data:list:list,data:list:query,data:list:add,data:list:edit,data:list:delete
          **/
         String authority = sysUserService.getUserAuthorityInfo(userId);
         return AuthorityUtils.commaSeparatedStringToAuthorityList(authority);

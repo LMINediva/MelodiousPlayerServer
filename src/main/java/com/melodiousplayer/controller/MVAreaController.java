@@ -28,7 +28,7 @@ public class MVAreaController {
     }
 
     @GetMapping("/mv_areas")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:mv:query')")
     public List<MvArea> selectAllAreas() {
         return mvAreaService.list();
     }

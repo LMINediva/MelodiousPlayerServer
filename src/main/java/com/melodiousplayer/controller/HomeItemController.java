@@ -18,7 +18,7 @@ import java.io.File;
 import java.util.*;
 
 /**
- * 首页Controller控制器
+ * 首页在线音乐Controller控制器
  *
  * @author Mike
  * @date 2025/03/18
@@ -60,7 +60,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @PostMapping("/list")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:music:query')")
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<HomeItem> pageResult = homeItemService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
@@ -79,7 +79,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:music:query')")
     public R findById(@PathVariable(value = "id") Integer id) {
         HomeItem homeItem = homeItemService.getById(id);
         Map<String, Object> map = new HashMap<>();
@@ -95,7 +95,7 @@ public class HomeItemController {
      */
     @Transactional
     @PostMapping("/delete")
-    @PreAuthorize("hasAuthority('system:user:delete')")
+    @PreAuthorize("hasAuthority('data:music:delete')")
     public R delete(@RequestBody Long[] ids) {
         for (Long id : ids) {
             HomeItem homeItem = homeItemService.getById(id);
@@ -152,7 +152,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @GetMapping("/updateStatus/{id}/status/{status}")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:music:edit')")
     public R updateStatus(@PathVariable(value = "id") Integer id,
                           @PathVariable(value = "status") Integer status) {
         HomeItem homeItem = homeItemService.getById(id);
@@ -169,7 +169,7 @@ public class HomeItemController {
      * @throws Exception 在线音乐海报图或缩略图上传异常
      */
     @RequestMapping("/uploadImage")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:music:edit')")
     public Map<String, Object> uploadImage(MultipartFile file) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         if (!file.isEmpty()) {
@@ -196,7 +196,7 @@ public class HomeItemController {
      * @throws Exception 歌词文件上传异常
      */
     @RequestMapping("/uploadLyric")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:music:edit')")
     public Map<String, Object> uploadLyric(MultipartFile file) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         if (!file.isEmpty()) {
@@ -223,7 +223,7 @@ public class HomeItemController {
      * @throws Exception 音乐文件上传异常
      */
     @RequestMapping("/uploadAudio")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:music:edit')")
     public Map<String, Object> uploadAudio(MultipartFile file) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         if (!file.isEmpty()) {
@@ -249,7 +249,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @RequestMapping("/updatePosterPicture")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:music:edit')")
     public R updatePosterPicture(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
         String posterImagePath = musicImagesFilePath + currentHomeItem.getPosterPic();
@@ -274,7 +274,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @RequestMapping("/updateThumbnailPicture")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:music:edit')")
     public R updateThumbnailPicture(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
         String thumbnailImagePath = musicImagesFilePath + currentHomeItem.getThumbnailPic();
@@ -299,7 +299,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @RequestMapping("/updateLyric")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:music:edit')")
     public R updateLyric(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
         String lyricPath = lyricFilePath + currentHomeItem.getLyric();
@@ -324,7 +324,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @RequestMapping("/updateAudio")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:music:edit')")
     public R updateAudio(@RequestBody HomeItem homeItem) {
         HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
         String audioPath = audioFilePath + currentHomeItem.getUrl();
@@ -354,7 +354,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @PostMapping("/checkTitle")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:music:query')")
     public R checkTitle(@RequestBody HomeItem homeItem) {
         if (homeItemService.getByTitle(homeItem.getTitle()) == null) {
             return R.ok();
@@ -370,7 +370,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('system:user:add')" + "||" + "hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:music:add')" + "||" + "hasAuthority('data:music:edit')")
     public R save(@RequestBody HomeItem homeItem) {
         if (homeItem.getId() == null || homeItem.getId() == -1) {
             homeItemService.save(homeItem);
@@ -452,7 +452,7 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @GetMapping("/total")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:music:query')")
     public R total() {
         Long total = homeItemService.count();
         Map<String, Object> resultMap = new HashMap<>();

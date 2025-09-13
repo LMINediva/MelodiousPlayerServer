@@ -72,7 +72,7 @@ public class PlayController {
      * @return 页面响应entity
      */
     @PostMapping("/list")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:list:query')")
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<Play> pageResult = playService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
@@ -100,7 +100,7 @@ public class PlayController {
      */
     @Transactional
     @PostMapping("/delete")
-    @PreAuthorize("hasAuthority('system:user:delete')")
+    @PreAuthorize("hasAuthority('data:list:delete')")
     public R delete(@RequestBody Long[] ids) {
         playService.removeByIds(Arrays.asList(ids));
         playMvService.remove(new QueryWrapper<PlayMv>().in("play_id", Arrays.asList(ids)));
@@ -114,7 +114,7 @@ public class PlayController {
      * @return 页面响应entity
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:list:query')")
     public R findById(@PathVariable(value = "id") Integer id) {
         Play play = playService.getById(id);
         List<Mv> mvList = mvService.list(new QueryWrapper<Mv>().inSql(
@@ -132,7 +132,7 @@ public class PlayController {
      * @return 页面响应entity
      */
     @PostMapping("/checkTitle")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:list:query')")
     public R checkTitle(@RequestBody Play play) {
         if (playService.getByTitle(play.getTitle()) == null) {
             return R.ok();
@@ -149,7 +149,7 @@ public class PlayController {
      * @throws Exception 在线悦单缩略图上传异常
      */
     @RequestMapping("/uploadImage")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:list:edit')")
     public Map<String, Object> uploadImage(MultipartFile file) throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         if (!file.isEmpty()) {
@@ -175,7 +175,7 @@ public class PlayController {
      * @return 页面响应entity
      */
     @RequestMapping("/updateThumbnailPicture")
-    @PreAuthorize("hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:list:edit')")
     public R updateThumbnailPicture(@RequestBody Play play) {
         Play currentPlay = playService.getById(play.getId());
         String thumbnailImagePath = listImagesFilePath + currentPlay.getThumbnailPic();
@@ -200,7 +200,7 @@ public class PlayController {
      * @return 页面响应entity
      */
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('system:user:add')" + "||" + "hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('data:list:add')" + "||" + "hasAuthority('data:list:edit')")
     public R save(@RequestBody Play play) throws Exception {
         if (play.getId() == null || play.getId() == -1) {
             playService.save(play);
@@ -252,7 +252,7 @@ public class PlayController {
      * @return 页面响应entity
      */
     @GetMapping("/total")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('data:list:query')")
     public R total() {
         Long total = playService.count();
         Map<String, Object> resultMap = new HashMap<>();
