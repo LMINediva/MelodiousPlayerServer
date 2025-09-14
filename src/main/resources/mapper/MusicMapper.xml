@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.melodiousplayer.mapper.HomeItemMapper">
+<mapper namespace="com.melodiousplayer.mapper.MusicMapper">
 
-    <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.HomeItem">
+    <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.Music">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="type" column="type" jdbcType="VARCHAR"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>

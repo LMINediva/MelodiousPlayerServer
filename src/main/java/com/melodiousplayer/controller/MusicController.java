@@ -3,7 +3,9 @@ package com.melodiousplayer.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
-import com.melodiousplayer.service.HomeItemService;
+import com.melodiousplayer.service.MusicService;
+import com.melodiousplayer.service.MusicUserService;
+import com.melodiousplayer.service.SysUserService;
 import com.melodiousplayer.util.DateUtil;
 import com.melodiousplayer.util.StringUtil;
 import org.apache.commons.io.FileUtils;
@@ -25,10 +27,16 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/data/music")
-public class HomeItemController {
+public class MusicController {
 
     @Autowired
-    private HomeItemService homeItemService;
+    private MusicService musicService;
+
+    @Autowired
+    private SysUserService sysUserService;
+
+    @Autowired
+    private MusicUserService musicUserService;
 
     @Value("${musicImagesFilePath}")
     private String musicImagesFilePath;
@@ -47,9 +55,9 @@ public class HomeItemController {
      * @return 页面响应entity
      */
     @GetMapping("/front_page")
-    public List<HomeItem> selectAll(@RequestParam("offset") Integer offset,
-                                    @RequestParam("size") Integer size) {
-        Page<HomeItem> pageResult = homeItemService.page(new Page<>(offset, size));
+    public List<Music> selectAll(@RequestParam("offset") Integer offset,
+                                 @RequestParam("size") Integer size) {
+        Page<Music> pageResult = musicService.page(new Page<>(offset, size));
         return pageResult.getRecords();
     }
 
@@ -63,11 +71,16 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('data:music:query')")
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
-        Page<HomeItem> pageResult = homeItemService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
-                new QueryWrapper<HomeItem>().like(StringUtil.isNotEmpty(query), "title", query));
-        List<HomeItem> homeItemList = pageResult.getRecords();
+        Page<Music> pageResult = musicService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
+                new QueryWrapper<Music>().like(StringUtil.isNotEmpty(query), "title", query));
+        List<Music> musicList = pageResult.getRecords();
+        for (Music music : musicList) {
+            SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                    "id", "select user_id from music_user where music_id = " + music.getId()));
+            music.setSysUser(sysUser);
+        }
         Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("musicList", homeItemList);
+        resultMap.put("musicList", musicList);
         resultMap.put("total", pageResult.getTotal());
         return R.ok(resultMap);
     }
@@ -81,9 +94,9 @@ public class HomeItemController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('data:music:query')")
     public R findById(@PathVariable(value = "id") Integer id) {
-        HomeItem homeItem = homeItemService.getById(id);
+        Music music = musicService.getById(id);
         Map<String, Object> map = new HashMap<>();
-        map.put("homeItem", homeItem);
+        map.put("music", music);
         return R.ok(map);
     }
 
@@ -98,11 +111,11 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('data:music:delete')")
     public R delete(@RequestBody Long[] ids) {
         for (Long id : ids) {
-            HomeItem homeItem = homeItemService.getById(id);
-            String posterImagePath = musicImagesFilePath + homeItem.getPosterPic();
-            String thumbnailImagePath = musicImagesFilePath + homeItem.getThumbnailPic();
-            String audioPath = audioFilePath + homeItem.getUrl();
-            String lyricPath = lyricFilePath + homeItem.getLyric();
+            Music music = musicService.getById(id);
+            String posterImagePath = musicImagesFilePath + music.getPosterPic();
+            String thumbnailImagePath = musicImagesFilePath + music.getThumbnailPic();
+            String audioPath = audioFilePath + music.getUrl();
+            String lyricPath = lyricFilePath + music.getLyric();
             File posterImageFile = new File(posterImagePath);
             File thumbnailImageFile = new File(thumbnailImagePath);
             File audioFile = new File(audioPath);
@@ -113,7 +126,7 @@ public class HomeItemController {
                     return R.error("海报图片删除失败");
                 }
             } else {
-                return R.error("海报图片不存在：" + homeItem.getPosterPic());
+                return R.error("海报图片不存在：" + music.getPosterPic());
             }
             if (thumbnailImageFile.exists()) {
                 boolean deleted = thumbnailImageFile.delete();
@@ -121,7 +134,7 @@ public class HomeItemController {
                     return R.error("缩略图图片删除失败");
                 }
             } else {
-                return R.error("缩略图图片不存在：" + homeItem.getThumbnailPic());
+                return R.error("缩略图图片不存在：" + music.getThumbnailPic());
             }
             if (audioFile.exists()) {
                 boolean deleted = audioFile.delete();
@@ -129,7 +142,7 @@ public class HomeItemController {
                     return R.error("音乐文件删除失败");
                 }
             } else {
-                return R.error("音乐文件不存在：" + homeItem.getUrl());
+                return R.error("音乐文件不存在：" + music.getUrl());
             }
             if (lyricFile.exists()) {
                 boolean deleted = lyricFile.delete();
@@ -137,10 +150,10 @@ public class HomeItemController {
                     return R.error("歌词文件删除失败");
                 }
             } else {
-                return R.error("歌词文件不存在：" + homeItem.getLyric());
+                return R.error("歌词文件不存在：" + music.getLyric());
             }
         }
-        homeItemService.removeByIds(Arrays.asList(ids));
+        musicService.removeByIds(Arrays.asList(ids));
         return R.ok();
     }
 
@@ -155,9 +168,9 @@ public class HomeItemController {
     @PreAuthorize("hasAuthority('data:music:edit')")
     public R updateStatus(@PathVariable(value = "id") Integer id,
                           @PathVariable(value = "status") Integer status) {
-        HomeItem homeItem = homeItemService.getById(id);
-        homeItem.setStatus(status);
-        homeItemService.saveOrUpdate(homeItem);
+        Music music = musicService.getById(id);
+        music.setStatus(status);
+        musicService.saveOrUpdate(music);
         return R.ok();
     }
 
@@ -245,14 +258,14 @@ public class HomeItemController {
     /**
      * 修改在线音乐海报图
      *
-     * @param homeItem 在线音乐信息
+     * @param music 在线音乐信息
      * @return 页面响应entity
      */
     @RequestMapping("/updatePosterPicture")
     @PreAuthorize("hasAuthority('data:music:edit')")
-    public R updatePosterPicture(@RequestBody HomeItem homeItem) {
-        HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
-        String posterImagePath = musicImagesFilePath + currentHomeItem.getPosterPic();
+    public R updatePosterPicture(@RequestBody Music music) {
+        Music currentMusic = musicService.getById(music.getId());
+        String posterImagePath = musicImagesFilePath + currentMusic.getPosterPic();
         File posterImageFile = new File(posterImagePath);
         if (posterImageFile.exists()) {
             boolean deleted = posterImageFile.delete();
@@ -260,24 +273,24 @@ public class HomeItemController {
                 return R.error("音乐海报图片删除失败");
             }
         } else {
-            return R.error("音乐海报图片不存在：" + currentHomeItem.getPosterPic());
+            return R.error("音乐海报图片不存在：" + currentMusic.getPosterPic());
         }
-        currentHomeItem.setPosterPic(homeItem.getPosterPic());
-        homeItemService.updateById(currentHomeItem);
+        currentMusic.setPosterPic(music.getPosterPic());
+        musicService.updateById(currentMusic);
         return R.ok();
     }
 
     /**
      * 修改在线音乐缩略图
      *
-     * @param homeItem 在线音乐信息
+     * @param music 在线音乐信息
      * @return 页面响应entity
      */
     @RequestMapping("/updateThumbnailPicture")
     @PreAuthorize("hasAuthority('data:music:edit')")
-    public R updateThumbnailPicture(@RequestBody HomeItem homeItem) {
-        HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
-        String thumbnailImagePath = musicImagesFilePath + currentHomeItem.getThumbnailPic();
+    public R updateThumbnailPicture(@RequestBody Music music) {
+        Music currentMusic = musicService.getById(music.getId());
+        String thumbnailImagePath = musicImagesFilePath + currentMusic.getThumbnailPic();
         File thumbnailImageFile = new File(thumbnailImagePath);
         if (thumbnailImageFile.exists()) {
             boolean deleted = thumbnailImageFile.delete();
@@ -285,24 +298,24 @@ public class HomeItemController {
                 return R.error("音乐缩略图图片删除失败");
             }
         } else {
-            return R.error("音乐缩略图图片不存在：" + currentHomeItem.getThumbnailPic());
+            return R.error("音乐缩略图图片不存在：" + currentMusic.getThumbnailPic());
         }
-        currentHomeItem.setThumbnailPic(homeItem.getThumbnailPic());
-        homeItemService.updateById(currentHomeItem);
+        currentMusic.setThumbnailPic(music.getThumbnailPic());
+        musicService.updateById(currentMusic);
         return R.ok();
     }
 
     /**
      * 修改在线音乐歌词文件
      *
-     * @param homeItem 在线音乐信息
+     * @param music 在线音乐信息
      * @return 页面响应entity
      */
     @RequestMapping("/updateLyric")
     @PreAuthorize("hasAuthority('data:music:edit')")
-    public R updateLyric(@RequestBody HomeItem homeItem) {
-        HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
-        String lyricPath = lyricFilePath + currentHomeItem.getLyric();
+    public R updateLyric(@RequestBody Music music) {
+        Music currentMusic = musicService.getById(music.getId());
+        String lyricPath = lyricFilePath + currentMusic.getLyric();
         File lyricFile = new File(lyricPath);
         if (lyricFile.exists()) {
             boolean deleted = lyricFile.delete();
@@ -310,24 +323,24 @@ public class HomeItemController {
                 return R.error("歌词文件删除失败");
             }
         } else {
-            return R.error("歌词文件不存在：" + currentHomeItem.getLyric());
+            return R.error("歌词文件不存在：" + currentMusic.getLyric());
         }
-        currentHomeItem.setLyric(homeItem.getLyric());
-        homeItemService.updateById(currentHomeItem);
+        currentMusic.setLyric(music.getLyric());
+        musicService.updateById(currentMusic);
         return R.ok();
     }
 
     /**
      * 修改在线音乐音频（一般品质、高品质和超高品质）
      *
-     * @param homeItem 在线音乐信息
+     * @param music 在线音乐信息
      * @return 页面响应entity
      */
     @RequestMapping("/updateAudio")
     @PreAuthorize("hasAuthority('data:music:edit')")
-    public R updateAudio(@RequestBody HomeItem homeItem) {
-        HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
-        String audioPath = audioFilePath + currentHomeItem.getUrl();
+    public R updateAudio(@RequestBody Music music) {
+        Music currentMusic = musicService.getById(music.getId());
+        String audioPath = audioFilePath + currentMusic.getUrl();
         File audioFile = new File(audioPath);
         if (audioFile.exists()) {
             boolean deleted = audioFile.delete();
@@ -335,28 +348,28 @@ public class HomeItemController {
                 return R.error("音乐文件删除失败");
             }
         } else {
-            return R.error("音乐文件不存在：" + currentHomeItem.getUrl());
+            return R.error("音乐文件不存在：" + currentMusic.getUrl());
         }
-        currentHomeItem.setUrl(homeItem.getUrl());
-        currentHomeItem.setHdUrl(homeItem.getUrl());
-        currentHomeItem.setUhdUrl(homeItem.getUrl());
-        currentHomeItem.setMusicSize(homeItem.getMusicSize());
-        currentHomeItem.setHdMusicSize(homeItem.getMusicSize());
-        currentHomeItem.setUhdMusicSize(homeItem.getMusicSize());
-        homeItemService.updateById(currentHomeItem);
+        currentMusic.setUrl(music.getUrl());
+        currentMusic.setHdUrl(music.getUrl());
+        currentMusic.setUhdUrl(music.getUrl());
+        currentMusic.setMusicSize(music.getMusicSize());
+        currentMusic.setHdMusicSize(music.getMusicSize());
+        currentMusic.setUhdMusicSize(music.getMusicSize());
+        musicService.updateById(currentMusic);
         return R.ok();
     }
 
     /**
      * 验证在线音乐名是否存在
      *
-     * @param homeItem 在线音乐信息
+     * @param music 在线音乐信息
      * @return 页面响应entity
      */
     @PostMapping("/checkTitle")
     @PreAuthorize("hasAuthority('data:music:query')")
-    public R checkTitle(@RequestBody HomeItem homeItem) {
-        if (homeItemService.getByTitle(homeItem.getTitle()) == null) {
+    public R checkTitle(@RequestBody Music music) {
+        if (musicService.getByTitle(music.getTitle()) == null) {
             return R.ok();
         } else {
             return R.error();
@@ -366,18 +379,18 @@ public class HomeItemController {
     /**
      * 添加或者修改在线音乐
      *
-     * @param homeItem 在线音乐信息
+     * @param music 在线音乐信息
      * @return 页面响应entity
      */
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('data:music:add')" + "||" + "hasAuthority('data:music:edit')")
-    public R save(@RequestBody HomeItem homeItem) {
-        if (homeItem.getId() == null || homeItem.getId() == -1) {
-            homeItemService.save(homeItem);
+    public R save(@RequestBody Music music) {
+        if (music.getId() == null || music.getId() == -1) {
+            musicService.save(music);
         } else {
-            HomeItem currentHomeItem = homeItemService.getById(homeItem.getId());
-            if (!currentHomeItem.getPosterPic().equals(homeItem.getPosterPic())) {
-                String posterImagePath = musicImagesFilePath + currentHomeItem.getPosterPic();
+            Music currentMusic = musicService.getById(music.getId());
+            if (!currentMusic.getPosterPic().equals(music.getPosterPic())) {
+                String posterImagePath = musicImagesFilePath + currentMusic.getPosterPic();
                 File posterImageFile = new File(posterImagePath);
                 if (posterImageFile.exists()) {
                     boolean deleted = posterImageFile.delete();
@@ -385,11 +398,11 @@ public class HomeItemController {
                         return R.error("音乐海报图片删除失败");
                     }
                 } else {
-                    return R.error("音乐海报图片不存在：" + currentHomeItem.getPosterPic());
+                    return R.error("音乐海报图片不存在：" + currentMusic.getPosterPic());
                 }
             }
-            if (!currentHomeItem.getThumbnailPic().equals(homeItem.getThumbnailPic())) {
-                String thumbnailImagePath = musicImagesFilePath + currentHomeItem.getThumbnailPic();
+            if (!currentMusic.getThumbnailPic().equals(music.getThumbnailPic())) {
+                String thumbnailImagePath = musicImagesFilePath + currentMusic.getThumbnailPic();
                 File thumbnailImageFile = new File(thumbnailImagePath);
                 if (thumbnailImageFile.exists()) {
                     boolean deleted = thumbnailImageFile.delete();
@@ -397,11 +410,11 @@ public class HomeItemController {
                         return R.error("音乐缩略图图片删除失败");
                     }
                 } else {
-                    return R.error("音乐缩略图图片不存在：" + currentHomeItem.getThumbnailPic());
+                    return R.error("音乐缩略图图片不存在：" + currentMusic.getThumbnailPic());
                 }
             }
-            if (!currentHomeItem.getUrl().equals(homeItem.getUrl())) {
-                String audioPath = audioFilePath + currentHomeItem.getUrl();
+            if (!currentMusic.getUrl().equals(music.getUrl())) {
+                String audioPath = audioFilePath + currentMusic.getUrl();
                 File audioFile = new File(audioPath);
                 if (audioFile.exists()) {
                     boolean deleted = audioFile.delete();
@@ -409,17 +422,17 @@ public class HomeItemController {
                         return R.error("音乐文件删除失败");
                     }
                 } else {
-                    return R.error("音乐文件不存在：" + currentHomeItem.getUrl());
+                    return R.error("音乐文件不存在：" + currentMusic.getUrl());
                 }
-                homeItem.setUrl(homeItem.getUrl());
-                homeItem.setHdUrl(homeItem.getUrl());
-                homeItem.setUhdUrl(homeItem.getUrl());
-                homeItem.setMusicSize(homeItem.getMusicSize());
-                homeItem.setHdMusicSize(homeItem.getMusicSize());
-                homeItem.setUhdMusicSize(homeItem.getMusicSize());
+                music.setUrl(music.getUrl());
+                music.setHdUrl(music.getUrl());
+                music.setUhdUrl(music.getUrl());
+                music.setMusicSize(music.getMusicSize());
+                music.setHdMusicSize(music.getMusicSize());
+                music.setUhdMusicSize(music.getMusicSize());
             }
-            if (!currentHomeItem.getLyric().equals(homeItem.getLyric())) {
-                String lyricPath = lyricFilePath + currentHomeItem.getLyric();
+            if (!currentMusic.getLyric().equals(music.getLyric())) {
+                String lyricPath = lyricFilePath + currentMusic.getLyric();
                 File lyricFile = new File(lyricPath);
                 if (lyricFile.exists()) {
                     boolean deleted = lyricFile.delete();
@@ -427,10 +440,10 @@ public class HomeItemController {
                         return R.error("歌词文件删除失败");
                     }
                 } else {
-                    return R.error("歌词文件不存在：" + currentHomeItem.getLyric());
+                    return R.error("歌词文件不存在：" + currentMusic.getLyric());
                 }
             }
-            homeItemService.updateById(homeItem);
+            musicService.updateById(music);
         }
         return R.ok();
     }
@@ -440,9 +453,9 @@ public class HomeItemController {
                         @RequestParam("size") Integer size) {
         System.out.println("offset = " + offset);
         System.out.println("size = " + size);
-        HomeItem homeItem = homeItemService.getById(1);
+        Music music = musicService.getById(1);
         Map<String, Object> map = new HashMap<>();
-        map.put("result", homeItem);
+        map.put("result", music);
         return R.ok(map);
     }
 
@@ -454,7 +467,7 @@ public class HomeItemController {
     @GetMapping("/total")
     @PreAuthorize("hasAuthority('data:music:query')")
     public R total() {
-        Long total = homeItemService.count();
+        Long total = musicService.count();
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("total", total);
         return R.ok(resultMap);

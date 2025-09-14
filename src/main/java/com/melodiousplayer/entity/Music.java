@@ -4,16 +4,19 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
+
 import lombok.Data;
 
 /**
  * 首页在线音乐数据项
- * @TableName home_item
+ *
+ * @TableName music
  */
-@TableName(value ="home_item")
+@TableName(value = "music")
 @Data
-public class HomeItem implements Serializable {
+public class Music implements Serializable {
     /**
      * 音乐ID
      */
@@ -103,6 +106,12 @@ public class HomeItem implements Serializable {
      */
     @TableField(value = "status")
     private Integer status;
+
+    /**
+     * 一首在线音乐对应的一位添加者ID（系统用户）
+     */
+    @TableField(exist = false)
+    private SysUser sysUser;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
