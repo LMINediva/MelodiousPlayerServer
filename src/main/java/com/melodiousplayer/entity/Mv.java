@@ -147,6 +147,12 @@ public class Mv implements Serializable {
     private MvArea mvArea;
 
     /**
+     * 一部在线MV对应的一位添加者ID（系统用户）
+     */
+    @TableField(exist = false)
+    private SysUser sysUser;
+
+    /**
      * 旧的MV所属区域ID
      */
     @TableField(exist = false)

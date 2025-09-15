@@ -387,6 +387,11 @@ public class MusicController {
     public R save(@RequestBody Music music) {
         if (music.getId() == null || music.getId() == -1) {
             musicService.save(music);
+            Integer id = music.getId();
+            MusicUser musicUser = new MusicUser();
+            musicUser.setMusicId(id);
+            musicUser.setUserId(music.getSysUser().getId());
+            musicUserService.save(musicUser);
         } else {
             Music currentMusic = musicService.getById(music.getId());
             if (!currentMusic.getPosterPic().equals(music.getPosterPic())) {

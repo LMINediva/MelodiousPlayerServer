@@ -3,9 +3,7 @@ package com.melodiousplayer.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
-import com.melodiousplayer.service.MvAreaCodeService;
-import com.melodiousplayer.service.MvAreaService;
-import com.melodiousplayer.service.MvService;
+import com.melodiousplayer.service.*;
 import com.melodiousplayer.util.DateUtil;
 import com.melodiousplayer.util.StringUtil;
 import org.apache.commons.io.FileUtils;
@@ -37,6 +35,12 @@ public class MVController {
 
     @Autowired
     private MvAreaCodeService mvAreaCodeService;
+
+    @Autowired
+    private SysUserService sysUserService;
+
+    @Autowired
+    private MvUserService mvUserService;
 
     @Value("${mvImagesFilePath}")
     private String mvImagesFilePath;
@@ -82,6 +86,9 @@ public class MVController {
                     "id", "select mv_area_id from mv_area_code where mv_id = " + mv.getId()
             ));
             mv.setMvArea(mvArea);
+            SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                    "id", "select user_id from mv_user where mv_id = " + mv.getId()));
+            mv.setSysUser(sysUser);
         }
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("mvList", mvList);
@@ -323,6 +330,10 @@ public class MVController {
             mvAreaCode.setMvId(id);
             mvAreaCode.setMvAreaId(mv.getMvArea().getId());
             mvAreaCodeService.save(mvAreaCode);
+            MvUser mvUser = new MvUser();
+            mvUser.setMvId(id);
+            mvUser.setUserId(mv.getSysUser().getId());
+            mvUserService.save(mvUser);
         } else {
             Mv currentMV = mvService.getById(mv.getId());
             if (!currentMV.getPosterPic().equals(mv.getPosterPic())) {
