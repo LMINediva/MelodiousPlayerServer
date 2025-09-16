@@ -247,6 +247,30 @@ public class PlayController {
     }
 
     /**
+     * 删除用户上传的未保存的文件缓存
+     *
+     * @param play 在线悦单信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/deleteUploadFileCache")
+    @PreAuthorize("hasAuthority('data:list:delete')")
+    public R deleteUploadFileCache(@RequestBody Play play) {
+        if (!play.getThumbnailPic().isEmpty()) {
+            String thumbnailImagePath = listImagesFilePath + play.getThumbnailPic();
+            File thumbnailImageFile = new File(thumbnailImagePath);
+            if (thumbnailImageFile.exists()) {
+                boolean deleted = thumbnailImageFile.delete();
+                if (!deleted) {
+                    return R.error("悦单缩略图图片删除失败");
+                }
+            } else {
+                return R.error("悦单缩略图图片不存在：" + play.getThumbnailPic());
+            }
+        }
+        return R.ok();
+    }
+
+    /**
      * 查询悦单总数
      *
      * @return 页面响应entity

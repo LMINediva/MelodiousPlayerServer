@@ -453,15 +453,64 @@ public class MusicController {
         return R.ok();
     }
 
-    @GetMapping("/front_page2")
-    public R selectById(@RequestParam("offset") Integer offset,
-                        @RequestParam("size") Integer size) {
-        System.out.println("offset = " + offset);
-        System.out.println("size = " + size);
-        Music music = musicService.getById(1);
-        Map<String, Object> map = new HashMap<>();
-        map.put("result", music);
-        return R.ok(map);
+    /**
+     * 删除用户上传的未保存的文件缓存
+     *
+     * @param music 在线音乐信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/deleteUploadFileCache")
+    @PreAuthorize("hasAuthority('data:music:delete')")
+    public R deleteUploadFileCache(@RequestBody Music music) {
+        if (!music.getPosterPic().isEmpty()) {
+            String posterImagePath = musicImagesFilePath + music.getPosterPic();
+            File posterImageFile = new File(posterImagePath);
+            if (posterImageFile.exists()) {
+                boolean deleted = posterImageFile.delete();
+                if (!deleted) {
+                    return R.error("音乐海报图片删除失败");
+                }
+            } else {
+                return R.error("音乐海报图片不存在：" + music.getPosterPic());
+            }
+        }
+        if (!music.getThumbnailPic().isEmpty()) {
+            String thumbnailImagePath = musicImagesFilePath + music.getThumbnailPic();
+            File thumbnailImageFile = new File(thumbnailImagePath);
+            if (thumbnailImageFile.exists()) {
+                boolean deleted = thumbnailImageFile.delete();
+                if (!deleted) {
+                    return R.error("音乐缩略图图片删除失败");
+                }
+            } else {
+                return R.error("音乐缩略图图片不存在：" + music.getThumbnailPic());
+            }
+        }
+        if (!music.getUrl().isEmpty()) {
+            String audioPath = audioFilePath + music.getUrl();
+            File audioFile = new File(audioPath);
+            if (audioFile.exists()) {
+                boolean deleted = audioFile.delete();
+                if (!deleted) {
+                    return R.error("音乐文件删除失败");
+                }
+            } else {
+                return R.error("音乐文件不存在：" + music.getUrl());
+            }
+        }
+        if (!music.getLyric().isEmpty()) {
+            String lyricPath = lyricFilePath + music.getLyric();
+            File lyricFile = new File(lyricPath);
+            if (lyricFile.exists()) {
+                boolean deleted = lyricFile.delete();
+                if (!deleted) {
+                    return R.error("歌词文件删除失败");
+                }
+            } else {
+                return R.error("歌词文件不存在：" + music.getLyric());
+            }
+        }
+        return R.ok();
     }
 
     /**

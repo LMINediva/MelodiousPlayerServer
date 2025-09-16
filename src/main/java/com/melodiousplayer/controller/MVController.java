@@ -383,6 +383,54 @@ public class MVController {
     }
 
     /**
+     * 删除用户上传的未保存的文件缓存
+     *
+     * @param mv 在线MV信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/deleteUploadFileCache")
+    @PreAuthorize("hasAuthority('data:mv:delete')")
+    public R deleteUploadFileCache(@RequestBody Mv mv) {
+        if (!mv.getPosterPic().isEmpty()) {
+            String posterImagePath = mvImagesFilePath + mv.getPosterPic();
+            File posterImageFile = new File(posterImagePath);
+            if (posterImageFile.exists()) {
+                boolean deleted = posterImageFile.delete();
+                if (!deleted) {
+                    return R.error("MV海报图片删除失败");
+                }
+            } else {
+                return R.error("MV海报图片不存在：" + mv.getPosterPic());
+            }
+        }
+        if (!mv.getThumbnailPic().isEmpty()) {
+            String thumbnailImagePath = mvImagesFilePath + mv.getThumbnailPic();
+            File thumbnailImageFile = new File(thumbnailImagePath);
+            if (thumbnailImageFile.exists()) {
+                boolean deleted = thumbnailImageFile.delete();
+                if (!deleted) {
+                    return R.error("MV缩略图图片删除失败");
+                }
+            } else {
+                return R.error("MV缩略图图片不存在：" + mv.getThumbnailPic());
+            }
+        }
+        if (!mv.getUrl().isEmpty()) {
+            String videoPath = mvFilePath + mv.getUrl();
+            File lyricFile = new File(videoPath);
+            if (lyricFile.exists()) {
+                boolean deleted = lyricFile.delete();
+                if (!deleted) {
+                    return R.error("MV文件删除失败");
+                }
+            } else {
+                return R.error("MV文件不存在：" + mv.getUrl());
+            }
+        }
+        return R.ok();
+    }
+
+    /**
      * 查询在线MV总数
      *
      * @return 页面响应entity

@@ -32,7 +32,7 @@ public class SysNoticeController {
      * @return 页面响应entity
      */
     @PostMapping("/list")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('system:notice:query')")
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<SysNotice> pageResult = sysNoticeService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
@@ -52,7 +52,7 @@ public class SysNoticeController {
      */
     @Transactional
     @PostMapping("/delete")
-    @PreAuthorize("hasAuthority('system:user:delete')")
+    @PreAuthorize("hasAuthority('system:notice:delete')")
     public R delete(@RequestBody Long[] ids) {
         sysNoticeService.removeByIds(Arrays.asList(ids));
         return R.ok();
@@ -65,7 +65,7 @@ public class SysNoticeController {
      * @return 页面响应entity
      */
     @PostMapping("/checkTitle")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('system:notice:query')")
     public R checkTitle(@RequestBody SysNotice sysNotice) {
         if (sysNoticeService.getByTitle(sysNotice.getTitle()) == null) {
             return R.ok();
@@ -81,7 +81,7 @@ public class SysNoticeController {
      * @return 页面响应entity
      */
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('system:user:query')")
+    @PreAuthorize("hasAuthority('system:notice:query')")
     public R findById(@PathVariable(value = "id") Integer id) {
         SysNotice sysNotice = sysNoticeService.getById(id);
         Map<String, Object> map = new HashMap<>();
@@ -96,7 +96,7 @@ public class SysNoticeController {
      * @return 页面响应entity
      */
     @PostMapping("/save")
-    @PreAuthorize("hasAuthority('system:user:add')" + "||" + "hasAuthority('system:user:edit')")
+    @PreAuthorize("hasAuthority('system:notice:add')" + "||" + "hasAuthority('system:notice:edit')")
     public R save(@RequestBody SysNotice sysNotice) {
         if (sysNotice.getId() == null || sysNotice.getId() == -1) {
             sysNoticeService.save(sysNotice);
