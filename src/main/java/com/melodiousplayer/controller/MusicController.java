@@ -1,5 +1,6 @@
 package com.melodiousplayer.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
@@ -462,7 +463,9 @@ public class MusicController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('data:music:delete')")
     public R deleteUploadFileCache(@RequestBody Music music) {
-        if (!music.getPosterPic().isEmpty()) {
+        System.out.println("lyric = " + music.getLyric());
+        System.out.println("poster = " + music.getPosterPic());
+        if (StrUtil.isNotBlank(music.getPosterPic())) {
             String posterImagePath = musicImagesFilePath + music.getPosterPic();
             File posterImageFile = new File(posterImagePath);
             if (posterImageFile.exists()) {
@@ -474,7 +477,7 @@ public class MusicController {
                 return R.error("音乐海报图片不存在：" + music.getPosterPic());
             }
         }
-        if (!music.getThumbnailPic().isEmpty()) {
+        if (StrUtil.isNotBlank(music.getThumbnailPic())) {
             String thumbnailImagePath = musicImagesFilePath + music.getThumbnailPic();
             File thumbnailImageFile = new File(thumbnailImagePath);
             if (thumbnailImageFile.exists()) {
@@ -486,7 +489,7 @@ public class MusicController {
                 return R.error("音乐缩略图图片不存在：" + music.getThumbnailPic());
             }
         }
-        if (!music.getUrl().isEmpty()) {
+        if (StrUtil.isNotBlank(music.getUrl())) {
             String audioPath = audioFilePath + music.getUrl();
             File audioFile = new File(audioPath);
             if (audioFile.exists()) {
@@ -498,7 +501,7 @@ public class MusicController {
                 return R.error("音乐文件不存在：" + music.getUrl());
             }
         }
-        if (!music.getLyric().isEmpty()) {
+        if (StrUtil.isNotBlank(music.getLyric())) {
             String lyricPath = lyricFilePath + music.getLyric();
             File lyricFile = new File(lyricPath);
             if (lyricFile.exists()) {

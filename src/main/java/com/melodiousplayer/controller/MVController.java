@@ -1,5 +1,6 @@
 package com.melodiousplayer.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
@@ -391,7 +392,7 @@ public class MVController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('data:mv:delete')")
     public R deleteUploadFileCache(@RequestBody Mv mv) {
-        if (!mv.getPosterPic().isEmpty()) {
+        if (StrUtil.isNotBlank(mv.getPosterPic())) {
             String posterImagePath = mvImagesFilePath + mv.getPosterPic();
             File posterImageFile = new File(posterImagePath);
             if (posterImageFile.exists()) {
@@ -403,7 +404,7 @@ public class MVController {
                 return R.error("MV海报图片不存在：" + mv.getPosterPic());
             }
         }
-        if (!mv.getThumbnailPic().isEmpty()) {
+        if (StrUtil.isNotBlank(mv.getThumbnailPic())) {
             String thumbnailImagePath = mvImagesFilePath + mv.getThumbnailPic();
             File thumbnailImageFile = new File(thumbnailImagePath);
             if (thumbnailImageFile.exists()) {
@@ -415,7 +416,7 @@ public class MVController {
                 return R.error("MV缩略图图片不存在：" + mv.getThumbnailPic());
             }
         }
-        if (!mv.getUrl().isEmpty()) {
+        if (StrUtil.isNotBlank(mv.getUrl())) {
             String videoPath = mvFilePath + mv.getUrl();
             File lyricFile = new File(videoPath);
             if (lyricFile.exists()) {

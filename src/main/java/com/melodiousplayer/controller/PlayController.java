@@ -1,5 +1,6 @@
 package com.melodiousplayer.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
@@ -255,7 +256,7 @@ public class PlayController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('data:list:delete')")
     public R deleteUploadFileCache(@RequestBody Play play) {
-        if (!play.getThumbnailPic().isEmpty()) {
+        if (StrUtil.isNotBlank(play.getThumbnailPic())) {
             String thumbnailImagePath = listImagesFilePath + play.getThumbnailPic();
             File thumbnailImageFile = new File(thumbnailImagePath);
             if (thumbnailImageFile.exists()) {
