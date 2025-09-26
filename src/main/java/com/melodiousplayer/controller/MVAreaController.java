@@ -23,8 +23,7 @@ public class MVAreaController {
 
     @GetMapping("/get_mv_areas")
     public List<MvArea> selectAll() {
-        List<MvArea> mvAreaList = mvAreaService.list();
-        return mvAreaList;
+        return mvAreaService.list();
     }
 
     @GetMapping("/mv_areas")

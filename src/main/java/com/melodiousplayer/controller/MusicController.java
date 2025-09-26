@@ -463,8 +463,6 @@ public class MusicController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('data:music:delete')")
     public R deleteUploadFileCache(@RequestBody Music music) {
-        System.out.println("lyric = " + music.getLyric());
-        System.out.println("poster = " + music.getPosterPic());
         if (StrUtil.isNotBlank(music.getPosterPic())) {
             String posterImagePath = musicImagesFilePath + music.getPosterPic();
             File posterImageFile = new File(posterImagePath);
