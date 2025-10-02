@@ -59,6 +59,7 @@ public class Mv implements Serializable {
      * 发行时间
      */
     @TableField(value = "regdate")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private Date regdate;
 
     /**

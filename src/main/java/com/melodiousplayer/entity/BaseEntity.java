@@ -25,14 +25,14 @@ public class BaseEntity implements Serializable {
      * 创建日期
      */
     @JsonSerialize(using = CustomDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private Date createTime;
 
     /**
      * 更新日期
      */
     @JsonSerialize(using = CustomDateTimeSerializer.class)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private Date updateTime;
 
     /**
