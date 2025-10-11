@@ -84,9 +84,9 @@ public class Play implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "created_time")
+    @TableField(value = "create_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
-    private Date createdTime;
+    private Date createTime;
 
     /**
      * 积分

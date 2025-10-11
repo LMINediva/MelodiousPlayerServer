@@ -15,7 +15,7 @@
         <result property="totalViews" column="total_views" jdbcType="INTEGER"/>
         <result property="totalFavorites" column="total_favorites" jdbcType="INTEGER"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="createdTime" column="created_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="integral" column="integral" jdbcType="INTEGER"/>
         <result property="weekIntegral" column="week_integral" jdbcType="INTEGER"/>
         <result property="totalUser" column="total_user" jdbcType="INTEGER"/>
@@ -26,7 +26,7 @@
         id,title,thumbnail_pic,
         video_count,description,category,
         status,total_views,total_favorites,
-        update_time,created_time,integral,
+        update_time,create_time,integral,
         week_integral,total_user,rank
     </sql>
 </mapper>
