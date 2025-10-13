@@ -67,7 +67,7 @@ public class PlayController {
     }
 
     /**
-     * 分页查询悦单页面的悦单信息
+     * 分页查询悦单列表信息
      *
      * @param pageBean 分页信息
      * @return 页面响应entity
@@ -78,6 +78,36 @@ public class PlayController {
         String query = pageBean.getQuery().trim();
         Page<Play> pageResult = playService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
                 new QueryWrapper<Play>().like(StringUtil.isNotEmpty(query), "title", query));
+        List<Play> playList = pageResult.getRecords();
+        for (Play play : playList) {
+            SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                    "id", "select user_id from play_user where play_id = " + play.getId()));
+            play.setSysUser(sysUser);
+            List<Mv> mvList = mvService.list(new QueryWrapper<Mv>().inSql(
+                    "id", "select mv_id from play_mv where play_id = " + play.getId()));
+            play.setMvList(mvList);
+        }
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("playList", playList);
+        resultMap.put("total", pageResult.getTotal());
+        return R.ok(resultMap);
+    }
+
+    /**
+     * 分页查询我的悦单列表信息
+     *
+     * @param pageBean 分页信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/myList")
+    @PreAuthorize("hasAuthority('data:list:query')")
+    public R myList(@RequestBody PageBean pageBean) {
+        String query = pageBean.getQuery().trim();
+        Long id = pageBean.getSysUser().getId();
+        Page<Play> pageResult = playService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
+                new QueryWrapper<Play>()
+                        .inSql("id", "select play_id from play_user where user_id = " + id)
+                        .like(StringUtil.isNotEmpty(query), "title", query));
         List<Play> playList = pageResult.getRecords();
         for (Play play : playList) {
             SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(

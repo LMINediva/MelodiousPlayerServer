@@ -87,6 +87,33 @@ public class MusicController {
     }
 
     /**
+     * 分页查询我的在线音乐列表信息
+     *
+     * @param pageBean 分页信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/myList")
+    @PreAuthorize("hasAuthority('data:music:query')")
+    public R myList(@RequestBody PageBean pageBean) {
+        String query = pageBean.getQuery().trim();
+        Long id = pageBean.getSysUser().getId();
+        Page<Music> pageResult = musicService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
+                new QueryWrapper<Music>()
+                        .inSql("id", "select music_id from music_user where user_id = " + id)
+                        .like(StringUtil.isNotEmpty(query), "title", query));
+        List<Music> musicList = pageResult.getRecords();
+        for (Music music : musicList) {
+            SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                    "id", "select user_id from music_user where music_id = " + music.getId()));
+            music.setSysUser(sysUser);
+        }
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("musicList", musicList);
+        resultMap.put("total", pageResult.getTotal());
+        return R.ok(resultMap);
+    }
+
+    /**
      * 根据id查询在线音乐
      *
      * @param id 在线音乐id

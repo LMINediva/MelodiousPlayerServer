@@ -70,7 +70,7 @@ public class MVController {
     }
 
     /**
-     * 分页查询MV页面的MV信息
+     * 分页查询MV列表信息
      *
      * @param pageBean 分页信息
      * @return 页面响应entity
@@ -81,6 +81,37 @@ public class MVController {
         String query = pageBean.getQuery().trim();
         Page<Mv> pageResult = mvService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
                 new QueryWrapper<Mv>().like(StringUtil.isNotEmpty(query), "title", query));
+        List<Mv> mvList = pageResult.getRecords();
+        for (Mv mv : mvList) {
+            MvArea mvArea = mvAreaService.getOne(new QueryWrapper<MvArea>().inSql(
+                    "id", "select mv_area_id from mv_area_code where mv_id = " + mv.getId()
+            ));
+            mv.setMvArea(mvArea);
+            SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                    "id", "select user_id from mv_user where mv_id = " + mv.getId()));
+            mv.setSysUser(sysUser);
+        }
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("mvList", mvList);
+        resultMap.put("total", pageResult.getTotal());
+        return R.ok(resultMap);
+    }
+
+    /**
+     * 分页查询我的MV列表信息
+     *
+     * @param pageBean 分页信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/myList")
+    @PreAuthorize("hasAuthority('data:mv:query')")
+    public R myList(@RequestBody PageBean pageBean) {
+        String query = pageBean.getQuery().trim();
+        Long id = pageBean.getSysUser().getId();
+        Page<Mv> pageResult = mvService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
+                new QueryWrapper<Mv>()
+                        .inSql("id", "select mv_id from mv_user where user_id = " + id)
+                        .like(StringUtil.isNotEmpty(query), "title", query));
         List<Mv> mvList = pageResult.getRecords();
         for (Mv mv : mvList) {
             MvArea mvArea = mvAreaService.getOne(new QueryWrapper<MvArea>().inSql(

@@ -13,7 +13,16 @@ public class PageBean {
     private int start;  // 起始页
     private String query; // 查询参数
 
+    private SysUser sysUser; // 当前用户
+
     public PageBean() {
+    }
+
+    public PageBean(int pageNum, int pageSize, String query, SysUser sysUser) {
+        this.pageNum = pageNum;
+        this.pageSize = pageSize;
+        this.query = query;
+        this.sysUser = sysUser;
     }
 
     public PageBean(int pageNum, int pageSize, String query) {
@@ -54,6 +63,14 @@ public class PageBean {
 
     public void setQuery(String query) {
         this.query = query;
+    }
+
+    public SysUser getSysUser() {
+        return sysUser;
+    }
+
+    public void setSysUser(SysUser sysUser) {
+        this.sysUser = sysUser;
     }
 
 }
