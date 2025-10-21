@@ -43,6 +43,14 @@ public class DirectoryHandler {
     @Value("${listImagesFilePath}")
     private String listImagesDirectory;
 
+    // 安卓应用图标目录
+    @Value("${androidApplicationImagesFilePath}")
+    private String androidApplicationImagesDirectory;
+
+    // 安卓应用文件目录
+    @Value("${androidApplicationFilePath}")
+    private String androidApplicationFileDirectory;
+
     @PostConstruct
     public void createDirectory() {
         // 用户头像目录
@@ -59,6 +67,10 @@ public class DirectoryHandler {
         createDirectoryFile(mvFileDirectory, "MV视频文件目录");
         // 悦单相关图片目录
         createDirectoryFile(listImagesDirectory, "悦单相关图片目录");
+        // 安卓应用图标目录
+        createDirectoryFile(androidApplicationImagesDirectory, "安卓应用图标目录");
+        // 安卓应用文件目录
+        createDirectoryFile(androidApplicationFileDirectory, "安卓应用文件目录");
     }
 
     /**

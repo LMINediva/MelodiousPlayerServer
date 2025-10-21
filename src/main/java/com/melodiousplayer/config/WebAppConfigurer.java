@@ -43,6 +43,14 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     @Value("${listImagesFilePath}")
     private String listImagesDirectory;
 
+    // 安卓应用图标目录
+    @Value("${androidApplicationImagesFilePath}")
+    private String androidApplicationImagesDirectory;
+
+    // 安卓应用文件目录
+    @Value("${androidApplicationFilePath}")
+    private String androidApplicationFileDirectory;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -56,14 +64,17 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/image/userAvatar/**", "/image/musicPicture/**",
                         "/audio/music/**", "/audio/lyric/**", "/image/mvPicture/**",
-                        "/video/mv/**", "/image/listPicture/**")
+                        "/video/mv/**", "/image/listPicture/**", "/application/android/**",
+                        "/image/androidApplicationPicture/**")
                 .addResourceLocations("file:" + avatarImagesDirectory,
                         "file:" + musicImagesDirectory,
                         "file:" + audioFileDirectory,
                         "file:" + lyricFileDirectory,
                         "file:" + mvImagesDirectory,
                         "file:" + mvFileDirectory,
-                        "file:" + listImagesDirectory);
+                        "file:" + listImagesDirectory,
+                        "file:" + androidApplicationFileDirectory,
+                        "file:" + androidApplicationImagesDirectory);
     }
 
 }

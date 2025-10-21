@@ -46,3 +46,5 @@ lyricFilePath: ${user.dir}${file.separator}Lyric${file.separator}
 mvImagesFilePath: ${user.dir}${file.separator}MVPicture${file.separator}
 mvFilePath: ${user.dir}${file.separator}MV${file.separator}
 listImagesFilePath: ${user.dir}${file.separator}ListPicture${file.separator}
+androidApplicationFilePath: ${user.dir}${file.separator}AndroidApplication${file.separator}
+androidApplicationImagesFilePath: ${user.dir}${file.separator}AndroidApplicationPicture${file.separator}
