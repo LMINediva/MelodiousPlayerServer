@@ -1,5 +1,6 @@
 package com.melodiousplayer.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -59,6 +57,21 @@ public class AndroidApplicationController {
         resultMap.put("androidApplicationList", androidApplicationList);
         resultMap.put("total", pageResult.getTotal());
         return R.ok(resultMap);
+    }
+
+    /**
+     * 根据id查询安卓应用
+     *
+     * @param id 安卓应用id
+     * @return 页面响应entity
+     */
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('system:android:query')")
+    public R findById(@PathVariable(value = "id") Integer id) {
+        AndroidApplication androidApplication = androidApplicationService.getById(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("androidApplication", androidApplication);
+        return R.ok(map);
     }
 
     /**
@@ -152,6 +165,140 @@ public class AndroidApplicationController {
             resultMap.put("data", dataMap);
         }
         return resultMap;
+    }
+
+    /**
+     * 修改安卓应用图标图片
+     *
+     * @param androidApplication 安卓应用信息
+     * @return 页面响应entity
+     */
+    @RequestMapping("/updateIconPicture")
+    @PreAuthorize("hasAuthority('system:android:edit')")
+    public R updateIconPicture(@RequestBody AndroidApplication androidApplication) {
+        AndroidApplication currentAndroidApplication =
+                androidApplicationService.getById(androidApplication.getId());
+        String iconImagePath = androidApplicationImagesFilePath + currentAndroidApplication.getIcon();
+        File iconImageFile = new File(iconImagePath);
+        if (iconImageFile.exists()) {
+            boolean deleted = iconImageFile.delete();
+            if (!deleted) {
+                return R.error("安卓应用图标图片删除失败");
+            }
+        } else {
+            return R.error("安卓应用图标图片不存在：" + currentAndroidApplication.getIcon());
+        }
+        currentAndroidApplication.setIcon(androidApplication.getIcon());
+        androidApplicationService.updateById(currentAndroidApplication);
+        return R.ok();
+    }
+
+    /**
+     * 修改安卓应用文件
+     *
+     * @param androidApplication 安卓应用信息
+     * @return 页面响应entity
+     */
+    @RequestMapping("/updateAndroidApplication")
+    @PreAuthorize("hasAuthority('system:android:edit')")
+    public R updateAndroidApplication(@RequestBody AndroidApplication androidApplication) {
+        AndroidApplication currentAndroidApplication =
+                androidApplicationService.getById(androidApplication.getId());
+        String androidApplicationPath = androidApplicationFilePath + currentAndroidApplication.getUrl();
+        File androidApplicationFile = new File(androidApplicationPath);
+        if (androidApplicationFile.exists()) {
+            boolean deleted = androidApplicationFile.delete();
+            if (!deleted) {
+                return R.error("安卓应用文件删除失败");
+            }
+        } else {
+            return R.error("安卓应用文件不存在：" + currentAndroidApplication.getUrl());
+        }
+        currentAndroidApplication.setUrl(androidApplication.getUrl());
+        currentAndroidApplication.setSize(androidApplication.getSize());
+        androidApplicationService.updateById(currentAndroidApplication);
+        return R.ok();
+    }
+
+    /**
+     * 添加或者修改安卓应用
+     *
+     * @param androidApplication 安卓应用信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('system:android:add')" + "||" + "hasAuthority('system:android:edit')")
+    public R save(@RequestBody AndroidApplication androidApplication) {
+        if (androidApplication.getId() == null || androidApplication.getId() == -1) {
+            androidApplicationService.save(androidApplication);
+        } else {
+            AndroidApplication currentAndroidApplication =
+                    androidApplicationService.getById(androidApplication.getId());
+            if (!currentAndroidApplication.getIcon().equals(androidApplication.getIcon())) {
+                String iconImagePath = androidApplicationImagesFilePath + currentAndroidApplication.getIcon();
+                File iconImageFile = new File(iconImagePath);
+                if (iconImageFile.exists()) {
+                    boolean deleted = iconImageFile.delete();
+                    if (!deleted) {
+                        return R.error("安卓应用图标图片删除失败");
+                    }
+                } else {
+                    return R.error("安卓应用图标图片不存在：" + currentAndroidApplication.getIcon());
+                }
+            }
+            if (!currentAndroidApplication.getUrl().equals(androidApplication.getUrl())) {
+                String androidApplicationPath = androidApplicationFilePath + currentAndroidApplication.getUrl();
+                File androidApplicationFile = new File(androidApplicationPath);
+                if (androidApplicationFile.exists()) {
+                    boolean deleted = androidApplicationFile.delete();
+                    if (!deleted) {
+                        return R.error("安卓应用文件删除失败");
+                    }
+                } else {
+                    return R.error("安卓应用文件不存在：" + currentAndroidApplication.getUrl());
+                }
+                androidApplication.setUrl(androidApplication.getUrl());
+                androidApplication.setSize(androidApplication.getSize());
+            }
+            androidApplicationService.updateById(androidApplication);
+        }
+        return R.ok();
+    }
+
+    /**
+     * 删除用户上传的未保存的安卓应用文件
+     *
+     * @param androidApplication 安卓应用信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/deleteUploadFileCache")
+    @PreAuthorize("hasAuthority('system:android:delete')")
+    public R deleteUploadFileCache(@RequestBody AndroidApplication androidApplication) {
+        if (StrUtil.isNotBlank(androidApplication.getIcon())) {
+            String iconImagePath = androidApplicationImagesFilePath + androidApplication.getIcon();
+            File iconImageFile = new File(iconImagePath);
+            if (iconImageFile.exists()) {
+                boolean deleted = iconImageFile.delete();
+                if (!deleted) {
+                    return R.error("安卓应用图标图片删除失败");
+                }
+            } else {
+                return R.error("安卓应用图标图片不存在：" + androidApplication.getIcon());
+            }
+        }
+        if (StrUtil.isNotBlank(androidApplication.getUrl())) {
+            String androidApplicationPath = androidApplicationFilePath + androidApplication.getUrl();
+            File androidApplicationFile = new File(androidApplicationPath);
+            if (androidApplicationFile.exists()) {
+                boolean deleted = androidApplicationFile.delete();
+                if (!deleted) {
+                    return R.error("安卓应用文件删除失败");
+                }
+            } else {
+                return R.error("安卓应用文件不存在：" + androidApplication.getUrl());
+            }
+        }
+        return R.ok();
     }
 
 }
