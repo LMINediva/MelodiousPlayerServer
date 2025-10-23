@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/data/mv/get_mv_list",
             "/get_mv_areas",
             "/data/list/get_list",
+            "/sys/android/downloadAPK/**",
             "/js/**",
             "/css/**",
             "/img/**",

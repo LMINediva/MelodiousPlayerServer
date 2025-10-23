@@ -10,12 +10,18 @@ import com.melodiousplayer.util.StringUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -299,6 +305,33 @@ public class AndroidApplicationController {
             }
         }
         return R.ok();
+    }
+
+    /**
+     * 根据安卓应用文件名下载APK
+     *
+     * @param filename 安卓应用文件名
+     * @return ResponseEntity对象
+     * @throws IOException IO异常
+     */
+    @GetMapping("/downloadAPK/{filename}")
+    public ResponseEntity<Resource> downloadAPK(@PathVariable(value = "filename") String filename)
+            throws IOException {
+        String androidApplicationPath = androidApplicationFilePath + filename;
+        File androidApplicationFile = new File(androidApplicationPath);
+        if (!androidApplicationFile.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+        // 构建文件资源
+        Resource resource = new FileSystemResource(androidApplicationFile);
+        // 对文件名进行URL编码，解决中文乱码问题
+        String encodedFilename = URLEncoder.encode(filename, "UTF-8")
+                .replaceAll("\\+", "%20");
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename*=UTF-8''" + encodedFilename)
+                .body(resource);
     }
 
 }
