@@ -44,6 +44,12 @@ public class AndroidApplication implements Serializable {
     private String version;
 
     /**
+     * 安卓应用内容
+     */
+    @TableField(value = "content")
+    private String content;
+
+    /**
      * 安卓应用链接
      */
     @TableField(value = "url")
