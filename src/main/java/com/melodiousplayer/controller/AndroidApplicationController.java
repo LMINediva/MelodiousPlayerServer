@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.AndroidApplicationService;
+import com.melodiousplayer.util.APKVersionUtil;
 import com.melodiousplayer.util.DateUtil;
 import com.melodiousplayer.util.StringUtil;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +39,9 @@ public class AndroidApplicationController {
 
     @Autowired
     private AndroidApplicationService androidApplicationService;
+
+    @Autowired
+    private Environment environment;
 
     @Value("${androidApplicationImagesFilePath}")
     private String androidApplicationImagesFilePath;
@@ -332,6 +337,55 @@ public class AndroidApplicationController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename*=UTF-8''" + encodedFilename)
                 .body(resource);
+    }
+
+    /**
+     * 检查安卓应用是否可更新
+     *
+     * @param version 安卓应用版本
+     * @return VersionUpdate对象
+     */
+    @PostMapping("/checkUpdate")
+    @ResponseBody
+    public R checkUpdate(@RequestParam("version") String version) {
+        VersionUpdate versionUpdate = new VersionUpdate();
+        QueryWrapper<AndroidApplication> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("version");
+        Page<AndroidApplication> page = new Page<>(1, 1);
+        Page<AndroidApplication> resultPage = androidApplicationService.page(page, queryWrapper);
+        AndroidApplication androidApplication = resultPage.getRecords().get(0);
+        Map<String, Object> map = new HashMap<>();
+        try {
+            if (androidApplication != null) {
+                String latestVersion = androidApplication.getVersion();
+                // 版本号对比
+                int result = APKVersionUtil.compareVersion(version, latestVersion);
+                if (result == 0) {
+                    // 版本号相等不需要更新版本
+                    versionUpdate.setUpdate("No");
+                } else if (result > 0) {
+                    // 当前APK版本号大于数据库中APK的最新版本号，那么就不需要升级
+                    versionUpdate.setUpdate("No");
+                } else {
+                    // 当前APK版本号小于数据库中APK的最新版本号，需要升级提示
+                    versionUpdate.setApk_file_url(androidApplication.getUrl());
+                    versionUpdate.setName(androidApplication.getName());
+                    versionUpdate.setUpdate("Yes");
+                    versionUpdate.setUpdate_log(androidApplication.getContent());
+                    versionUpdate.setNew_version(androidApplication.getVersion());
+                    versionUpdate.setTarget_size(androidApplication.getSize().toString());
+                    versionUpdate.setConstraint(APKVersionUtil.getConstraintValue(androidApplication.getForce()));
+                }
+            } else {
+                // 没有查到最新版本，返回不需要更新标识
+                versionUpdate.setUpdate("No");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.error(String.valueOf(e));
+        }
+        map.put("versionUpdate", versionUpdate);
+        return R.ok(map);
     }
 
 }

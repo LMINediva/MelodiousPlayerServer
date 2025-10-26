@@ -47,10 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/audio/**",
             "/video/**",
             "/data/music/front_page",
-            "/data/music/front_page2",
             "/data/mv/get_mv_list",
             "/get_mv_areas",
             "/data/list/get_list",
+            "/sys/android/checkUpdate",
             "/sys/android/downloadAPK/**",
             "/js/**",
             "/css/**",
@@ -74,7 +74,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring()
                 .antMatchers("/images/**", "/lrc/**", "/mp3/**", "/mp4/**");
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -69,6 +69,12 @@ public class AndroidApplication implements Serializable {
     private Date uploadTime;
 
     /**
+     * 强制更新
+     */
+    @TableField(value = "`force`")
+    private Integer force;
+
+    /**
      * 状态
      */
     @TableField(value = "status")

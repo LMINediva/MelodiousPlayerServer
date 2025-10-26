@@ -51,7 +51,7 @@ public class SysUser extends BaseEntity implements Serializable {
      * 最后登录时间
      */
     @TableField(value = "login_date")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private Date loginDate;
 
     /**
