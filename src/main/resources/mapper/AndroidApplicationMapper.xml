@@ -5,22 +5,23 @@
 <mapper namespace="com.melodiousplayer.mapper.AndroidApplicationMapper">
 
     <resultMap id="BaseResultMap" type="com.melodiousplayer.entity.AndroidApplication">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="icon" column="icon" jdbcType="VARCHAR"/>
-            <result property="version" column="version" jdbcType="VARCHAR"/>
-            <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="url" column="url" jdbcType="VARCHAR"/>
-            <result property="size" column="size" jdbcType="FLOAT"/>
-            <result property="uploadTime" column="upload_time" jdbcType="TIMESTAMP"/>
-            <result property="force" column="force" jdbcType="INTEGER"/>
-            <result property="status" column="status" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="code" column="code" jdbcType="INTEGER"/>
+        <result property="version" column="version" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="url" column="url" jdbcType="VARCHAR"/>
+        <result property="size" column="size" jdbcType="FLOAT"/>
+        <result property="uploadTime" column="upload_time" jdbcType="TIMESTAMP"/>
+        <result property="force" column="force" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,icon,
-        version,content,url,
-        size,upload_time,force,
-        status
+        code,version,content,
+        url,size,upload_time,
+        force,status
     </sql>
 </mapper>

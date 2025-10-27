@@ -38,6 +38,12 @@ public class AndroidApplication implements Serializable {
     private String icon;
 
     /**
+     * 安卓应用版本代码
+     */
+    @TableField(value = "code")
+    private Integer code;
+
+    /**
      * 安卓应用版本号
      */
     @TableField(value = "version")
