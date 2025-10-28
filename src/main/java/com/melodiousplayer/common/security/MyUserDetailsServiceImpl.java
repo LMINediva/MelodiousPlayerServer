@@ -46,6 +46,7 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
          * system:user:role,system:menu:delete,system:role:add,system:role:query,system:menu:edit,
          * system:notice:list,system:notice:query,system:notice:add,system:notice:edit,system:notice:delete,
          * system:android:list,system:android:query,system:android:add,system:android:edit,system:android:delete,
+         * system:feedback:list,system:feedback:query,system:feedback:add,system:feedback:edit,system:feedback:delete,
          * data:music:list,data:music:query,data:music:add,data:music:edit,data:music:delete,
          * data:mv:list,data:mv:query,data:mv:add,data:mv:edit,data:mv:delete,
          * data:list:list,data:list:query,data:list:add,data:list:edit,data:list:delete

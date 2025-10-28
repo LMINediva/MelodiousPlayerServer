@@ -99,10 +99,10 @@ public class AndroidApplicationController {
             AndroidApplication androidApplication = androidApplicationService.getById(id);
             String androidApplicationIconPath = androidApplicationImagesFilePath + androidApplication.getIcon();
             String androidApplicationPath = androidApplicationFilePath + androidApplication.getUrl();
-            File ndroidApplicationIconFile = new File(androidApplicationIconPath);
+            File androidApplicationIconFile = new File(androidApplicationIconPath);
             File androidApplicationFile = new File(androidApplicationPath);
-            if (ndroidApplicationIconFile.exists()) {
-                boolean deleted = ndroidApplicationIconFile.delete();
+            if (androidApplicationIconFile.exists()) {
+                boolean deleted = androidApplicationIconFile.delete();
                 if (!deleted) {
                     return R.error("安卓应用图标删除失败");
                 }

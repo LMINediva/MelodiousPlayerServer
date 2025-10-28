@@ -51,6 +51,10 @@ public class DirectoryHandler {
     @Value("${androidApplicationFilePath}")
     private String androidApplicationFileDirectory;
 
+    // 用户反馈图片目录
+    @Value("${feedbackImagesFilePath}")
+    private String feedbackImagesDirectory;
+
     @PostConstruct
     public void createDirectory() {
         // 用户头像目录
@@ -71,6 +75,8 @@ public class DirectoryHandler {
         createDirectoryFile(androidApplicationImagesDirectory, "安卓应用图标目录");
         // 安卓应用文件目录
         createDirectoryFile(androidApplicationFileDirectory, "安卓应用文件目录");
+        // 用户反馈图片目录
+        createDirectoryFile(feedbackImagesDirectory, "用户反馈图片目录");
     }
 
     /**
