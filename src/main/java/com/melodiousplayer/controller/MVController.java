@@ -173,6 +173,7 @@ public class MVController {
         }
         mvService.removeByIds(Arrays.asList(ids));
         mvAreaCodeService.remove(new QueryWrapper<MvAreaCode>().in("mv_id", Arrays.asList(ids)));
+        mvUserService.remove(new QueryWrapper<MvUser>().in("mv_id", Arrays.asList(ids)));
         return R.ok();
     }
 

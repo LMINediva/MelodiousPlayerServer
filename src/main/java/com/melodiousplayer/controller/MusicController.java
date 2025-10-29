@@ -182,6 +182,7 @@ public class MusicController {
             }
         }
         musicService.removeByIds(Arrays.asList(ids));
+        musicUserService.remove(new QueryWrapper<MusicUser>().in("music_id", Arrays.asList(ids)));
         return R.ok();
     }
 

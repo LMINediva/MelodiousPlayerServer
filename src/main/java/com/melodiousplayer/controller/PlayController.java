@@ -138,6 +138,7 @@ public class PlayController {
     public R delete(@RequestBody Long[] ids) {
         playService.removeByIds(Arrays.asList(ids));
         playMvService.remove(new QueryWrapper<PlayMv>().in("play_id", Arrays.asList(ids)));
+        playUserService.remove(new QueryWrapper<PlayUser>().in("play_id", Arrays.asList(ids)));
         return R.ok();
     }
 

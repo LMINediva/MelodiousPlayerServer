@@ -208,7 +208,7 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('system:user:delete')")
     public R delete(@RequestBody Long[] ids) {
         sysUserService.removeByIds(Arrays.asList(ids));
-        sysUserRoleService.remove(new QueryWrapper<SysUserRole>().in("user_id", ids));
+        sysUserRoleService.remove(new QueryWrapper<SysUserRole>().in("user_id", Arrays.asList(ids)));
         return R.ok();
     }
 
