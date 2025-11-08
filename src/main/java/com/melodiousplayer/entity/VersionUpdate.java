@@ -15,7 +15,9 @@ public class VersionUpdate {
     private String name;
     // 更新标识
     private String update;
-    // 新版本
+    // 新版本代码
+    private Integer code;
+    // 新版本号
     private String new_version;
     // 新版APK下载地址
     private String apk_file_url;
@@ -24,6 +26,6 @@ public class VersionUpdate {
     // 新版APK大小
     private String target_size;
     // 是否强制更新
-    private boolean constraint;
+    private Boolean constraint;
 
 }

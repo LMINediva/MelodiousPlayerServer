@@ -371,6 +371,7 @@ public class AndroidApplicationController {
                     versionUpdate.setApk_file_url(androidApplication.getUrl());
                     versionUpdate.setName(androidApplication.getName());
                     versionUpdate.setUpdate("Yes");
+                    versionUpdate.setCode(androidApplication.getCode());
                     versionUpdate.setUpdate_log(androidApplication.getContent());
                     versionUpdate.setNew_version(androidApplication.getVersion());
                     versionUpdate.setTarget_size(androidApplication.getSize().toString());
