@@ -465,16 +465,20 @@ public class MusicController {
                 music.setHdMusicSize(music.getMusicSize());
                 music.setUhdMusicSize(music.getMusicSize());
             }
-            if (!currentMusic.getLyric().equals(music.getLyric())) {
-                String lyricPath = lyricFilePath + currentMusic.getLyric();
-                File lyricFile = new File(lyricPath);
-                if (lyricFile.exists()) {
-                    boolean deleted = lyricFile.delete();
-                    if (!deleted) {
-                        return R.error("歌词文件删除失败");
+            if (currentMusic.getLyric() != null) {
+                if (!currentMusic.getLyric().isEmpty()) {
+                    if (!currentMusic.getLyric().equals(music.getLyric())) {
+                        String lyricPath = lyricFilePath + currentMusic.getLyric();
+                        File lyricFile = new File(lyricPath);
+                        if (lyricFile.exists()) {
+                            boolean deleted = lyricFile.delete();
+                            if (!deleted) {
+                                return R.error("歌词文件删除失败");
+                            }
+                        } else {
+                            return R.error("歌词文件不存在：" + currentMusic.getLyric());
+                        }
                     }
-                } else {
-                    return R.error("歌词文件不存在：" + currentMusic.getLyric());
                 }
             }
             musicService.updateById(music);
