@@ -38,6 +38,9 @@ public class PlayController {
     private MvService mvService;
 
     @Autowired
+    private MvAreaService mvAreaService;
+
+    @Autowired
     private PlayMvService playMvService;
 
     @Autowired
@@ -118,6 +121,15 @@ public class PlayController {
             play.setSysUser(sysUser);
             List<Mv> mvList = mvService.list(new QueryWrapper<Mv>().inSql(
                     "id", "select mv_id from play_mv where play_id = " + play.getId()));
+            for (Mv mv : mvList) {
+                MvArea mvArea = mvAreaService.getOne(new QueryWrapper<MvArea>().inSql(
+                        "id", "select mv_area_id from mv_area_code where mv_id = " + mv.getId()
+                ));
+                mv.setMvArea(mvArea);
+                SysUser mvUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                        "id", "select user_id from mv_user where mv_id = " + mv.getId()));
+                mv.setSysUser(mvUser);
+            }
             play.setMvList(mvList);
         }
         Map<String, Object> resultMap = new HashMap<>();
