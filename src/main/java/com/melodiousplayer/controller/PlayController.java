@@ -148,6 +148,19 @@ public class PlayController {
     @PostMapping("/delete")
     @PreAuthorize("hasAuthority('data:list:delete')")
     public R delete(@RequestBody Long[] ids) {
+        for (Long id : ids) {
+            Play play = playService.getById(id);
+            String thumbnailImagePath = listImagesFilePath + play.getThumbnailPic();
+            File thumbnailImageFile = new File(thumbnailImagePath);
+            if (thumbnailImageFile.exists()) {
+                boolean deleted = thumbnailImageFile.delete();
+                if (!deleted) {
+                    return R.error("缩略图图片删除失败");
+                }
+            } else {
+                return R.error("缩略图图片不存在：" + play.getThumbnailPic());
+            }
+        }
         playService.removeByIds(Arrays.asList(ids));
         playMvService.remove(new QueryWrapper<PlayMv>().in("play_id", Arrays.asList(ids)));
         playUserService.remove(new QueryWrapper<PlayUser>().in("play_id", Arrays.asList(ids)));
