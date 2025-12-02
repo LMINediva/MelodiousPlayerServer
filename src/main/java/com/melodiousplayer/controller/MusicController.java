@@ -172,13 +172,17 @@ public class MusicController {
             } else {
                 return R.error("音乐文件不存在：" + music.getUrl());
             }
-            if (lyricFile.exists()) {
-                boolean deleted = lyricFile.delete();
-                if (!deleted) {
-                    return R.error("歌词文件删除失败");
+            if (music.getLyric() != null) {
+                if (!music.getLyric().isEmpty()) {
+                    if (lyricFile.exists()) {
+                        boolean deleted = lyricFile.delete();
+                        if (!deleted) {
+                            return R.error("歌词文件删除失败");
+                        }
+                    } else {
+                        return R.error("歌词文件不存在：" + music.getLyric());
+                    }
                 }
-            } else {
-                return R.error("歌词文件不存在：" + music.getLyric());
             }
         }
         musicService.removeByIds(Arrays.asList(ids));
