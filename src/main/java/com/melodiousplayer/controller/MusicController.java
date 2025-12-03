@@ -123,6 +123,9 @@ public class MusicController {
     @PreAuthorize("hasAuthority('data:music:query')")
     public R findById(@PathVariable(value = "id") Integer id) {
         Music music = musicService.getById(id);
+        SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                "id", "select user_id from music_user where music_id = " + music.getId()));
+        music.setSysUser(sysUser);
         Map<String, Object> map = new HashMap<>();
         map.put("music", music);
         return R.ok(map);

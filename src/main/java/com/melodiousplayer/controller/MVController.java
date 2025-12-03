@@ -191,6 +191,9 @@ public class MVController {
                 "id", "select mv_area_id from mv_area_code where mv_id = " + mvItem.getId()
         ));
         mvItem.setMvArea(mvArea);
+        SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                "id", "select user_id from mv_user where mv_id = " + mvItem.getId()));
+        mvItem.setSysUser(sysUser);
         Map<String, Object> map = new HashMap<>();
         map.put("mvItem", mvItem);
         return R.ok(map);
