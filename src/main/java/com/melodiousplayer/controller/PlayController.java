@@ -180,6 +180,9 @@ public class PlayController {
         List<Mv> mvList = mvService.list(new QueryWrapper<Mv>().inSql(
                 "id", "select mv_id from play_mv where play_id = " + play.getId()));
         play.setMvList(mvList);
+        SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                "id", "select user_id from play_user where play_id = " + play.getId()));
+        play.setSysUser(sysUser);
         Map<String, Object> map = new HashMap<>();
         map.put("playItem", play);
         return R.ok(map);
