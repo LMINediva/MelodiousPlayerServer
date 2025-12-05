@@ -6,7 +6,7 @@ import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.SysRoleMenuService;
 import com.melodiousplayer.service.SysRoleService;
 import com.melodiousplayer.service.SysUserRoleService;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +54,7 @@ public class SysRoleController {
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<SysRole> pageResult = sysRoleService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
-                new QueryWrapper<SysRole>().like(StringUtil.isNotEmpty(query), "name", query));
+                new QueryWrapper<SysRole>().like(StringUtils.isNotEmpty(query), "name", query));
         List<SysRole> roleList = pageResult.getRecords();
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("roleList", roleList);

@@ -7,8 +7,8 @@ import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.SysRoleService;
 import com.melodiousplayer.service.SysUserRoleService;
 import com.melodiousplayer.service.SysUserService;
-import com.melodiousplayer.util.DateUtil;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.DateUtils;
+import com.melodiousplayer.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -101,7 +101,7 @@ public class SysUserController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(avatarImagesFilePath + newFileName));
             resultMap.put("code", 0);
             resultMap.put("msg", "上传成功");
@@ -153,7 +153,7 @@ public class SysUserController {
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<SysUser> pageResult = sysUserService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
-                new QueryWrapper<SysUser>().like(StringUtil.isNotEmpty(query), "username", query));
+                new QueryWrapper<SysUser>().like(StringUtils.isNotEmpty(query), "username", query));
         List<SysUser> userList = pageResult.getRecords();
         for (SysUser user : userList) {
             List<SysRole> roleList = sysRoleService.list(new QueryWrapper<SysRole>().inSql(
@@ -292,7 +292,7 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('system:user:query')")
     public R pastData() {
         Date date = new Date();
-        int year = Integer.parseInt(DateUtil.formatDate(date, "YYYY"));
+        int year = Integer.parseInt(DateUtils.formatDate(date, "YYYY"));
         int[] pastYear = new int[7];
         Long[] pastUserQuantity = new Long[7];
         for (int i = 0; i < 7; i++) {

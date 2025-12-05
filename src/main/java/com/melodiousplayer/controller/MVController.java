@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.*;
-import com.melodiousplayer.util.DateUtil;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.DateUtils;
+import com.melodiousplayer.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,7 +80,7 @@ public class MVController {
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<Mv> pageResult = mvService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
-                new QueryWrapper<Mv>().like(StringUtil.isNotEmpty(query), "title", query));
+                new QueryWrapper<Mv>().like(StringUtils.isNotEmpty(query), "title", query));
         List<Mv> mvList = pageResult.getRecords();
         for (Mv mv : mvList) {
             MvArea mvArea = mvAreaService.getOne(new QueryWrapper<MvArea>().inSql(
@@ -111,7 +111,7 @@ public class MVController {
         Page<Mv> pageResult = mvService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
                 new QueryWrapper<Mv>()
                         .inSql("id", "select mv_id from mv_user where user_id = " + id)
-                        .like(StringUtil.isNotEmpty(query), "title", query));
+                        .like(StringUtils.isNotEmpty(query), "title", query));
         List<Mv> mvList = pageResult.getRecords();
         for (Mv mv : mvList) {
             MvArea mvArea = mvAreaService.getOne(new QueryWrapper<MvArea>().inSql(
@@ -214,7 +214,7 @@ public class MVController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(mvImagesFilePath + newFileName));
             resultMap.put("code", 0);
             resultMap.put("msg", "上传成功");
@@ -241,7 +241,7 @@ public class MVController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(mvFilePath + newFileName));
             resultMap.put("code", 0);
             resultMap.put("msg", "上传成功");

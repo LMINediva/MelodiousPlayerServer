@@ -9,7 +9,7 @@ import com.melodiousplayer.mapper.SysMenuMapper;
 import com.melodiousplayer.mapper.SysRoleMapper;
 import com.melodiousplayer.service.SysUserService;
 import com.melodiousplayer.mapper.SysUserMapper;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +58,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser>
                             "SELECT menu_id FROM sys_role_menu WHERE role_id = " + sysRole.getId()));
             for (SysMenu sysMenu : sysMenuList) {
                 String perms = sysMenu.getPerms();
-                if (StringUtil.isNotEmpty(perms)) {
+                if (StringUtils.isNotEmpty(perms)) {
                     menuCodeSet.add(perms);
                 }
             }

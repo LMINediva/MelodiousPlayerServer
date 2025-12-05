@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.SysNoticeService;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +36,7 @@ public class SysNoticeController {
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<SysNotice> pageResult = sysNoticeService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
-                new QueryWrapper<SysNotice>().like(StringUtil.isNotEmpty(query), "title", query));
+                new QueryWrapper<SysNotice>().like(StringUtils.isNotEmpty(query), "title", query));
         List<SysNotice> noticeList = pageResult.getRecords();
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("noticeList", noticeList);

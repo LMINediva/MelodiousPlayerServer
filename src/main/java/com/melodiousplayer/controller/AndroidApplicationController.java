@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.AndroidApplicationService;
-import com.melodiousplayer.util.APKVersionUtil;
-import com.melodiousplayer.util.DateUtil;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.APKVersionUtils;
+import com.melodiousplayer.util.DateUtils;
+import com.melodiousplayer.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +62,7 @@ public class AndroidApplicationController {
         Page<AndroidApplication> pageResult =
                 androidApplicationService.page(new Page<>(pageBean.getPageNum(),
                         pageBean.getPageSize()), new QueryWrapper<AndroidApplication>()
-                        .like(StringUtil.isNotEmpty(query), "version", query));
+                        .like(StringUtils.isNotEmpty(query), "version", query));
         List<AndroidApplication> androidApplicationList = pageResult.getRecords();
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("androidApplicationList", androidApplicationList);
@@ -137,7 +137,7 @@ public class AndroidApplicationController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(),
                     new File(androidApplicationImagesFilePath + newFileName));
             resultMap.put("code", 0);
@@ -165,7 +165,7 @@ public class AndroidApplicationController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(),
                     new File(androidApplicationFilePath + newFileName));
             resultMap.put("code", 0);
@@ -359,7 +359,7 @@ public class AndroidApplicationController {
             if (androidApplication != null) {
                 String latestVersion = androidApplication.getVersion();
                 // 版本号对比
-                int result = APKVersionUtil.compareVersion(version, latestVersion);
+                int result = APKVersionUtils.compareVersion(version, latestVersion);
                 if (result == 0) {
                     // 版本号相等不需要更新版本
                     versionUpdate.setUpdate("No");
@@ -375,7 +375,7 @@ public class AndroidApplicationController {
                     versionUpdate.setUpdate_log(androidApplication.getContent());
                     versionUpdate.setNew_version(androidApplication.getVersion());
                     versionUpdate.setTarget_size(androidApplication.getSize().toString());
-                    versionUpdate.setConstraint(APKVersionUtil.getConstraintValue(androidApplication.getForce()));
+                    versionUpdate.setConstraint(APKVersionUtils.getConstraintValue(androidApplication.getForce()));
                 }
             } else {
                 // 没有查到最新版本，返回不需要更新标识

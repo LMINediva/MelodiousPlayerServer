@@ -7,8 +7,8 @@ import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.MusicService;
 import com.melodiousplayer.service.MusicUserService;
 import com.melodiousplayer.service.SysUserService;
-import com.melodiousplayer.util.DateUtil;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.DateUtils;
+import com.melodiousplayer.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,7 +73,7 @@ public class MusicController {
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<Music> pageResult = musicService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
-                new QueryWrapper<Music>().like(StringUtil.isNotEmpty(query), "title", query));
+                new QueryWrapper<Music>().like(StringUtils.isNotEmpty(query), "title", query));
         List<Music> musicList = pageResult.getRecords();
         for (Music music : musicList) {
             SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
@@ -100,7 +100,7 @@ public class MusicController {
         Page<Music> pageResult = musicService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
                 new QueryWrapper<Music>()
                         .inSql("id", "select music_id from music_user where user_id = " + id)
-                        .like(StringUtil.isNotEmpty(query), "title", query));
+                        .like(StringUtils.isNotEmpty(query), "title", query));
         List<Music> musicList = pageResult.getRecords();
         for (Music music : musicList) {
             SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
@@ -225,7 +225,7 @@ public class MusicController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(musicImagesFilePath + newFileName));
             resultMap.put("code", 0);
             resultMap.put("msg", "上传成功");
@@ -252,7 +252,7 @@ public class MusicController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(lyricFilePath + newFileName));
             resultMap.put("code", 0);
             resultMap.put("msg", "上传成功");
@@ -279,7 +279,7 @@ public class MusicController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(audioFilePath + newFileName));
             resultMap.put("code", 0);
             resultMap.put("msg", "上传成功");

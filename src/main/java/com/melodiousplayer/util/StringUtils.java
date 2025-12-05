@@ -7,9 +7,38 @@ import java.util.Random;
 /**
  * 字符串工具类
  *
- * @author
+ * @author Mike
+ * @date 2025/12/05
  */
-public class StringUtil {
+public class StringUtils extends org.apache.commons.lang3.StringUtils {
+
+    /**
+     * 是否包含字符串
+     *
+     * @param str  验证字符串
+     * @param strs 字符串组
+     * @return 包含返回true
+     */
+    public static boolean inStringIgnoreCase(String str, String... strs) {
+        if (str != null && strs != null) {
+            for (String s : strs) {
+                if (str.equalsIgnoreCase(trim(s))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * * 判断一个对象是否为空
+     *
+     * @param object Object
+     * @return true：为空 false：非空
+     */
+    public static boolean isNull(Object object) {
+        return object == null;
+    }
 
     /**
      * 判断是否是空

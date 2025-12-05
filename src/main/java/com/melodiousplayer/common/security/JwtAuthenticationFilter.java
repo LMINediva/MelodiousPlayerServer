@@ -5,7 +5,7 @@ import com.melodiousplayer.entity.CheckResult;
 import com.melodiousplayer.entity.SysUser;
 import com.melodiousplayer.service.SysUserService;
 import com.melodiousplayer.util.JwtUtils;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.StringUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader("token");
         System.out.println("请求url：" + request.getRequestURI());
         // 如果token是空或者url在白名单里，则放行
-        if (StringUtil.isEmpty(token) || new ArrayList<String>(Arrays.asList(URL_WHITE_LIST))
+        if (StringUtils.isEmpty(token) || new ArrayList<String>(Arrays.asList(URL_WHITE_LIST))
                 .contains(request.getRequestURI())) {
             chain.doFilter(request, response);
             return;

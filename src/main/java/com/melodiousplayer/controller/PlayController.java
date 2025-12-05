@@ -5,8 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.*;
-import com.melodiousplayer.util.DateUtil;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.DateUtils;
+import com.melodiousplayer.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -83,7 +83,7 @@ public class PlayController {
     public R list(@RequestBody PageBean pageBean) {
         String query = pageBean.getQuery().trim();
         Page<Play> pageResult = playService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
-                new QueryWrapper<Play>().like(StringUtil.isNotEmpty(query), "title", query));
+                new QueryWrapper<Play>().like(StringUtils.isNotEmpty(query), "title", query));
         List<Play> playList = pageResult.getRecords();
         for (Play play : playList) {
             SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
@@ -113,7 +113,7 @@ public class PlayController {
         Page<Play> pageResult = playService.page(new Page<>(pageBean.getPageNum(), pageBean.getPageSize()),
                 new QueryWrapper<Play>()
                         .inSql("id", "select play_id from play_user where user_id = " + id)
-                        .like(StringUtil.isNotEmpty(query), "title", query));
+                        .like(StringUtils.isNotEmpty(query), "title", query));
         List<Play> playList = pageResult.getRecords();
         for (Play play : playList) {
             SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
@@ -219,7 +219,7 @@ public class PlayController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(), new File(listImagesFilePath + newFileName));
             resultMap.put("code", 0);
             resultMap.put("msg", "上传成功");
@@ -294,7 +294,7 @@ public class PlayController {
                     return R.error("悦单缩略图图片不存在：" + currentPlay.getThumbnailPic());
                 }
             }
-            play.setUpdateTime(DateUtil.formatString(DateUtil.getCurrentDate(), "yyyy-MM-dd HH:mm:ss"));
+            play.setUpdateTime(DateUtils.formatString(DateUtils.getCurrentDate(), "yyyy-MM-dd HH:mm:ss"));
             playService.updateById(play);
             playMvService.remove(new QueryWrapper<PlayMv>().eq("play_id", play.getId()));
             List<PlayMv> playMvList = new ArrayList<>();

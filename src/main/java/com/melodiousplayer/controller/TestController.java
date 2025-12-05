@@ -4,7 +4,7 @@ import com.melodiousplayer.entity.R;
 import com.melodiousplayer.entity.SysUser;
 import com.melodiousplayer.service.SysUserService;
 import com.melodiousplayer.util.JwtUtils;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,7 +36,7 @@ public class TestController {
     @RequestMapping("/user/list")
     @PreAuthorize("hasAuthority('system:user2:list')")
     public R userList(@RequestHeader(required = false) String token) {
-        if (StringUtil.isNotEmpty(token)) {
+        if (StringUtils.isNotEmpty(token)) {
             Map<String, Object> resultMap = new HashMap<>();
             List<SysUser> userList = sysUserService.list();
             resultMap.put("userList", userList);

@@ -6,7 +6,7 @@ package com.melodiousplayer.util;
  * @author Mike
  * @date 2025/10/25
  */
-public class APKVersionUtil {
+public class APKVersionUtils {
 
     /**
      * 比较APK版本号的大小

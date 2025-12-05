@@ -7,8 +7,8 @@ import com.melodiousplayer.entity.*;
 import com.melodiousplayer.service.FeedbackService;
 import com.melodiousplayer.service.FeedbackUserService;
 import com.melodiousplayer.service.SysUserService;
-import com.melodiousplayer.util.DateUtil;
-import com.melodiousplayer.util.StringUtil;
+import com.melodiousplayer.util.DateUtils;
+import com.melodiousplayer.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +56,7 @@ public class FeedbackController {
         Page<Feedback> pageResult =
                 feedbackService.page(new Page<>(pageBean.getPageNum(),
                         pageBean.getPageSize()), new QueryWrapper<Feedback>()
-                        .like(StringUtil.isNotEmpty(query), "content", query));
+                        .like(StringUtils.isNotEmpty(query), "content", query));
         List<Feedback> feedbackList = pageResult.getRecords();
         for (Feedback feedback : feedbackList) {
             SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
@@ -127,7 +127,7 @@ public class FeedbackController {
             // 获取文件名
             String originalFilename = file.getOriginalFilename();
             String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
-            String newFileName = DateUtil.getCurrentDateStr() + suffixName;
+            String newFileName = DateUtils.getCurrentDateStr() + suffixName;
             FileUtils.copyInputStreamToFile(file.getInputStream(),
                     new File(feedbackImagesFilePath + newFileName));
             resultMap.put("code", 0);
