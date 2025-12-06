@@ -20,8 +20,8 @@ import java.util.Map;
 @RequestMapping("/monitor/server")
 public class ServerController {
 
-    @GetMapping()
-    @PreAuthorize("hasAuthority('data:list:query')")
+    @GetMapping("/list")
+    @PreAuthorize("hasAuthority('monitor:server:list')")
     public R getInfo() throws Exception {
         Server server = new Server();
         server.copyTo();
