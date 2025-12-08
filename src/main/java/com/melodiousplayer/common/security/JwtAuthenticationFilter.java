@@ -58,7 +58,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
         String token = request.getHeader("token");
-        System.out.println("请求url：" + request.getRequestURI());
         // 如果token是空或者url在白名单里，则放行
         if (StringUtils.isEmpty(token) || new ArrayList<String>(Arrays.asList(URL_WHITE_LIST))
                 .contains(request.getRequestURI())) {
