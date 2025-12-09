@@ -7,6 +7,14 @@ import org.bouncycastle.util.encoders.Base64;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import javax.management.Attribute;
+import javax.management.AttributeList;
+import javax.management.MBeanServerConnection;
+import javax.management.ObjectName;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
 import java.util.Date;
 
 /**
@@ -109,9 +117,55 @@ public class JwtUtils {
                 .getBody();
     }
 
+    public static double getLinuxCPUUsage() {
+        double cpuUsage = 0;
+        try {
+            Process process = Runtime.getRuntime().exec(new String[]{"top", "-b", "-n", "1"});
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("%CPU")) {
+                    System.out.println("CPU Usage: " + line);
+                    cpuUsage = Double.parseDouble(line);
+                    break;
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cpuUsage;
+    }
+
+    public static double getCPUUsage() {
+        double cpuUsage = 0;
+        try {
+            // 执行命令获取CPU使用情况
+            Process process = Runtime.getRuntime().exec("cat /proc/stat");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("cpu")) {
+                    // 解析CPU使用情况
+                    String[] tokens = line.split("\\s+");
+                    long user = Long.parseLong(tokens[1]) + Long.parseLong(tokens[2]) + Long.parseLong(tokens[3]);
+                    long total = Long.parseLong(tokens[1]) + Long.parseLong(tokens[2]) + Long.parseLong(tokens[3]) + Long.parseLong(tokens[4]) + Long.parseLong(tokens[5]);
+                    long idle = Long.parseLong(tokens[4]);
+                    cpuUsage = 100.0 * (total - idle) / total;
+                    System.out.println("CPU Usage: " + String.format("%.2f", cpuUsage) + "%");
+                    break; // 只处理第一行（通常是最新的CPU状态）
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cpuUsage;
+    }
+
     public static void main(String[] args) throws InterruptedException {
         //小明失效 10s
-        String sc = createJWT("1", "小明", 60 * 60 * 1000);
+        /*String sc = createJWT("1", "小明", 60 * 60 * 1000);
         System.out.println(sc);
         System.out.println(validateJWT(sc).getErrCode());
         System.out.println(validateJWT(sc).getClaims().getId());
@@ -120,7 +174,16 @@ public class JwtUtils {
         System.out.println(validateJWT(sc).getClaims());
         Claims claims = validateJWT(sc).getClaims();
         String sc2 = createJWT(claims.getId(), claims.getSubject(), JwtConstant.JWT_TTL);
-        System.out.println(sc2);
+        System.out.println(sc2);*/
+
+        Runtime runtime = Runtime.getRuntime();
+        long totalMemory = runtime.totalMemory(); // 获取Java虚拟机中的总内存
+        long freeMemory = runtime.freeMemory(); // 获取剩余空闲内存
+        long maxMemory = runtime.maxMemory(); // 获取最大可用内存
+
+        System.out.println("Total Memory: " + totalMemory / (1024 * 1024) + " MB");
+        System.out.println("Free Memory: " + freeMemory / (1024 * 1024) + " MB");
+        System.out.println("Max Memory: " + maxMemory / (1024 * 1024) + " MB");
     }
 
 }

@@ -11,7 +11,7 @@
  Target Server Version : 80040
  File Encoding         : 65001
 
- Date: 02/11/2025 14:39:17
+ Date: 09/12/2025 11:26:53
 */
 
 SET NAMES utf8mb4;
@@ -34,13 +34,13 @@ CREATE TABLE `android_application`  (
   `force` int NULL DEFAULT NULL COMMENT '强制更新',
   `status` int NULL DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '安卓应用' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '安卓应用' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of android_application
 -- ----------------------------
 INSERT INTO `android_application` VALUES (1, '悦听影音', 'default.png', 1, '1.0.0', '1、在线音乐、MV和歌单列表播放功能；\n2、用户登录、注册功能、退出登录等功能；\n3、用户添加音乐、MV和歌单列表的功能；\n4、本地音乐和视频的播放功能。', '20251022014724000000029.apk', 8.1, '2025-10-22 13:47:29', 0, 0);
-INSERT INTO `android_application` VALUES (2, '悦听影音', 'default.png', 2, '2.1.3', '1、新增版本检查更新功能；\n2、美化界面UI，使界面UI更舒适；\n3、修复表单字符串超出限制的BUG。', '20251027013123000000705.apk', 10.2, '2025-10-25 14:28:22', 0, 0);
+INSERT INTO `android_application` VALUES (2, '悦听影音', 'default.png', 2, '2.1.3', '1、新增版本检查更新功能；\n2、美化界面UI，使界面UI更舒适；\n3、修复表单字符串超出限制的BUG。', '20251103014151000000908.apk', 8.6, '2025-10-25 14:28:22', 0, 0);
 
 -- ----------------------------
 -- Table structure for feedback
@@ -52,7 +52,7 @@ CREATE TABLE `feedback`  (
   `picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '反馈图片',
   `submission_time` datetime NULL DEFAULT NULL COMMENT '提交时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '反馈' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '反馈' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of feedback
@@ -70,7 +70,7 @@ CREATE TABLE `feedback_user`  (
   `feedback_id` int NULL DEFAULT NULL COMMENT '反馈ID',
   `user_id` bigint NULL DEFAULT NULL COMMENT '创作者ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of feedback_user
@@ -100,14 +100,14 @@ CREATE TABLE `music`  (
   `uhd_music_size` float NULL DEFAULT NULL COMMENT '超高品质音乐大小',
   `status` int NULL DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '首页在线音乐数据项' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '首页在线音乐数据项' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of music
 -- ----------------------------
 INSERT INTO `music` VALUES (1, 'audio/mpeg', '这个年纪', '齐一', '国语', '20250810125433000000801.jpeg', '20250810125538000000881.jpg', '20250810125625000000918.lrc', '20250810125712000000459.mp3', '20250810125712000000459.mp3', '20250810125712000000459.mp3', 10.9, 10.9, 10.9, 0);
 INSERT INTO `music` VALUES (2, 'audio/mpeg', '感谢你曾来过2017版', 'Ayo97; 阿涵', '这首歌讲述的是一对恋人，以前在一起很恩爱，随着相处时间，女孩因为种种原因离开了男孩，离别的痛苦然而又割舍不得，曾经一起的回忆历历在目，感谢他曾经的来过，虽然只是个过客，但也深深相爱过，最终两人没能走到一起走到最后。', '20250721013540000000631.jpg', '20250721013544000000747.jpg', '20250725010545000000044.lrc', '20250721013601000000893.mp3', '20250721013601000000893.mp3', '20250721013601000000893.mp3', 9.1, 9.1, 9.1, 0);
-INSERT INTO `music` VALUES (3, 'audio/mpeg', '我的天空', '南征北战', '《我的天空》是一首较有影响力的现象级励志歌曲，其目标受众是即将参加高考的学生。它自问世后一直人气颇高，被歌迷和网友广为传唱。', '20250721014709000000253.jpg', '20250721014712000000920.jpg', NULL, '20250721014736000000441.mp3', '20250721014736000000441.mp3', '20250721014736000000441.mp3', 9.2, 9.2, 9.2, 0);
+INSERT INTO `music` VALUES (3, 'audio/mpeg', '我的天空', '南征北战', '《我的天空》是一首较有影响力的现象级励志歌曲，其目标受众是即将参加高考的学生。它自问世后一直人气颇高，被歌迷和网友广为传唱。', '20250721014709000000253.jpg', '20250721014712000000920.jpg', '20251109020128000000536.lrc', '20250721014736000000441.mp3', '20250721014736000000441.mp3', '20250721014736000000441.mp3', 0, 0, 0, 0);
 INSERT INTO `music` VALUES (4, 'audio/mpeg', '体面', '于文文', '在拿到《前任3：再见前任》剧本之后，于文文就产生了音乐创作的想法。随着电影《前任3：再见前任》越来越深入的拍摄，让于文文对于角色林佳产生了更多的情感共鸣，而沉浸在人物里的她，需要用音乐创作去宣泄情绪和表达态度。于是，于文文以“林佳”为创作灵感 ，为影片量身定制了该曲。', '20250721015434000000918.jpg', '20250721015438000000207.jpg', NULL, '20250721015459000000859.mp3', '20250721015459000000859.mp3', '20250721015459000000859.mp3', 10.8, 10.8, 10.8, 0);
 INSERT INTO `music` VALUES (5, 'audio/mpeg', '此生不换', '青鸟飞鱼', '《此生不换》是电视剧《仙剑奇侠传三》的插曲，创作者在歌词中写道“喝不完忘情泉不让你如烟”，以此暗喻着剧中的两位主人公徐长卿与紫萱在全剧的终章虽共饮忘情之水、试图斩断情丝，却终究难以割舍对彼此的深情眷恋，并希望表达出二人不愿让彼此刻骨铭心的爱恋如烟消散、徒留遗憾的情感。', '20250721020029000000862.jpg', '20250721020033000000191.jpg', NULL, '20250721020050000000183.mp3', '20250721020050000000183.mp3', '20250721020050000000183.mp3', 10.2, 10.2, 10.2, 0);
 INSERT INTO `music` VALUES (6, 'audio/mpeg', '就忘了吧（DJAh版）', '1K', '《就忘了吧》 是一首以都市情感为主题的歌曲，通过直白的叙事风格与反复的“忘了吧”核心句式，刻画了失恋后自我挣扎与释怀的心理过程。', '20250725110544000000126.jpg', '20250725110547000000464.jpg', NULL, '20250725110600000000970.mp3', '20250725110600000000970.mp3', '20250725110600000000970.mp3', 8.7, 8.7, 8.7, 0);
@@ -117,6 +117,7 @@ INSERT INTO `music` VALUES (11, 'audio/mpeg', '尘土', '安朕宇', '歌曲以�
 INSERT INTO `music` VALUES (12, 'audio/mpeg', '悬溺', '葛东琪', '歌曲采用双人合唱形式，围绕情感困局与自我抗争展开创作。', '20250925124948000000448.jpg', '20250925125000000000163.jpg', '20250925125015000000695.lrc', '20250925125036000000213.mp3', '20250925125036000000213.mp3', '20250925125036000000213.mp3', 7, 7, 7, 0);
 INSERT INTO `music` VALUES (13, 'audio/mpeg', '夏天', '李玖哲', '歌曲以夏日为背景，通过风筝、日落、星空等意象描绘恋人间的甜蜜互动，传递携手冒险与相伴成长的温暖情感。', '20250925010021000000082.jpg', '20250925010030000000598.jpg', '20250925010048000000862.lrc', '20250925010104000000063.mp3', '20250925010104000000063.mp3', '20250925010104000000063.mp3', 3, 3, 3, 0);
 INSERT INTO `music` VALUES (14, 'audio/mpeg', '纸短情长', '烟把儿乐队', '《纸短情长》伴奏优美，声音动人，烟把儿乐队以轻快俏皮的唱法将这首歌曲演绎了出来。', '20250925012341000000249.jpg', '20250925012350000000355.jpg', '20250925012400000000429.lrc', '20250925012413000000725.mp3', '20250925012413000000725.mp3', '20250925012413000000725.mp3', 4, 4, 4, 0);
+INSERT INTO `music` VALUES (52, 'audio/mpeg', '唯一', '邓紫棋', '邓紫棋版本的《唯一》不仅在旋律上引人入胜，其歌词也充满了情感。在该曲中，她表达了对爱的执着和珍惜，让听者深深感受到了她对爱情的看法和追求。', '20251201114605000000922.jpg', '20251201114614000000872.jpg', '20251201012600000000286.lrc', '20251201114655000000745.mp3', '20251201114655000000745.mp3', '20251201114655000000745.mp3', 9, 9, 9, 0);
 
 -- ----------------------------
 -- Table structure for music_user
@@ -127,7 +128,7 @@ CREATE TABLE `music_user`  (
   `music_id` int NULL DEFAULT NULL COMMENT '音乐ID',
   `user_id` bigint NULL DEFAULT NULL COMMENT '创作者ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of music_user
@@ -144,6 +145,7 @@ INSERT INTO `music_user` VALUES (10, 11, 45);
 INSERT INTO `music_user` VALUES (11, 12, 45);
 INSERT INTO `music_user` VALUES (12, 13, 45);
 INSERT INTO `music_user` VALUES (13, 14, 45);
+INSERT INTO `music_user` VALUES (51, 52, 45);
 
 -- ----------------------------
 -- Table structure for mv
@@ -171,7 +173,7 @@ CREATE TABLE `mv`  (
   `duration` time NULL DEFAULT NULL COMMENT '时长',
   `status` int NULL DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'MV' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'MV' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of mv
@@ -219,7 +221,7 @@ CREATE TABLE `mv_area_code`  (
   `mv_id` int NULL DEFAULT NULL COMMENT 'MVID',
   `mv_area_id` int NULL DEFAULT NULL COMMENT 'MV区域ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of mv_area_code
@@ -247,7 +249,7 @@ CREATE TABLE `mv_user`  (
   `mv_id` int NULL DEFAULT NULL COMMENT 'MVID',
   `user_id` bigint NULL DEFAULT NULL COMMENT '创作者ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of mv_user
@@ -287,7 +289,7 @@ CREATE TABLE `play`  (
   `total_user` int NULL DEFAULT NULL COMMENT '总积分',
   `rank` int NULL DEFAULT NULL COMMENT '排名',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '音乐清单' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '音乐清单' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of play
@@ -312,7 +314,7 @@ CREATE TABLE `play_mv`  (
   `play_id` int NULL DEFAULT NULL COMMENT '音乐清单ID',
   `mv_id` int NULL DEFAULT NULL COMMENT 'MVID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 84 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of play_mv
@@ -360,7 +362,7 @@ CREATE TABLE `play_user`  (
   `play_id` int NULL DEFAULT NULL COMMENT '音乐清单ID',
   `user_id` bigint NULL DEFAULT NULL COMMENT '创作者ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of play_user
@@ -394,7 +396,7 @@ CREATE TABLE `sys_menu`  (
   `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 77 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -418,37 +420,39 @@ INSERT INTO `sys_menu` VALUES (19, '菜单删除', '#', 5, 4, '', NULL, 'F', 'sy
 INSERT INTO `sys_menu` VALUES (20, '用户查询', '#', 3, 1, '', NULL, 'F', 'system:user:query', '2022-07-04 15:24:42', '2022-07-04 15:24:46', '用户查询按钮');
 INSERT INTO `sys_menu` VALUES (21, '角色查询', '#', 4, 1, '', NULL, 'F', 'system:role:query', '2022-07-04 15:24:42', '2022-07-04 15:24:46', '角色查询按钮');
 INSERT INTO `sys_menu` VALUES (22, '菜单查询', '#', 5, 1, '', NULL, 'F', 'system:menu:query', '2022-07-04 15:24:42', '2022-07-04 15:24:46', '菜单查询按钮');
-INSERT INTO `sys_menu` VALUES (34, '数据管理', 'data', 0, 2, '/data', NULL, 'M', '', '2025-07-16 11:28:46', '2025-07-16 11:28:57', '数据管理目录');
-INSERT INTO `sys_menu` VALUES (37, '在线音乐', 'music', 34, 1, '/data/music', 'data/music/index', 'C', 'data:music:list', '2025-07-18 18:37:43', '2025-09-13 11:18:35', '在线音乐目录');
-INSERT INTO `sys_menu` VALUES (38, '在线MV', 'mv', 34, 2, '/data/mv', 'data/mv/index', 'C', 'data:mv:list', '2025-07-25 18:33:55', '2025-09-13 11:19:07', '在线MV目录');
-INSERT INTO `sys_menu` VALUES (39, '在线悦单', 'list', 34, 3, '/data/list', 'data/list/index', 'C', 'data:list:list', '2025-08-01 19:16:03', '2025-09-13 11:19:23', '在线悦单目录');
-INSERT INTO `sys_menu` VALUES (40, '公告管理', 'notice', 1, 4, '/sys/notice', 'sys/notice/index', 'C', 'system:notice:list', '2025-08-14 22:14:06', '2025-09-16 14:16:58', '公告管理目录');
-INSERT INTO `sys_menu` VALUES (41, '音乐查询', '', 37, 1, '', '', 'F', 'data:music:query', '2025-09-13 11:24:10', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (42, '音乐新增', '', 37, 2, '', '', 'F', 'data:music:add', '2025-09-13 11:25:22', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (43, '音乐修改', '', 37, 3, '', '', 'F', 'data:music:edit', '2025-09-13 11:26:18', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (44, '音乐删除', '', 37, 4, '', '', 'F', 'data:music:delete', '2025-09-13 11:27:22', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (45, 'MV查询', '', 38, 1, '', '', 'F', 'data:mv:query', '2025-09-13 11:28:31', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (46, 'MV新增', '', 38, 2, '', '', 'F', 'data:mv:add', '2025-09-13 11:29:26', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (47, 'MV修改', '', 38, 3, '', '', 'F', 'data:mv:edit', '2025-09-13 11:30:04', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (48, 'MV删除', '', 38, 4, '', '', 'F', 'data:mv:delete', '2025-09-13 11:30:52', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (49, '悦单查询', '', 39, 1, '', '', 'F', 'data:list:query', '2025-09-13 11:32:11', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (50, '悦单新增', '', 39, 2, '', '', 'F', 'data:list:add', '2025-09-13 11:32:57', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (51, '悦单修改', '', 39, 3, '', '', 'F', 'data:list:edit', '2025-09-13 11:33:33', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (52, '悦单删除', '', 39, 4, '', '', 'F', 'data:list:delete', '2025-09-13 11:34:18', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (53, '公告查询', '', 40, 1, '', '', 'F', 'system:notice:query', '2025-09-16 14:18:27', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (54, '公告新增', '', 40, 2, '', '', 'F', 'system:notice:add', '2025-09-16 14:19:27', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (55, '公告修改', '', 40, 3, '', '', 'F', 'system:notice:edit', '2025-09-16 14:20:16', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (56, '公告删除', '', 40, 4, '', '', 'F', 'system:notice:delete', '2025-09-16 14:21:06', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (57, '安卓应用', 'android', 1, 6, '/sys/android', 'sys/android/index', 'C', 'system:android:list', '2025-10-20 13:04:38', '2025-10-28 11:31:56', NULL);
-INSERT INTO `sys_menu` VALUES (58, '应用查询', '', 57, 1, '', '', 'F', 'system:android:query', '2025-10-20 13:09:41', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (59, '应用新增', '', 57, 2, '', '', 'F', 'system:android:add', '2025-10-20 13:10:52', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (60, '应用修改', '', 57, 3, '', '', 'F', 'system:android:edit', '2025-10-20 13:11:48', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (61, '应用删除', '', 57, 4, '', '', 'F', 'system:android:delete', '2025-10-20 13:12:34', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (62, '反馈管理', 'feedback', 1, 5, '/sys/feedback', 'sys/feedback/index', 'C', 'system:feedback:list', '2025-10-28 11:34:19', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (63, '反馈查询', '', 62, 1, '', '', 'F', 'system:feedback:query', '2025-10-28 11:37:50', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (64, '反馈新增', '', 62, 2, '', '', 'F', 'system:feedback:add', '2025-10-28 11:38:38', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (65, '反馈修改', '', 62, 3, '', '', 'F', 'system:feedback:edit', '2025-10-28 11:39:13', NULL, NULL);
-INSERT INTO `sys_menu` VALUES (66, '反馈删除', '', 62, 4, '', '', 'F', 'system:feedback:delete', '2025-10-28 11:40:08', NULL, NULL);
+INSERT INTO `sys_menu` VALUES (34, '数据管理', 'data', 0, 3, '/data', NULL, 'M', '', '2025-07-16 11:28:46', '2025-07-16 11:28:57', '数据管理目录');
+INSERT INTO `sys_menu` VALUES (37, '在线音乐', 'music', 34, 1, '/data/music', 'data/music/index', 'C', 'data:music:list', '2025-07-18 18:37:43', '2025-12-08 11:27:54', '音乐管理菜单');
+INSERT INTO `sys_menu` VALUES (38, '在线MV', 'mv', 34, 2, '/data/mv', 'data/mv/index', 'C', 'data:mv:list', '2025-07-25 18:33:55', '2025-12-08 11:28:05', 'MV管理菜单');
+INSERT INTO `sys_menu` VALUES (39, '在线悦单', 'list', 34, 3, '/data/list', 'data/list/index', 'C', 'data:list:list', '2025-08-01 19:16:03', '2025-12-08 11:28:16', '悦单管理菜单');
+INSERT INTO `sys_menu` VALUES (40, '公告管理', 'notice', 1, 4, '/sys/notice', 'sys/notice/index', 'C', 'system:notice:list', '2025-08-14 22:14:06', '2025-12-08 11:28:44', '公告管理菜单');
+INSERT INTO `sys_menu` VALUES (41, '音乐查询', '', 37, 1, '', '', 'F', 'data:music:query', '2025-09-13 11:24:10', '2025-12-08 11:15:56', '音乐查询按钮');
+INSERT INTO `sys_menu` VALUES (42, '音乐新增', '', 37, 2, '', '', 'F', 'data:music:add', '2025-09-13 11:25:22', '2025-12-08 11:16:39', '添加音乐按钮');
+INSERT INTO `sys_menu` VALUES (43, '音乐修改', '', 37, 3, '', '', 'F', 'data:music:edit', '2025-09-13 11:26:18', '2025-12-08 11:17:00', '修改音乐按钮');
+INSERT INTO `sys_menu` VALUES (44, '音乐删除', '', 37, 4, '', '', 'F', 'data:music:delete', '2025-09-13 11:27:22', '2025-12-08 11:17:22', '删除音乐按钮');
+INSERT INTO `sys_menu` VALUES (45, 'MV查询', '', 38, 1, '', '', 'F', 'data:mv:query', '2025-09-13 11:28:31', '2025-12-08 11:17:53', 'MV查询按钮');
+INSERT INTO `sys_menu` VALUES (46, 'MV新增', '', 38, 2, '', '', 'F', 'data:mv:add', '2025-09-13 11:29:26', '2025-12-08 11:18:08', '添加MV按钮');
+INSERT INTO `sys_menu` VALUES (47, 'MV修改', '', 38, 3, '', '', 'F', 'data:mv:edit', '2025-09-13 11:30:04', '2025-12-08 11:18:21', '修改MV按钮');
+INSERT INTO `sys_menu` VALUES (48, 'MV删除', '', 38, 4, '', '', 'F', 'data:mv:delete', '2025-09-13 11:30:52', '2025-12-08 11:18:32', '删除MV按钮');
+INSERT INTO `sys_menu` VALUES (49, '悦单查询', '', 39, 1, '', '', 'F', 'data:list:query', '2025-09-13 11:32:11', '2025-12-08 11:19:13', '悦单查询按钮');
+INSERT INTO `sys_menu` VALUES (50, '悦单新增', '', 39, 2, '', '', 'F', 'data:list:add', '2025-09-13 11:32:57', '2025-12-08 11:19:31', '添加悦单按钮');
+INSERT INTO `sys_menu` VALUES (51, '悦单修改', '', 39, 3, '', '', 'F', 'data:list:edit', '2025-09-13 11:33:33', '2025-12-08 11:19:46', '修改悦单按钮');
+INSERT INTO `sys_menu` VALUES (52, '悦单删除', '', 39, 4, '', '', 'F', 'data:list:delete', '2025-09-13 11:34:18', '2025-12-08 11:20:01', '删除悦单按钮');
+INSERT INTO `sys_menu` VALUES (53, '公告查询', '', 40, 1, '', '', 'F', 'system:notice:query', '2025-09-16 14:18:27', '2025-12-08 11:20:36', '公告查询按钮');
+INSERT INTO `sys_menu` VALUES (54, '公告新增', '', 40, 2, '', '', 'F', 'system:notice:add', '2025-09-16 14:19:27', '2025-12-08 11:20:49', '添加公告按钮');
+INSERT INTO `sys_menu` VALUES (55, '公告修改', '', 40, 3, '', '', 'F', 'system:notice:edit', '2025-09-16 14:20:16', '2025-12-08 11:21:02', '修改公告按钮');
+INSERT INTO `sys_menu` VALUES (56, '公告删除', '', 40, 4, '', '', 'F', 'system:notice:delete', '2025-09-16 14:21:06', '2025-12-08 11:21:14', '删除公告按钮');
+INSERT INTO `sys_menu` VALUES (57, '安卓应用', 'android', 1, 6, '/sys/android', 'sys/android/index', 'C', 'system:android:list', '2025-10-20 13:04:38', '2025-12-08 11:22:43', '应用管理菜单');
+INSERT INTO `sys_menu` VALUES (58, '应用查询', '', 57, 1, '', '', 'F', 'system:android:query', '2025-10-20 13:09:41', '2025-12-08 11:23:10', '应用查询按钮');
+INSERT INTO `sys_menu` VALUES (59, '应用新增', '', 57, 2, '', '', 'F', 'system:android:add', '2025-10-20 13:10:52', '2025-12-08 11:23:34', '添加应用按钮');
+INSERT INTO `sys_menu` VALUES (60, '应用修改', '', 57, 3, '', '', 'F', 'system:android:edit', '2025-10-20 13:11:48', '2025-12-08 11:23:49', '修改应用按钮');
+INSERT INTO `sys_menu` VALUES (61, '应用删除', '', 57, 4, '', '', 'F', 'system:android:delete', '2025-10-20 13:12:34', '2025-12-08 11:24:01', '删除应用按钮');
+INSERT INTO `sys_menu` VALUES (62, '反馈管理', 'feedback', 1, 5, '/sys/feedback', 'sys/feedback/index', 'C', 'system:feedback:list', '2025-10-28 11:34:19', '2025-12-08 11:24:41', '反馈管理菜单');
+INSERT INTO `sys_menu` VALUES (63, '反馈查询', '', 62, 1, '', '', 'F', 'system:feedback:query', '2025-10-28 11:37:50', '2025-12-08 11:25:09', '反馈查询按钮');
+INSERT INTO `sys_menu` VALUES (64, '反馈新增', '', 62, 2, '', '', 'F', 'system:feedback:add', '2025-10-28 11:38:38', '2025-12-08 11:25:22', '添加反馈按钮');
+INSERT INTO `sys_menu` VALUES (65, '反馈修改', '', 62, 3, '', '', 'F', 'system:feedback:edit', '2025-10-28 11:39:13', '2025-12-08 11:25:46', '修改反馈按钮');
+INSERT INTO `sys_menu` VALUES (66, '反馈删除', '', 62, 4, '', '', 'F', 'system:feedback:delete', '2025-10-28 11:40:08', '2025-12-08 11:26:00', '删除反馈按钮');
+INSERT INTO `sys_menu` VALUES (67, '系统监控', 'monitor', 0, 2, '/monitor', NULL, 'M', '', '2025-12-06 11:21:12', '2025-12-08 11:26:41', '服务管理目录');
+INSERT INTO `sys_menu` VALUES (68, '服务监控', 'server', 67, 1, '/monitor/server', 'monitor/server/index', 'C', 'monitor:server:list', '2025-12-06 11:32:19', '2025-12-08 11:26:57', '服务管理菜单');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -500,7 +504,7 @@ CREATE TABLE `sys_role_menu`  (
   `role_id` bigint NULL DEFAULT NULL COMMENT '角色ID',
   `menu_id` bigint NULL DEFAULT NULL COMMENT '菜单ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 822 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 948 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -549,56 +553,6 @@ INSERT INTO `sys_role_menu` VALUES (251, 4, 1);
 INSERT INTO `sys_role_menu` VALUES (252, 4, 2);
 INSERT INTO `sys_role_menu` VALUES (253, 4, 6);
 INSERT INTO `sys_role_menu` VALUES (254, 4, 7);
-INSERT INTO `sys_role_menu` VALUES (750, 1, 1);
-INSERT INTO `sys_role_menu` VALUES (751, 1, 3);
-INSERT INTO `sys_role_menu` VALUES (752, 1, 20);
-INSERT INTO `sys_role_menu` VALUES (753, 1, 8);
-INSERT INTO `sys_role_menu` VALUES (754, 1, 9);
-INSERT INTO `sys_role_menu` VALUES (755, 1, 10);
-INSERT INTO `sys_role_menu` VALUES (756, 1, 11);
-INSERT INTO `sys_role_menu` VALUES (757, 1, 12);
-INSERT INTO `sys_role_menu` VALUES (758, 1, 4);
-INSERT INTO `sys_role_menu` VALUES (759, 1, 21);
-INSERT INTO `sys_role_menu` VALUES (760, 1, 13);
-INSERT INTO `sys_role_menu` VALUES (761, 1, 14);
-INSERT INTO `sys_role_menu` VALUES (762, 1, 15);
-INSERT INTO `sys_role_menu` VALUES (763, 1, 16);
-INSERT INTO `sys_role_menu` VALUES (764, 1, 5);
-INSERT INTO `sys_role_menu` VALUES (765, 1, 22);
-INSERT INTO `sys_role_menu` VALUES (766, 1, 17);
-INSERT INTO `sys_role_menu` VALUES (767, 1, 18);
-INSERT INTO `sys_role_menu` VALUES (768, 1, 19);
-INSERT INTO `sys_role_menu` VALUES (769, 1, 40);
-INSERT INTO `sys_role_menu` VALUES (770, 1, 53);
-INSERT INTO `sys_role_menu` VALUES (771, 1, 54);
-INSERT INTO `sys_role_menu` VALUES (772, 1, 55);
-INSERT INTO `sys_role_menu` VALUES (773, 1, 56);
-INSERT INTO `sys_role_menu` VALUES (774, 1, 62);
-INSERT INTO `sys_role_menu` VALUES (775, 1, 63);
-INSERT INTO `sys_role_menu` VALUES (776, 1, 64);
-INSERT INTO `sys_role_menu` VALUES (777, 1, 65);
-INSERT INTO `sys_role_menu` VALUES (778, 1, 66);
-INSERT INTO `sys_role_menu` VALUES (779, 1, 57);
-INSERT INTO `sys_role_menu` VALUES (780, 1, 58);
-INSERT INTO `sys_role_menu` VALUES (781, 1, 59);
-INSERT INTO `sys_role_menu` VALUES (782, 1, 60);
-INSERT INTO `sys_role_menu` VALUES (783, 1, 61);
-INSERT INTO `sys_role_menu` VALUES (784, 1, 34);
-INSERT INTO `sys_role_menu` VALUES (785, 1, 37);
-INSERT INTO `sys_role_menu` VALUES (786, 1, 41);
-INSERT INTO `sys_role_menu` VALUES (787, 1, 42);
-INSERT INTO `sys_role_menu` VALUES (788, 1, 43);
-INSERT INTO `sys_role_menu` VALUES (789, 1, 44);
-INSERT INTO `sys_role_menu` VALUES (790, 1, 38);
-INSERT INTO `sys_role_menu` VALUES (791, 1, 45);
-INSERT INTO `sys_role_menu` VALUES (792, 1, 46);
-INSERT INTO `sys_role_menu` VALUES (793, 1, 47);
-INSERT INTO `sys_role_menu` VALUES (794, 1, 48);
-INSERT INTO `sys_role_menu` VALUES (795, 1, 39);
-INSERT INTO `sys_role_menu` VALUES (796, 1, 49);
-INSERT INTO `sys_role_menu` VALUES (797, 1, 50);
-INSERT INTO `sys_role_menu` VALUES (798, 1, 51);
-INSERT INTO `sys_role_menu` VALUES (799, 1, 52);
 INSERT INTO `sys_role_menu` VALUES (822, 2, 20);
 INSERT INTO `sys_role_menu` VALUES (823, 2, 9);
 INSERT INTO `sys_role_menu` VALUES (824, 2, 53);
@@ -622,6 +576,58 @@ INSERT INTO `sys_role_menu` VALUES (841, 2, 49);
 INSERT INTO `sys_role_menu` VALUES (842, 2, 50);
 INSERT INTO `sys_role_menu` VALUES (843, 2, 51);
 INSERT INTO `sys_role_menu` VALUES (844, 2, 52);
+INSERT INTO `sys_role_menu` VALUES (896, 1, 1);
+INSERT INTO `sys_role_menu` VALUES (897, 1, 3);
+INSERT INTO `sys_role_menu` VALUES (898, 1, 20);
+INSERT INTO `sys_role_menu` VALUES (899, 1, 8);
+INSERT INTO `sys_role_menu` VALUES (900, 1, 9);
+INSERT INTO `sys_role_menu` VALUES (901, 1, 10);
+INSERT INTO `sys_role_menu` VALUES (902, 1, 11);
+INSERT INTO `sys_role_menu` VALUES (903, 1, 12);
+INSERT INTO `sys_role_menu` VALUES (904, 1, 4);
+INSERT INTO `sys_role_menu` VALUES (905, 1, 21);
+INSERT INTO `sys_role_menu` VALUES (906, 1, 13);
+INSERT INTO `sys_role_menu` VALUES (907, 1, 14);
+INSERT INTO `sys_role_menu` VALUES (908, 1, 15);
+INSERT INTO `sys_role_menu` VALUES (909, 1, 16);
+INSERT INTO `sys_role_menu` VALUES (910, 1, 5);
+INSERT INTO `sys_role_menu` VALUES (911, 1, 22);
+INSERT INTO `sys_role_menu` VALUES (912, 1, 17);
+INSERT INTO `sys_role_menu` VALUES (913, 1, 18);
+INSERT INTO `sys_role_menu` VALUES (914, 1, 19);
+INSERT INTO `sys_role_menu` VALUES (915, 1, 40);
+INSERT INTO `sys_role_menu` VALUES (916, 1, 53);
+INSERT INTO `sys_role_menu` VALUES (917, 1, 54);
+INSERT INTO `sys_role_menu` VALUES (918, 1, 55);
+INSERT INTO `sys_role_menu` VALUES (919, 1, 56);
+INSERT INTO `sys_role_menu` VALUES (920, 1, 62);
+INSERT INTO `sys_role_menu` VALUES (921, 1, 63);
+INSERT INTO `sys_role_menu` VALUES (922, 1, 64);
+INSERT INTO `sys_role_menu` VALUES (923, 1, 65);
+INSERT INTO `sys_role_menu` VALUES (924, 1, 66);
+INSERT INTO `sys_role_menu` VALUES (925, 1, 57);
+INSERT INTO `sys_role_menu` VALUES (926, 1, 58);
+INSERT INTO `sys_role_menu` VALUES (927, 1, 59);
+INSERT INTO `sys_role_menu` VALUES (928, 1, 60);
+INSERT INTO `sys_role_menu` VALUES (929, 1, 61);
+INSERT INTO `sys_role_menu` VALUES (930, 1, 67);
+INSERT INTO `sys_role_menu` VALUES (931, 1, 68);
+INSERT INTO `sys_role_menu` VALUES (932, 1, 34);
+INSERT INTO `sys_role_menu` VALUES (933, 1, 37);
+INSERT INTO `sys_role_menu` VALUES (934, 1, 41);
+INSERT INTO `sys_role_menu` VALUES (935, 1, 42);
+INSERT INTO `sys_role_menu` VALUES (936, 1, 43);
+INSERT INTO `sys_role_menu` VALUES (937, 1, 44);
+INSERT INTO `sys_role_menu` VALUES (938, 1, 38);
+INSERT INTO `sys_role_menu` VALUES (939, 1, 45);
+INSERT INTO `sys_role_menu` VALUES (940, 1, 46);
+INSERT INTO `sys_role_menu` VALUES (941, 1, 47);
+INSERT INTO `sys_role_menu` VALUES (942, 1, 48);
+INSERT INTO `sys_role_menu` VALUES (943, 1, 39);
+INSERT INTO `sys_role_menu` VALUES (944, 1, 49);
+INSERT INTO `sys_role_menu` VALUES (945, 1, 50);
+INSERT INTO `sys_role_menu` VALUES (946, 1, 51);
+INSERT INTO `sys_role_menu` VALUES (947, 1, 52);
 
 -- ----------------------------
 -- Table structure for sys_user

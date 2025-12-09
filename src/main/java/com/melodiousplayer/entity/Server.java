@@ -124,7 +124,19 @@ public class Server {
         long iowait = ticks[TickType.IOWAIT.ordinal()] - prevTicks[TickType.IOWAIT.ordinal()];
         long idle = ticks[TickType.IDLE.ordinal()] - prevTicks[TickType.IDLE.ordinal()];
         long totalCpu = user + nice + cSys + idle + iowait + irq + softirq + steal;
-        cpu.setCpuNum(processor.getLogicalProcessorCount());
+
+        int coreCount = Runtime.getRuntime().availableProcessors();
+        String osName = System.getProperty("os.name");
+        // 判断操作系统类型
+        if (osName.contains("Linux")) {
+            // Linux系统
+            totalCpu = 0;
+            cSys = 0;
+            user = 0;
+            iowait = 0;
+            idle = 0;
+        }
+        cpu.setCpuNum(coreCount);
         cpu.setTotal(totalCpu);
         cpu.setSys(cSys);
         cpu.setUsed(user);
