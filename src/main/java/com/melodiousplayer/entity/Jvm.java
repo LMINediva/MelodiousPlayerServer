@@ -4,6 +4,7 @@ import com.melodiousplayer.util.Arith;
 import com.melodiousplayer.util.DateUtils;
 
 import java.lang.management.ManagementFactory;
+import java.util.TimeZone;
 
 /**
  * JVM相关信息
@@ -97,6 +98,9 @@ public class Jvm {
      * JDK启动时间
      */
     public String getStartTime() {
+        // 设置时区为上海（CST 即 China Standard Time）
+        TimeZone shanghaiTimeZone = TimeZone.getTimeZone("Asia/Shanghai");
+        TimeZone.setDefault(shanghaiTimeZone);
         return DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD_HH_MM_SS, DateUtils.getServerStartDate());
     }
 
@@ -104,6 +108,9 @@ public class Jvm {
      * JDK运行时间
      */
     public String getRunTime() {
+        // 设置时区为上海（CST 即 China Standard Time）
+        TimeZone shanghaiTimeZone = TimeZone.getTimeZone("Asia/Shanghai");
+        TimeZone.setDefault(shanghaiTimeZone);
         return DateUtils.timeDistance(DateUtils.getNowDate(), DateUtils.getServerStartDate());
     }
 
