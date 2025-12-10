@@ -22,9 +22,15 @@ public class ServerController {
 
     @GetMapping("/list")
     @PreAuthorize("hasAuthority('monitor:server:list')")
-    public R getInfo() throws Exception {
+    public R getInfo() {
         Server server = new Server();
-        server.copyTo();
+        String osName = System.getProperty("os.name").toLowerCase();
+        if (osName.contains("linux")) {
+            // Termux系统不兼容oshi框架
+            server.copyTermuxTo();
+        } else {
+            server.copyTo();
+        }
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("server", server);
         return R.ok(resultMap);
