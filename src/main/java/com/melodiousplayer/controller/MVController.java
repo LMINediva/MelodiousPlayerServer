@@ -425,7 +425,7 @@ public class MVController {
      * @return 页面响应entity
      */
     @PostMapping("/deleteUploadFileCache")
-    @PreAuthorize("hasAuthority('data:mv:delete')")
+    @PreAuthorize("hasAuthority('data:mv:edit')")
     public R deleteUploadFileCache(@RequestBody Mv mv) {
         if (StrUtil.isNotBlank(mv.getPosterPic())) {
             String posterImagePath = mvImagesFilePath + mv.getPosterPic();

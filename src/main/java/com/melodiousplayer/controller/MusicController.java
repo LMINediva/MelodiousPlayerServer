@@ -500,7 +500,7 @@ public class MusicController {
      * @return 页面响应entity
      */
     @PostMapping("/deleteUploadFileCache")
-    @PreAuthorize("hasAuthority('data:music:delete')")
+    @PreAuthorize("hasAuthority('data:music:edit')")
     public R deleteUploadFileCache(@RequestBody Music music) {
         if (StrUtil.isNotBlank(music.getPosterPic())) {
             String posterImagePath = musicImagesFilePath + music.getPosterPic();

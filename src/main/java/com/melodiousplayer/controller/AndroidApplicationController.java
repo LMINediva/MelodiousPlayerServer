@@ -283,7 +283,7 @@ public class AndroidApplicationController {
      * @return 页面响应entity
      */
     @PostMapping("/deleteUploadFileCache")
-    @PreAuthorize("hasAuthority('system:android:delete')")
+    @PreAuthorize("hasAuthority('system:android:edit')")
     public R deleteUploadFileCache(@RequestBody AndroidApplication androidApplication) {
         if (StrUtil.isNotBlank(androidApplication.getIcon())) {
             String iconImagePath = androidApplicationImagesFilePath + androidApplication.getIcon();

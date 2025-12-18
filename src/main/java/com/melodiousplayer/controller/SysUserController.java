@@ -1,5 +1,6 @@
 package com.melodiousplayer.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.common.constant.Constant;
@@ -60,6 +61,19 @@ public class SysUserController {
             sysUser.setPassword(bCryptPasswordEncoder.encode(sysUser.getPassword()));
             sysUserService.save(sysUser);
         } else {
+            SysUser currentSysUser = sysUserService.getById(sysUser.getId());
+            if (!currentSysUser.getAvatar().equals(sysUser.getAvatar())) {
+                String avatarImagePath = avatarImagesFilePath + sysUser.getAvatar();
+                File avatarImageFile = new File(avatarImagePath);
+                if (avatarImageFile.exists()) {
+                    boolean deleted = avatarImageFile.delete();
+                    if (!deleted) {
+                        return R.error("用户头像图片删除失败");
+                    }
+                } else {
+                    return R.error("用户头像图片不存在：" + sysUser.getAvatar());
+                }
+            }
             sysUser.setUpdateTime(new Date());
             sysUserService.updateById(sysUser);
         }
@@ -304,6 +318,30 @@ public class SysUserController {
         resultMap.put("pastYear", pastYear);
         resultMap.put("pastUserQuantity", pastUserQuantity);
         return R.ok(resultMap);
+    }
+
+    /**
+     * 删除用户上传的未保存的文件缓存
+     *
+     * @param sysUser 用户信息
+     * @return 页面响应entity
+     */
+    @PostMapping("/deleteUploadFileCache")
+    @PreAuthorize("hasAuthority('system:user:edit')")
+    public R deleteUploadFileCache(@RequestBody SysUser sysUser) {
+        if (StrUtil.isNotBlank(sysUser.getAvatar())) {
+            String avatarImagePath = avatarImagesFilePath + sysUser.getAvatar();
+            File avatarImageFile = new File(avatarImagePath);
+            if (avatarImageFile.exists()) {
+                boolean deleted = avatarImageFile.delete();
+                if (!deleted) {
+                    return R.error("用户头像图片删除失败");
+                }
+            } else {
+                return R.error("用户头像图片不存在：" + sysUser.getAvatar());
+            }
+        }
+        return R.ok();
     }
 
 }

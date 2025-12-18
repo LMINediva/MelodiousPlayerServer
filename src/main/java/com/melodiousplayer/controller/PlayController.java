@@ -316,7 +316,7 @@ public class PlayController {
      * @return 页面响应entity
      */
     @PostMapping("/deleteUploadFileCache")
-    @PreAuthorize("hasAuthority('data:list:delete')")
+    @PreAuthorize("hasAuthority('data:list:edit')")
     public R deleteUploadFileCache(@RequestBody Play play) {
         if (StrUtil.isNotBlank(play.getThumbnailPic())) {
             String thumbnailImagePath = listImagesFilePath + play.getThumbnailPic();

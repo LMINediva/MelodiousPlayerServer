@@ -207,7 +207,7 @@ public class FeedbackController {
      * @return 页面响应entity
      */
     @PostMapping("/deleteUploadFileCache")
-    @PreAuthorize("hasAuthority('system:feedback:delete')")
+    @PreAuthorize("hasAuthority('system:feedback:edit')")
     public R deleteUploadFileCache(@RequestBody Feedback feedback) {
         if (StrUtil.isNotBlank(feedback.getPicture())) {
             String imagePath = feedbackImagesFilePath + feedback.getPicture();
