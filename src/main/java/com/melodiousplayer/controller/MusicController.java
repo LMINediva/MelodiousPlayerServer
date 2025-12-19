@@ -502,7 +502,8 @@ public class MusicController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('data:music:edit')")
     public R deleteUploadFileCache(@RequestBody Music music) {
-        if (StrUtil.isNotBlank(music.getPosterPic())) {
+        Music currentMusic = musicService.getById(music.getId());
+        if (!currentMusic.getPosterPic().equals(music.getPosterPic())) {
             String posterImagePath = musicImagesFilePath + music.getPosterPic();
             File posterImageFile = new File(posterImagePath);
             if (posterImageFile.exists()) {
@@ -514,7 +515,7 @@ public class MusicController {
                 return R.error("音乐海报图片不存在：" + music.getPosterPic());
             }
         }
-        if (StrUtil.isNotBlank(music.getThumbnailPic())) {
+        if (!currentMusic.getThumbnailPic().equals(music.getThumbnailPic())) {
             String thumbnailImagePath = musicImagesFilePath + music.getThumbnailPic();
             File thumbnailImageFile = new File(thumbnailImagePath);
             if (thumbnailImageFile.exists()) {
@@ -526,7 +527,7 @@ public class MusicController {
                 return R.error("音乐缩略图图片不存在：" + music.getThumbnailPic());
             }
         }
-        if (StrUtil.isNotBlank(music.getUrl())) {
+        if (!currentMusic.getUrl().equals(music.getUrl())) {
             String audioPath = audioFilePath + music.getUrl();
             File audioFile = new File(audioPath);
             if (audioFile.exists()) {
@@ -538,16 +539,20 @@ public class MusicController {
                 return R.error("音乐文件不存在：" + music.getUrl());
             }
         }
-        if (StrUtil.isNotBlank(music.getLyric())) {
-            String lyricPath = lyricFilePath + music.getLyric();
-            File lyricFile = new File(lyricPath);
-            if (lyricFile.exists()) {
-                boolean deleted = lyricFile.delete();
-                if (!deleted) {
-                    return R.error("歌词文件删除失败");
+        if (currentMusic.getLyric() != null && music.getLyric() != null) {
+            if (!currentMusic.getLyric().isEmpty() && !music.getLyric().isEmpty()) {
+                if (!currentMusic.getLyric().equals(music.getLyric())) {
+                    String lyricPath = lyricFilePath + music.getLyric();
+                    File lyricFile = new File(lyricPath);
+                    if (lyricFile.exists()) {
+                        boolean deleted = lyricFile.delete();
+                        if (!deleted) {
+                            return R.error("歌词文件删除失败");
+                        }
+                    } else {
+                        return R.error("歌词文件不存在：" + music.getLyric());
+                    }
                 }
-            } else {
-                return R.error("歌词文件不存在：" + music.getLyric());
             }
         }
         return R.ok();
