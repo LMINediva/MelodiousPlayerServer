@@ -1,6 +1,5 @@
 package com.melodiousplayer.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
@@ -151,29 +150,41 @@ public class MusicController {
             File thumbnailImageFile = new File(thumbnailImagePath);
             File audioFile = new File(audioPath);
             File lyricFile = new File(lyricPath);
-            if (posterImageFile.exists()) {
-                boolean deleted = posterImageFile.delete();
-                if (!deleted) {
-                    return R.error("海报图片删除失败");
+            if (music.getPosterPic() != null) {
+                if (!music.getPosterPic().isEmpty()) {
+                    if (posterImageFile.exists()) {
+                        boolean deleted = posterImageFile.delete();
+                        if (!deleted) {
+                            return R.error("海报图片删除失败");
+                        }
+                    } else {
+                        return R.error("海报图片不存在：" + music.getPosterPic());
+                    }
                 }
-            } else {
-                return R.error("海报图片不存在：" + music.getPosterPic());
             }
-            if (thumbnailImageFile.exists()) {
-                boolean deleted = thumbnailImageFile.delete();
-                if (!deleted) {
-                    return R.error("缩略图图片删除失败");
+            if (music.getThumbnailPic() != null) {
+                if (!music.getThumbnailPic().isEmpty()) {
+                    if (thumbnailImageFile.exists()) {
+                        boolean deleted = thumbnailImageFile.delete();
+                        if (!deleted) {
+                            return R.error("缩略图图片删除失败");
+                        }
+                    } else {
+                        return R.error("缩略图图片不存在：" + music.getThumbnailPic());
+                    }
                 }
-            } else {
-                return R.error("缩略图图片不存在：" + music.getThumbnailPic());
             }
-            if (audioFile.exists()) {
-                boolean deleted = audioFile.delete();
-                if (!deleted) {
-                    return R.error("音乐文件删除失败");
+            if (music.getUrl() != null) {
+                if (!music.getUrl().isEmpty()) {
+                    if (audioFile.exists()) {
+                        boolean deleted = audioFile.delete();
+                        if (!deleted) {
+                            return R.error("音乐文件删除失败");
+                        }
+                    } else {
+                        return R.error("音乐文件不存在：" + music.getUrl());
+                    }
                 }
-            } else {
-                return R.error("音乐文件不存在：" + music.getUrl());
             }
             if (music.getLyric() != null) {
                 if (!music.getLyric().isEmpty()) {
@@ -303,13 +314,17 @@ public class MusicController {
         Music currentMusic = musicService.getById(music.getId());
         String posterImagePath = musicImagesFilePath + currentMusic.getPosterPic();
         File posterImageFile = new File(posterImagePath);
-        if (posterImageFile.exists()) {
-            boolean deleted = posterImageFile.delete();
-            if (!deleted) {
-                return R.error("音乐海报图片删除失败");
+        if (currentMusic.getPosterPic() != null && !currentMusic.getPosterPic().isEmpty()) {
+            if (!currentMusic.getPosterPic().equals(music.getPosterPic())) {
+                if (posterImageFile.exists()) {
+                    boolean deleted = posterImageFile.delete();
+                    if (!deleted) {
+                        return R.error("音乐海报图片删除失败");
+                    }
+                } else {
+                    return R.error("音乐海报图片不存在：" + currentMusic.getPosterPic());
+                }
             }
-        } else {
-            return R.error("音乐海报图片不存在：" + currentMusic.getPosterPic());
         }
         currentMusic.setPosterPic(music.getPosterPic());
         musicService.updateById(currentMusic);
@@ -328,13 +343,17 @@ public class MusicController {
         Music currentMusic = musicService.getById(music.getId());
         String thumbnailImagePath = musicImagesFilePath + currentMusic.getThumbnailPic();
         File thumbnailImageFile = new File(thumbnailImagePath);
-        if (thumbnailImageFile.exists()) {
-            boolean deleted = thumbnailImageFile.delete();
-            if (!deleted) {
-                return R.error("音乐缩略图图片删除失败");
+        if (currentMusic.getThumbnailPic() != null && !currentMusic.getThumbnailPic().isEmpty()) {
+            if (!currentMusic.getThumbnailPic().equals(music.getThumbnailPic())) {
+                if (thumbnailImageFile.exists()) {
+                    boolean deleted = thumbnailImageFile.delete();
+                    if (!deleted) {
+                        return R.error("音乐缩略图图片删除失败");
+                    }
+                } else {
+                    return R.error("音乐缩略图图片不存在：" + currentMusic.getThumbnailPic());
+                }
             }
-        } else {
-            return R.error("音乐缩略图图片不存在：" + currentMusic.getThumbnailPic());
         }
         currentMusic.setThumbnailPic(music.getThumbnailPic());
         musicService.updateById(currentMusic);
@@ -353,13 +372,17 @@ public class MusicController {
         Music currentMusic = musicService.getById(music.getId());
         String lyricPath = lyricFilePath + currentMusic.getLyric();
         File lyricFile = new File(lyricPath);
-        if (lyricFile.exists()) {
-            boolean deleted = lyricFile.delete();
-            if (!deleted) {
-                return R.error("歌词文件删除失败");
+        if (currentMusic.getLyric() != null && !currentMusic.getLyric().isEmpty()) {
+            if (!currentMusic.getLyric().equals(music.getLyric())) {
+                if (lyricFile.exists()) {
+                    boolean deleted = lyricFile.delete();
+                    if (!deleted) {
+                        return R.error("歌词文件删除失败");
+                    }
+                } else {
+                    return R.error("歌词文件不存在：" + currentMusic.getLyric());
+                }
             }
-        } else {
-            return R.error("歌词文件不存在：" + currentMusic.getLyric());
         }
         currentMusic.setLyric(music.getLyric());
         musicService.updateById(currentMusic);
@@ -378,13 +401,17 @@ public class MusicController {
         Music currentMusic = musicService.getById(music.getId());
         String audioPath = audioFilePath + currentMusic.getUrl();
         File audioFile = new File(audioPath);
-        if (audioFile.exists()) {
-            boolean deleted = audioFile.delete();
-            if (!deleted) {
-                return R.error("音乐文件删除失败");
+        if (currentMusic.getUrl() != null && !currentMusic.getUrl().isEmpty()) {
+            if (!currentMusic.getUrl().equals(music.getUrl())) {
+                if (audioFile.exists()) {
+                    boolean deleted = audioFile.delete();
+                    if (!deleted) {
+                        return R.error("音乐文件删除失败");
+                    }
+                } else {
+                    return R.error("音乐文件不存在：" + currentMusic.getUrl());
+                }
             }
-        } else {
-            return R.error("音乐文件不存在：" + currentMusic.getUrl());
         }
         currentMusic.setUrl(music.getUrl());
         currentMusic.setHdUrl(music.getUrl());
@@ -430,47 +457,59 @@ public class MusicController {
             musicUserService.save(musicUser);
         } else {
             Music currentMusic = musicService.getById(music.getId());
-            if (!currentMusic.getPosterPic().equals(music.getPosterPic())) {
-                String posterImagePath = musicImagesFilePath + currentMusic.getPosterPic();
-                File posterImageFile = new File(posterImagePath);
-                if (posterImageFile.exists()) {
-                    boolean deleted = posterImageFile.delete();
-                    if (!deleted) {
-                        return R.error("音乐海报图片删除失败");
+            if (currentMusic.getPosterPic() != null) {
+                if (!currentMusic.getPosterPic().isEmpty()) {
+                    if (!currentMusic.getPosterPic().equals(music.getPosterPic())) {
+                        String posterImagePath = musicImagesFilePath + currentMusic.getPosterPic();
+                        File posterImageFile = new File(posterImagePath);
+                        if (posterImageFile.exists()) {
+                            boolean deleted = posterImageFile.delete();
+                            if (!deleted) {
+                                return R.error("音乐海报图片删除失败");
+                            }
+                        } else {
+                            return R.error("音乐海报图片不存在：" + currentMusic.getPosterPic());
+                        }
                     }
-                } else {
-                    return R.error("音乐海报图片不存在：" + currentMusic.getPosterPic());
                 }
             }
-            if (!currentMusic.getThumbnailPic().equals(music.getThumbnailPic())) {
-                String thumbnailImagePath = musicImagesFilePath + currentMusic.getThumbnailPic();
-                File thumbnailImageFile = new File(thumbnailImagePath);
-                if (thumbnailImageFile.exists()) {
-                    boolean deleted = thumbnailImageFile.delete();
-                    if (!deleted) {
-                        return R.error("音乐缩略图图片删除失败");
+            if (currentMusic.getThumbnailPic() != null) {
+                if (!currentMusic.getThumbnailPic().isEmpty()) {
+                    if (!currentMusic.getThumbnailPic().equals(music.getThumbnailPic())) {
+                        String thumbnailImagePath = musicImagesFilePath + currentMusic.getThumbnailPic();
+                        File thumbnailImageFile = new File(thumbnailImagePath);
+                        if (thumbnailImageFile.exists()) {
+                            boolean deleted = thumbnailImageFile.delete();
+                            if (!deleted) {
+                                return R.error("音乐缩略图图片删除失败");
+                            }
+                        } else {
+                            return R.error("音乐缩略图图片不存在：" + currentMusic.getThumbnailPic());
+                        }
                     }
-                } else {
-                    return R.error("音乐缩略图图片不存在：" + currentMusic.getThumbnailPic());
                 }
             }
-            if (!currentMusic.getUrl().equals(music.getUrl())) {
-                String audioPath = audioFilePath + currentMusic.getUrl();
-                File audioFile = new File(audioPath);
-                if (audioFile.exists()) {
-                    boolean deleted = audioFile.delete();
-                    if (!deleted) {
-                        return R.error("音乐文件删除失败");
+            if (currentMusic.getUrl() != null) {
+                if (!currentMusic.getUrl().isEmpty()) {
+                    if (!currentMusic.getUrl().equals(music.getUrl())) {
+                        String audioPath = audioFilePath + currentMusic.getUrl();
+                        File audioFile = new File(audioPath);
+                        if (audioFile.exists()) {
+                            boolean deleted = audioFile.delete();
+                            if (!deleted) {
+                                return R.error("音乐文件删除失败");
+                            }
+                        } else {
+                            return R.error("音乐文件不存在：" + currentMusic.getUrl());
+                        }
+                        music.setUrl(music.getUrl());
+                        music.setHdUrl(music.getUrl());
+                        music.setUhdUrl(music.getUrl());
+                        music.setMusicSize(music.getMusicSize());
+                        music.setHdMusicSize(music.getMusicSize());
+                        music.setUhdMusicSize(music.getMusicSize());
                     }
-                } else {
-                    return R.error("音乐文件不存在：" + currentMusic.getUrl());
                 }
-                music.setUrl(music.getUrl());
-                music.setHdUrl(music.getUrl());
-                music.setUhdUrl(music.getUrl());
-                music.setMusicSize(music.getMusicSize());
-                music.setHdMusicSize(music.getMusicSize());
-                music.setUhdMusicSize(music.getMusicSize());
             }
             if (currentMusic.getLyric() != null) {
                 if (!currentMusic.getLyric().isEmpty()) {
@@ -502,46 +541,51 @@ public class MusicController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('data:music:edit')")
     public R deleteUploadFileCache(@RequestBody Music music) {
-        Music currentMusic = musicService.getById(music.getId());
-        if (!currentMusic.getPosterPic().equals(music.getPosterPic())) {
-            String posterImagePath = musicImagesFilePath + music.getPosterPic();
-            File posterImageFile = new File(posterImagePath);
-            if (posterImageFile.exists()) {
-                boolean deleted = posterImageFile.delete();
-                if (!deleted) {
-                    return R.error("音乐海报图片删除失败");
+        if (music.getId() == null || music.getId() == -1) {
+            if (music.getPosterPic() != null) {
+                if (!music.getPosterPic().isEmpty()) {
+                    String posterImagePath = musicImagesFilePath + music.getPosterPic();
+                    File posterImageFile = new File(posterImagePath);
+                    if (posterImageFile.exists()) {
+                        boolean deleted = posterImageFile.delete();
+                        if (!deleted) {
+                            return R.error("音乐海报图片删除失败");
+                        }
+                    } else {
+                        return R.error("音乐海报图片不存在：" + music.getPosterPic());
+                    }
                 }
-            } else {
-                return R.error("音乐海报图片不存在：" + music.getPosterPic());
             }
-        }
-        if (!currentMusic.getThumbnailPic().equals(music.getThumbnailPic())) {
-            String thumbnailImagePath = musicImagesFilePath + music.getThumbnailPic();
-            File thumbnailImageFile = new File(thumbnailImagePath);
-            if (thumbnailImageFile.exists()) {
-                boolean deleted = thumbnailImageFile.delete();
-                if (!deleted) {
-                    return R.error("音乐缩略图图片删除失败");
+            if (music.getThumbnailPic() != null) {
+                if (!music.getThumbnailPic().isEmpty()) {
+                    String thumbnailImagePath = musicImagesFilePath + music.getThumbnailPic();
+                    File thumbnailImageFile = new File(thumbnailImagePath);
+                    if (thumbnailImageFile.exists()) {
+                        boolean deleted = thumbnailImageFile.delete();
+                        if (!deleted) {
+                            return R.error("音乐缩略图图片删除失败");
+                        }
+                    } else {
+                        return R.error("音乐缩略图图片不存在：" + music.getThumbnailPic());
+                    }
                 }
-            } else {
-                return R.error("音乐缩略图图片不存在：" + music.getThumbnailPic());
             }
-        }
-        if (!currentMusic.getUrl().equals(music.getUrl())) {
-            String audioPath = audioFilePath + music.getUrl();
-            File audioFile = new File(audioPath);
-            if (audioFile.exists()) {
-                boolean deleted = audioFile.delete();
-                if (!deleted) {
-                    return R.error("音乐文件删除失败");
+            if (music.getUrl() != null) {
+                if (!music.getUrl().isEmpty()) {
+                    String audioPath = audioFilePath + music.getUrl();
+                    File audioFile = new File(audioPath);
+                    if (audioFile.exists()) {
+                        boolean deleted = audioFile.delete();
+                        if (!deleted) {
+                            return R.error("音乐文件删除失败");
+                        }
+                    } else {
+                        return R.error("音乐文件不存在：" + music.getUrl());
+                    }
                 }
-            } else {
-                return R.error("音乐文件不存在：" + music.getUrl());
             }
-        }
-        if (currentMusic.getLyric() != null && music.getLyric() != null) {
-            if (!currentMusic.getLyric().isEmpty() && !music.getLyric().isEmpty()) {
-                if (!currentMusic.getLyric().equals(music.getLyric())) {
+            if (music.getLyric() != null) {
+                if (!music.getLyric().isEmpty()) {
                     String lyricPath = lyricFilePath + music.getLyric();
                     File lyricFile = new File(lyricPath);
                     if (lyricFile.exists()) {
@@ -551,6 +595,72 @@ public class MusicController {
                         }
                     } else {
                         return R.error("歌词文件不存在：" + music.getLyric());
+                    }
+                }
+            }
+        } else {
+            Music currentMusic = musicService.getById(music.getId());
+            if (music.getPosterPic() != null) {
+                if (!music.getPosterPic().isEmpty()) {
+                    if (!currentMusic.getPosterPic().equals(music.getPosterPic())) {
+                        String posterImagePath = musicImagesFilePath + music.getPosterPic();
+                        File posterImageFile = new File(posterImagePath);
+                        if (posterImageFile.exists()) {
+                            boolean deleted = posterImageFile.delete();
+                            if (!deleted) {
+                                return R.error("音乐海报图片删除失败");
+                            }
+                        } else {
+                            return R.error("音乐海报图片不存在：" + music.getPosterPic());
+                        }
+                    }
+                }
+            }
+            if (music.getThumbnailPic() != null) {
+                if (!music.getThumbnailPic().isEmpty()) {
+                    if (!currentMusic.getThumbnailPic().equals(music.getThumbnailPic())) {
+                        String thumbnailImagePath = musicImagesFilePath + music.getThumbnailPic();
+                        File thumbnailImageFile = new File(thumbnailImagePath);
+                        if (thumbnailImageFile.exists()) {
+                            boolean deleted = thumbnailImageFile.delete();
+                            if (!deleted) {
+                                return R.error("音乐缩略图图片删除失败");
+                            }
+                        } else {
+                            return R.error("音乐缩略图图片不存在：" + music.getThumbnailPic());
+                        }
+                    }
+                }
+            }
+            if (music.getUrl() != null) {
+                if (!music.getUrl().isEmpty()) {
+                    if (!currentMusic.getUrl().equals(music.getUrl())) {
+                        String audioPath = audioFilePath + music.getUrl();
+                        File audioFile = new File(audioPath);
+                        if (audioFile.exists()) {
+                            boolean deleted = audioFile.delete();
+                            if (!deleted) {
+                                return R.error("音乐文件删除失败");
+                            }
+                        } else {
+                            return R.error("音乐文件不存在：" + music.getUrl());
+                        }
+                    }
+                }
+            }
+            if (music.getLyric() != null) {
+                if (!music.getLyric().isEmpty()) {
+                    if (!currentMusic.getLyric().equals(music.getLyric())) {
+                        String lyricPath = lyricFilePath + music.getLyric();
+                        File lyricFile = new File(lyricPath);
+                        if (lyricFile.exists()) {
+                            boolean deleted = lyricFile.delete();
+                            if (!deleted) {
+                                return R.error("歌词文件删除失败");
+                            }
+                        } else {
+                            return R.error("歌词文件不存在：" + music.getLyric());
+                        }
                     }
                 }
             }

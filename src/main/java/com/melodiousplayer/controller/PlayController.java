@@ -1,6 +1,5 @@
 package com.melodiousplayer.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
@@ -152,13 +151,17 @@ public class PlayController {
             Play play = playService.getById(id);
             String thumbnailImagePath = listImagesFilePath + play.getThumbnailPic();
             File thumbnailImageFile = new File(thumbnailImagePath);
-            if (thumbnailImageFile.exists()) {
-                boolean deleted = thumbnailImageFile.delete();
-                if (!deleted) {
-                    return R.error("缩略图图片删除失败");
+            if (play.getThumbnailPic() != null) {
+                if (!play.getThumbnailPic().isEmpty()) {
+                    if (thumbnailImageFile.exists()) {
+                        boolean deleted = thumbnailImageFile.delete();
+                        if (!deleted) {
+                            return R.error("缩略图图片删除失败");
+                        }
+                    } else {
+                        return R.error("缩略图图片不存在：" + play.getThumbnailPic());
+                    }
                 }
-            } else {
-                return R.error("缩略图图片不存在：" + play.getThumbnailPic());
             }
         }
         playService.removeByIds(Arrays.asList(ids));
@@ -243,13 +246,17 @@ public class PlayController {
         Play currentPlay = playService.getById(play.getId());
         String thumbnailImagePath = listImagesFilePath + currentPlay.getThumbnailPic();
         File thumbnailImageFile = new File(thumbnailImagePath);
-        if (thumbnailImageFile.exists()) {
-            boolean deleted = thumbnailImageFile.delete();
-            if (!deleted) {
-                return R.error("悦单缩略图图片删除失败");
+        if (currentPlay.getThumbnailPic() != null && !currentPlay.getThumbnailPic().isEmpty()) {
+            if (!currentPlay.getThumbnailPic().equals(play.getThumbnailPic())) {
+                if (thumbnailImageFile.exists()) {
+                    boolean deleted = thumbnailImageFile.delete();
+                    if (!deleted) {
+                        return R.error("悦单缩略图图片删除失败");
+                    }
+                } else {
+                    return R.error("悦单缩略图图片不存在：" + currentPlay.getThumbnailPic());
+                }
             }
-        } else {
-            return R.error("悦单缩略图图片不存在：" + currentPlay.getThumbnailPic());
         }
         currentPlay.setThumbnailPic(play.getThumbnailPic());
         playService.updateById(currentPlay);
@@ -282,16 +289,20 @@ public class PlayController {
             playMvService.saveBatch(playMvList);
         } else {
             Play currentPlay = playService.getById(play.getId());
-            if (!currentPlay.getThumbnailPic().equals(play.getThumbnailPic())) {
-                String thumbnailImagePath = listImagesFilePath + currentPlay.getThumbnailPic();
-                File thumbnailImageFile = new File(thumbnailImagePath);
-                if (thumbnailImageFile.exists()) {
-                    boolean deleted = thumbnailImageFile.delete();
-                    if (!deleted) {
-                        return R.error("悦单缩略图图片删除失败");
+            if (currentPlay.getThumbnailPic() != null) {
+                if (!currentPlay.getThumbnailPic().isEmpty()) {
+                    if (!currentPlay.getThumbnailPic().equals(play.getThumbnailPic())) {
+                        String thumbnailImagePath = listImagesFilePath + currentPlay.getThumbnailPic();
+                        File thumbnailImageFile = new File(thumbnailImagePath);
+                        if (thumbnailImageFile.exists()) {
+                            boolean deleted = thumbnailImageFile.delete();
+                            if (!deleted) {
+                                return R.error("悦单缩略图图片删除失败");
+                            }
+                        } else {
+                            return R.error("悦单缩略图图片不存在：" + currentPlay.getThumbnailPic());
+                        }
                     }
-                } else {
-                    return R.error("悦单缩略图图片不存在：" + currentPlay.getThumbnailPic());
                 }
             }
             play.setUpdateTime(DateUtils.formatString(DateUtils.getCurrentDate(), "yyyy-MM-dd HH:mm:ss"));
@@ -318,16 +329,38 @@ public class PlayController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('data:list:edit')")
     public R deleteUploadFileCache(@RequestBody Play play) {
-        if (StrUtil.isNotBlank(play.getThumbnailPic())) {
-            String thumbnailImagePath = listImagesFilePath + play.getThumbnailPic();
-            File thumbnailImageFile = new File(thumbnailImagePath);
-            if (thumbnailImageFile.exists()) {
-                boolean deleted = thumbnailImageFile.delete();
-                if (!deleted) {
-                    return R.error("悦单缩略图图片删除失败");
+        if (play.getId() == null || play.getId() == -1) {
+            if (play.getThumbnailPic() != null) {
+                if (!play.getThumbnailPic().isEmpty()) {
+                    String thumbnailImagePath = listImagesFilePath + play.getThumbnailPic();
+                    File thumbnailImageFile = new File(thumbnailImagePath);
+                    if (thumbnailImageFile.exists()) {
+                        boolean deleted = thumbnailImageFile.delete();
+                        if (!deleted) {
+                            return R.error("悦单缩略图图片删除失败");
+                        }
+                    } else {
+                        return R.error("悦单缩略图图片不存在：" + play.getThumbnailPic());
+                    }
                 }
-            } else {
-                return R.error("悦单缩略图图片不存在：" + play.getThumbnailPic());
+            }
+        } else {
+            Play currentPlay = playService.getById(play.getId());
+            if (play.getThumbnailPic() != null) {
+                if (!play.getThumbnailPic().isEmpty()) {
+                    if (!currentPlay.getThumbnailPic().equals(play.getThumbnailPic())) {
+                        String thumbnailImagePath = listImagesFilePath + play.getThumbnailPic();
+                        File thumbnailImageFile = new File(thumbnailImagePath);
+                        if (thumbnailImageFile.exists()) {
+                            boolean deleted = thumbnailImageFile.delete();
+                            if (!deleted) {
+                                return R.error("悦单缩略图图片删除失败");
+                            }
+                        } else {
+                            return R.error("悦单缩略图图片不存在：" + play.getThumbnailPic());
+                        }
+                    }
+                }
             }
         }
         return R.ok();
