@@ -79,6 +79,9 @@ public class FeedbackController {
     @PreAuthorize("hasAuthority('system:feedback:query')")
     public R findById(@PathVariable(value = "id") Integer id) {
         Feedback feedback = feedbackService.getById(id);
+        SysUser sysUser = sysUserService.getOne(new QueryWrapper<SysUser>().inSql(
+                "id", "select user_id from feedback_user where feedback_id = " + feedback.getId()));
+        feedback.setSysUser(sysUser);
         Map<String, Object> map = new HashMap<>();
         map.put("feedback", feedback);
         return R.ok(map);
