@@ -1,6 +1,5 @@
 package com.melodiousplayer.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
@@ -101,21 +100,29 @@ public class AndroidApplicationController {
             String androidApplicationPath = androidApplicationFilePath + androidApplication.getUrl();
             File androidApplicationIconFile = new File(androidApplicationIconPath);
             File androidApplicationFile = new File(androidApplicationPath);
-            if (androidApplicationIconFile.exists()) {
-                boolean deleted = androidApplicationIconFile.delete();
-                if (!deleted) {
-                    return R.error("安卓应用图标删除失败");
+            if (androidApplication.getIcon() != null && !androidApplication.getIcon().isEmpty()) {
+                if (!androidApplication.getIcon().equals("default.png")) {
+                    if (androidApplicationIconFile.exists()) {
+                        boolean deleted = androidApplicationIconFile.delete();
+                        if (!deleted) {
+                            return R.error("安卓应用图标删除失败");
+                        }
+                    } else {
+                        return R.error("安卓应用图标不存在：" + androidApplication.getIcon());
+                    }
                 }
-            } else {
-                return R.error("安卓应用图标不存在：" + androidApplication.getIcon());
             }
-            if (androidApplicationFile.exists()) {
-                boolean deleted = androidApplicationFile.delete();
-                if (!deleted) {
-                    return R.error("安卓应用文件删除失败");
+            if (androidApplication.getUrl() != null) {
+                if (!androidApplication.getUrl().isEmpty()) {
+                    if (androidApplicationFile.exists()) {
+                        boolean deleted = androidApplicationFile.delete();
+                        if (!deleted) {
+                            return R.error("安卓应用文件删除失败");
+                        }
+                    } else {
+                        return R.error("安卓应用文件不存在：" + androidApplication.getUrl());
+                    }
                 }
-            } else {
-                return R.error("安卓应用文件不存在：" + androidApplication.getUrl());
             }
         }
         androidApplicationService.removeByIds(Arrays.asList(ids));
@@ -191,13 +198,19 @@ public class AndroidApplicationController {
                 androidApplicationService.getById(androidApplication.getId());
         String iconImagePath = androidApplicationImagesFilePath + currentAndroidApplication.getIcon();
         File iconImageFile = new File(iconImagePath);
-        if (iconImageFile.exists()) {
-            boolean deleted = iconImageFile.delete();
-            if (!deleted) {
-                return R.error("安卓应用图标图片删除失败");
+        if (androidApplication.getIcon() != null && !androidApplication.getIcon().isEmpty()) {
+            if (!androidApplication.getIcon().equals("default.png")) {
+                if (!currentAndroidApplication.getIcon().equals(androidApplication.getIcon())) {
+                    if (iconImageFile.exists()) {
+                        boolean deleted = iconImageFile.delete();
+                        if (!deleted) {
+                            return R.error("安卓应用图标图片删除失败");
+                        }
+                    } else {
+                        return R.error("安卓应用图标图片不存在：" + currentAndroidApplication.getIcon());
+                    }
+                }
             }
-        } else {
-            return R.error("安卓应用图标图片不存在：" + currentAndroidApplication.getIcon());
         }
         currentAndroidApplication.setIcon(androidApplication.getIcon());
         androidApplicationService.updateById(currentAndroidApplication);
@@ -217,13 +230,17 @@ public class AndroidApplicationController {
                 androidApplicationService.getById(androidApplication.getId());
         String androidApplicationPath = androidApplicationFilePath + currentAndroidApplication.getUrl();
         File androidApplicationFile = new File(androidApplicationPath);
-        if (androidApplicationFile.exists()) {
-            boolean deleted = androidApplicationFile.delete();
-            if (!deleted) {
-                return R.error("安卓应用文件删除失败");
+        if (androidApplication.getUrl() != null && !androidApplication.getUrl().isEmpty()) {
+            if (!currentAndroidApplication.getUrl().equals(androidApplication.getUrl())) {
+                if (androidApplicationFile.exists()) {
+                    boolean deleted = androidApplicationFile.delete();
+                    if (!deleted) {
+                        return R.error("安卓应用文件删除失败");
+                    }
+                } else {
+                    return R.error("安卓应用文件不存在：" + currentAndroidApplication.getUrl());
+                }
             }
-        } else {
-            return R.error("安卓应用文件不存在：" + currentAndroidApplication.getUrl());
         }
         currentAndroidApplication.setUrl(androidApplication.getUrl());
         currentAndroidApplication.setSize(androidApplication.getSize());
@@ -285,28 +302,69 @@ public class AndroidApplicationController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('system:android:edit')")
     public R deleteUploadFileCache(@RequestBody AndroidApplication androidApplication) {
-        if (StrUtil.isNotBlank(androidApplication.getIcon())) {
-            String iconImagePath = androidApplicationImagesFilePath + androidApplication.getIcon();
-            File iconImageFile = new File(iconImagePath);
-            if (iconImageFile.exists()) {
-                boolean deleted = iconImageFile.delete();
-                if (!deleted) {
-                    return R.error("安卓应用图标图片删除失败");
+        if (androidApplication.getId() == null || androidApplication.getId() == -1) {
+            if (androidApplication.getIcon() != null && !androidApplication.getIcon().isEmpty()) {
+                if (!androidApplication.getIcon().equals("default.png")) {
+                    String iconImagePath = androidApplicationImagesFilePath + androidApplication.getIcon();
+                    File iconImageFile = new File(iconImagePath);
+                    if (iconImageFile.exists()) {
+                        boolean deleted = iconImageFile.delete();
+                        if (!deleted) {
+                            return R.error("安卓应用图标图片删除失败");
+                        }
+                    } else {
+                        return R.error("安卓应用图标图片不存在：" + androidApplication.getIcon());
+                    }
                 }
-            } else {
-                return R.error("安卓应用图标图片不存在：" + androidApplication.getIcon());
             }
-        }
-        if (StrUtil.isNotBlank(androidApplication.getUrl())) {
-            String androidApplicationPath = androidApplicationFilePath + androidApplication.getUrl();
-            File androidApplicationFile = new File(androidApplicationPath);
-            if (androidApplicationFile.exists()) {
-                boolean deleted = androidApplicationFile.delete();
-                if (!deleted) {
-                    return R.error("安卓应用文件删除失败");
+            if (androidApplication.getUrl() != null) {
+                if (!androidApplication.getUrl().isEmpty()) {
+                    String androidApplicationPath = androidApplicationFilePath + androidApplication.getUrl();
+                    File androidApplicationFile = new File(androidApplicationPath);
+                    if (androidApplicationFile.exists()) {
+                        boolean deleted = androidApplicationFile.delete();
+                        if (!deleted) {
+                            return R.error("安卓应用文件删除失败");
+                        }
+                    } else {
+                        return R.error("安卓应用文件不存在：" + androidApplication.getUrl());
+                    }
                 }
-            } else {
-                return R.error("安卓应用文件不存在：" + androidApplication.getUrl());
+            }
+        } else {
+            AndroidApplication currentAndroidApplication =
+                    androidApplicationService.getById(androidApplication.getId());
+            if (androidApplication.getIcon() != null && !androidApplication.getIcon().isEmpty()) {
+                if (!androidApplication.getIcon().equals("default.png")) {
+                    if (!currentAndroidApplication.getIcon().equals(androidApplication.getIcon())) {
+                        String iconImagePath = androidApplicationImagesFilePath + androidApplication.getIcon();
+                        File iconImageFile = new File(iconImagePath);
+                        if (iconImageFile.exists()) {
+                            boolean deleted = iconImageFile.delete();
+                            if (!deleted) {
+                                return R.error("安卓应用图标图片删除失败");
+                            }
+                        } else {
+                            return R.error("安卓应用图标图片不存在：" + androidApplication.getIcon());
+                        }
+                    }
+                }
+            }
+            if (androidApplication.getUrl() != null) {
+                if (!androidApplication.getUrl().isEmpty()) {
+                    if (!currentAndroidApplication.getUrl().equals(androidApplication.getUrl())) {
+                        String androidApplicationPath = androidApplicationFilePath + androidApplication.getUrl();
+                        File androidApplicationFile = new File(androidApplicationPath);
+                        if (androidApplicationFile.exists()) {
+                            boolean deleted = androidApplicationFile.delete();
+                            if (!deleted) {
+                                return R.error("安卓应用文件删除失败");
+                            }
+                        } else {
+                            return R.error("安卓应用文件不存在：" + androidApplication.getUrl());
+                        }
+                    }
+                }
             }
         }
         return R.ok();

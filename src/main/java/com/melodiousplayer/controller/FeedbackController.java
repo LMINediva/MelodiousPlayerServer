@@ -1,6 +1,5 @@
 package com.melodiousplayer.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.entity.*;
@@ -101,13 +100,17 @@ public class FeedbackController {
             Feedback feedback = feedbackService.getById(id);
             String feedbackImagePath = feedbackImagesFilePath + feedback.getPicture();
             File feedbackImageFile = new File(feedbackImagePath);
-            if (feedbackImageFile.exists()) {
-                boolean deleted = feedbackImageFile.delete();
-                if (!deleted) {
-                    return R.error("用户反馈图片删除失败");
+            if (feedback.getPicture() != null) {
+                if (!feedback.getPicture().isEmpty()) {
+                    if (feedbackImageFile.exists()) {
+                        boolean deleted = feedbackImageFile.delete();
+                        if (!deleted) {
+                            return R.error("用户反馈图片删除失败");
+                        }
+                    } else {
+                        return R.error("用户反馈图片不存在：" + feedback.getPicture());
+                    }
                 }
-            } else {
-                return R.error("用户反馈图片不存在：" + feedback.getPicture());
             }
         }
         feedbackService.removeByIds(Arrays.asList(ids));
@@ -155,13 +158,17 @@ public class FeedbackController {
         Feedback currentFeedback = feedbackService.getById(feedback.getId());
         String imagePath = feedbackImagesFilePath + currentFeedback.getPicture();
         File imageFile = new File(imagePath);
-        if (imageFile.exists()) {
-            boolean deleted = imageFile.delete();
-            if (!deleted) {
-                return R.error("用户反馈图片删除失败");
+        if (currentFeedback.getPicture() != null && !currentFeedback.getPicture().isEmpty()) {
+            if (!currentFeedback.getPicture().equals(feedback.getPicture())) {
+                if (imageFile.exists()) {
+                    boolean deleted = imageFile.delete();
+                    if (!deleted) {
+                        return R.error("用户反馈图片删除失败");
+                    }
+                } else {
+                    return R.error("用户反馈图片不存在：" + currentFeedback.getPicture());
+                }
             }
-        } else {
-            return R.error("用户反馈图片不存在：" + currentFeedback.getPicture());
         }
         currentFeedback.setPicture(feedback.getPicture());
         feedbackService.updateById(currentFeedback);
@@ -186,16 +193,20 @@ public class FeedbackController {
             feedbackUserService.save(feedbackUser);
         } else {
             Feedback currentFeedback = feedbackService.getById(feedback.getId());
-            if (!currentFeedback.getPicture().equals(feedback.getPicture())) {
-                String imagePath = feedbackImagesFilePath + currentFeedback.getPicture();
-                File imageFile = new File(imagePath);
-                if (imageFile.exists()) {
-                    boolean deleted = imageFile.delete();
-                    if (!deleted) {
-                        return R.error("用户反馈图片删除失败");
+            if (currentFeedback.getPicture() != null) {
+                if (!currentFeedback.getPicture().isEmpty()) {
+                    if (!currentFeedback.getPicture().equals(feedback.getPicture())) {
+                        String imagePath = feedbackImagesFilePath + currentFeedback.getPicture();
+                        File imageFile = new File(imagePath);
+                        if (imageFile.exists()) {
+                            boolean deleted = imageFile.delete();
+                            if (!deleted) {
+                                return R.error("用户反馈图片删除失败");
+                            }
+                        } else {
+                            return R.error("用户反馈图片不存在：" + currentFeedback.getPicture());
+                        }
                     }
-                } else {
-                    return R.error("用户反馈图片不存在：" + currentFeedback.getPicture());
                 }
             }
             feedbackService.updateById(feedback);
@@ -212,16 +223,38 @@ public class FeedbackController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('system:feedback:edit')")
     public R deleteUploadFileCache(@RequestBody Feedback feedback) {
-        if (StrUtil.isNotBlank(feedback.getPicture())) {
-            String imagePath = feedbackImagesFilePath + feedback.getPicture();
-            File imageFile = new File(imagePath);
-            if (imageFile.exists()) {
-                boolean deleted = imageFile.delete();
-                if (!deleted) {
-                    return R.error("用户反馈图片删除失败");
+        if (feedback.getId() == null || feedback.getId() == -1) {
+            if (feedback.getPicture() != null) {
+                if (!feedback.getPicture().isEmpty()) {
+                    String imagePath = feedbackImagesFilePath + feedback.getPicture();
+                    File imageFile = new File(imagePath);
+                    if (imageFile.exists()) {
+                        boolean deleted = imageFile.delete();
+                        if (!deleted) {
+                            return R.error("用户反馈图片删除失败");
+                        }
+                    } else {
+                        return R.error("用户反馈图片不存在：" + feedback.getPicture());
+                    }
                 }
-            } else {
-                return R.error("用户反馈图片不存在：" + feedback.getPicture());
+            }
+        } else {
+            Feedback currentFeedback = feedbackService.getById(feedback.getId());
+            if (currentFeedback.getPicture() != null) {
+                if (!currentFeedback.getPicture().isEmpty()) {
+                    if (!currentFeedback.getPicture().equals(feedback.getPicture())) {
+                        String imagePath = feedbackImagesFilePath + feedback.getPicture();
+                        File imageFile = new File(imagePath);
+                        if (imageFile.exists()) {
+                            boolean deleted = imageFile.delete();
+                            if (!deleted) {
+                                return R.error("用户反馈图片删除失败");
+                            }
+                        } else {
+                            return R.error("用户反馈图片不存在：" + feedback.getPicture());
+                        }
+                    }
+                }
             }
         }
         return R.ok();
