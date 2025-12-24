@@ -199,7 +199,7 @@ public class AndroidApplicationController {
         String iconImagePath = androidApplicationImagesFilePath + currentAndroidApplication.getIcon();
         File iconImageFile = new File(iconImagePath);
         if (androidApplication.getIcon() != null && !androidApplication.getIcon().isEmpty()) {
-            if (!androidApplication.getIcon().equals("default.png")) {
+            if (!currentAndroidApplication.getIcon().equals("default.png")) {
                 if (!currentAndroidApplication.getIcon().equals(androidApplication.getIcon())) {
                     if (iconImageFile.exists()) {
                         boolean deleted = iconImageFile.delete();
@@ -262,31 +262,37 @@ public class AndroidApplicationController {
         } else {
             AndroidApplication currentAndroidApplication =
                     androidApplicationService.getById(androidApplication.getId());
-            if (!currentAndroidApplication.getIcon().equals(androidApplication.getIcon())) {
-                String iconImagePath = androidApplicationImagesFilePath + currentAndroidApplication.getIcon();
-                File iconImageFile = new File(iconImagePath);
-                if (iconImageFile.exists()) {
-                    boolean deleted = iconImageFile.delete();
-                    if (!deleted) {
-                        return R.error("安卓应用图标图片删除失败");
+            if (currentAndroidApplication.getIcon() != null && !currentAndroidApplication.getIcon().isEmpty()) {
+                if (!currentAndroidApplication.getIcon().equals("default.png")) {
+                    if (!currentAndroidApplication.getIcon().equals(androidApplication.getIcon())) {
+                        String iconImagePath = androidApplicationImagesFilePath + currentAndroidApplication.getIcon();
+                        File iconImageFile = new File(iconImagePath);
+                        if (iconImageFile.exists()) {
+                            boolean deleted = iconImageFile.delete();
+                            if (!deleted) {
+                                return R.error("安卓应用图标图片删除失败");
+                            }
+                        } else {
+                            return R.error("安卓应用图标图片不存在：" + currentAndroidApplication.getIcon());
+                        }
                     }
-                } else {
-                    return R.error("安卓应用图标图片不存在：" + currentAndroidApplication.getIcon());
                 }
             }
-            if (!currentAndroidApplication.getUrl().equals(androidApplication.getUrl())) {
-                String androidApplicationPath = androidApplicationFilePath + currentAndroidApplication.getUrl();
-                File androidApplicationFile = new File(androidApplicationPath);
-                if (androidApplicationFile.exists()) {
-                    boolean deleted = androidApplicationFile.delete();
-                    if (!deleted) {
-                        return R.error("安卓应用文件删除失败");
+            if (currentAndroidApplication.getUrl() != null && !currentAndroidApplication.getUrl().isEmpty()) {
+                if (!currentAndroidApplication.getUrl().equals(androidApplication.getUrl())) {
+                    String androidApplicationPath = androidApplicationFilePath + currentAndroidApplication.getUrl();
+                    File androidApplicationFile = new File(androidApplicationPath);
+                    if (androidApplicationFile.exists()) {
+                        boolean deleted = androidApplicationFile.delete();
+                        if (!deleted) {
+                            return R.error("安卓应用文件删除失败");
+                        }
+                    } else {
+                        return R.error("安卓应用文件不存在：" + currentAndroidApplication.getUrl());
                     }
-                } else {
-                    return R.error("安卓应用文件不存在：" + currentAndroidApplication.getUrl());
+                    androidApplication.setUrl(androidApplication.getUrl());
+                    androidApplication.setSize(androidApplication.getSize());
                 }
-                androidApplication.setUrl(androidApplication.getUrl());
-                androidApplication.setSize(androidApplication.getSize());
             }
             androidApplicationService.updateById(androidApplication);
         }

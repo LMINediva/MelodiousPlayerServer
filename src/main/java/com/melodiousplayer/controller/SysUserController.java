@@ -1,6 +1,5 @@
 package com.melodiousplayer.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.melodiousplayer.common.constant.Constant;
@@ -60,18 +59,27 @@ public class SysUserController {
             sysUser.setCreateTime(new Date());
             sysUser.setPassword(bCryptPasswordEncoder.encode(sysUser.getPassword()));
             sysUserService.save(sysUser);
+            Long id = sysUser.getId();
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setRoleId(2L);
+            sysUserRole.setUserId(id);
+            sysUserRoleService.save(sysUserRole);
         } else {
             SysUser currentSysUser = sysUserService.getById(sysUser.getId());
-            if (!currentSysUser.getAvatar().equals(sysUser.getAvatar())) {
-                String avatarImagePath = avatarImagesFilePath + sysUser.getAvatar();
-                File avatarImageFile = new File(avatarImagePath);
-                if (avatarImageFile.exists()) {
-                    boolean deleted = avatarImageFile.delete();
-                    if (!deleted) {
-                        return R.error("用户头像图片删除失败");
+            if (currentSysUser.getAvatar() != null && !currentSysUser.getAvatar().isEmpty()) {
+                if (!currentSysUser.getAvatar().equals("default.jpg")) {
+                    if (!currentSysUser.getAvatar().equals(sysUser.getAvatar())) {
+                        String avatarImagePath = avatarImagesFilePath + sysUser.getAvatar();
+                        File avatarImageFile = new File(avatarImagePath);
+                        if (avatarImageFile.exists()) {
+                            boolean deleted = avatarImageFile.delete();
+                            if (!deleted) {
+                                return R.error("用户头像图片删除失败");
+                            }
+                        } else {
+                            return R.error("用户头像图片不存在：" + sysUser.getAvatar());
+                        }
                     }
-                } else {
-                    return R.error("用户头像图片不存在：" + sysUser.getAvatar());
                 }
             }
             sysUser.setUpdateTime(new Date());
@@ -137,17 +145,18 @@ public class SysUserController {
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R updateAvatar(@RequestBody SysUser sysUser) {
         SysUser currentUser = sysUserService.getById(sysUser.getId());
-        String defaultAvatar = "default.jpg";
-        if (!currentUser.getAvatar().equals(defaultAvatar)) {
-            String avatarPath = avatarImagesFilePath + currentUser.getAvatar();
-            File avatarFile = new File(avatarPath);
-            if (avatarFile.exists()) {
-                boolean deleted = avatarFile.delete();
-                if (!deleted) {
-                    return R.error("用户头像删除失败");
+        if (sysUser.getAvatar() != null && !sysUser.getAvatar().isEmpty()) {
+            if (!currentUser.getAvatar().equals("default.jpg")) {
+                String avatarPath = avatarImagesFilePath + currentUser.getAvatar();
+                File avatarFile = new File(avatarPath);
+                if (avatarFile.exists()) {
+                    boolean deleted = avatarFile.delete();
+                    if (!deleted) {
+                        return R.error("用户头像删除失败");
+                    }
+                } else {
+                    return R.error("用户头像不存在：" + currentUser.getAvatar());
                 }
-            } else {
-                return R.error("用户头像不存在：" + currentUser.getAvatar());
             }
         }
         currentUser.setUpdateTime(new Date());
@@ -221,6 +230,23 @@ public class SysUserController {
     @PostMapping("/delete")
     @PreAuthorize("hasAuthority('system:user:delete')")
     public R delete(@RequestBody Long[] ids) {
+        for (Long id : ids) {
+            SysUser sysUser = sysUserService.getById(id);
+            if (sysUser.getAvatar() != null && !sysUser.getAvatar().isEmpty()) {
+                if (!sysUser.getAvatar().equals("default.jpg")) {
+                    String avatarPath = avatarImagesFilePath + sysUser.getAvatar();
+                    File avatarFile = new File(avatarPath);
+                    if (avatarFile.exists()) {
+                        boolean deleted = avatarFile.delete();
+                        if (!deleted) {
+                            return R.error("用户头像删除失败");
+                        }
+                    } else {
+                        return R.error("用户头像不存在：" + sysUser.getAvatar());
+                    }
+                }
+            }
+        }
         sysUserService.removeByIds(Arrays.asList(ids));
         sysUserRoleService.remove(new QueryWrapper<SysUserRole>().in("user_id", Arrays.asList(ids)));
         return R.ok();
@@ -329,16 +355,38 @@ public class SysUserController {
     @PostMapping("/deleteUploadFileCache")
     @PreAuthorize("hasAuthority('system:user:edit')")
     public R deleteUploadFileCache(@RequestBody SysUser sysUser) {
-        if (StrUtil.isNotBlank(sysUser.getAvatar())) {
-            String avatarImagePath = avatarImagesFilePath + sysUser.getAvatar();
-            File avatarImageFile = new File(avatarImagePath);
-            if (avatarImageFile.exists()) {
-                boolean deleted = avatarImageFile.delete();
-                if (!deleted) {
-                    return R.error("用户头像图片删除失败");
+        if (sysUser.getId() == null || sysUser.getId() == -1) {
+            if (sysUser.getAvatar() != null && !sysUser.getAvatar().isEmpty()) {
+                if (!sysUser.getAvatar().equals("default.png")) {
+                    String avatarImagePath = avatarImagesFilePath + sysUser.getAvatar();
+                    File avatarImageFile = new File(avatarImagePath);
+                    if (avatarImageFile.exists()) {
+                        boolean deleted = avatarImageFile.delete();
+                        if (!deleted) {
+                            return R.error("用户头像图片删除失败");
+                        }
+                    } else {
+                        return R.error("用户头像图片不存在：" + sysUser.getAvatar());
+                    }
                 }
-            } else {
-                return R.error("用户头像图片不存在：" + sysUser.getAvatar());
+            }
+        } else {
+            SysUser currentSysUser = sysUserService.getById(sysUser.getId());
+            if (currentSysUser.getAvatar() != null && !currentSysUser.getAvatar().isEmpty()) {
+                if (!sysUser.getAvatar().equals("default.jpg")) {
+                    if (!currentSysUser.getAvatar().equals(sysUser.getAvatar())) {
+                        String avatarImagePath = avatarImagesFilePath + sysUser.getAvatar();
+                        File avatarImageFile = new File(avatarImagePath);
+                        if (avatarImageFile.exists()) {
+                            boolean deleted = avatarImageFile.delete();
+                            if (!deleted) {
+                                return R.error("用户头像图片删除失败");
+                            }
+                        } else {
+                            return R.error("用户头像图片不存在：" + sysUser.getAvatar());
+                        }
+                    }
+                }
             }
         }
         return R.ok();
