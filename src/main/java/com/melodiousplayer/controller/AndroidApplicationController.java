@@ -10,7 +10,6 @@ import com.melodiousplayer.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -38,9 +37,6 @@ public class AndroidApplicationController {
 
     @Autowired
     private AndroidApplicationService androidApplicationService;
-
-    @Autowired
-    private Environment environment;
 
     @Value("${androidApplicationImagesFilePath}")
     private String androidApplicationImagesFilePath;
@@ -401,6 +397,50 @@ public class AndroidApplicationController {
                 .header(HttpHeaders.CONTENT_DISPOSITION,
                         "attachment; filename*=UTF-8''" + encodedFilename)
                 .body(resource);
+    }
+
+    /**
+     * 下载最新版的APK
+     *
+     * @return ResponseEntity对象
+     * @throws IOException IO异常
+     */
+    @GetMapping("/downloadLatestAPK")
+    public ResponseEntity<Resource> downloadLatestAPK()
+            throws IOException {
+        QueryWrapper<AndroidApplication> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("version").last("LIMIT 1");
+        AndroidApplication androidApplication = androidApplicationService.getOne(queryWrapper);
+        String androidApplicationPath = androidApplicationFilePath + androidApplication.getUrl();
+        File androidApplicationFile = new File(androidApplicationPath);
+        if (!androidApplicationFile.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+        // 构建文件资源
+        Resource resource = new FileSystemResource(androidApplicationFile);
+        // 对文件名进行URL编码，解决中文乱码问题
+        String encodedFilename = URLEncoder.encode(androidApplication.getName() + ".apk", "UTF-8")
+                .replaceAll("\\+", "%20");
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/vnd.android.package-archive"))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename*=UTF-8''" + encodedFilename)
+                .body(resource);
+    }
+
+    /**
+     * 查询最新版的APK
+     *
+     * @return AndroidApplication对象
+     */
+    @GetMapping("/findLatestAPK")
+    public R findLatestAPK() {
+        QueryWrapper<AndroidApplication> queryWrapper = new QueryWrapper<>();
+        queryWrapper.orderByDesc("version").last("LIMIT 1");
+        AndroidApplication androidApplication = androidApplicationService.getOne(queryWrapper);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("androidApplication", androidApplication);
+        return R.ok(resultMap);
     }
 
     /**

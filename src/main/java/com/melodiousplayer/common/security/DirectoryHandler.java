@@ -95,7 +95,7 @@ public class DirectoryHandler {
                 System.out.println(description + "创建失败");
             }
         } else {
-            System.out.println(description + "已经存在");
+            System.out.println(description + "已经创建");
         }
     }
 
