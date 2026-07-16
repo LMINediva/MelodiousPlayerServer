@@ -250,7 +250,7 @@ public class Server {
         try {
             Runtime.getRuntime().exec(new String[]{"termux-wake-unlock"});
         } catch (Exception e) {
-            e.printStackTrace
+            e.printStackTrace();
         }
     }
 
