@@ -223,11 +223,35 @@ public class Server {
     }
 
     public void copyTermuxTo() {
+        wakeLock();
         setTermuxCpuInfo();
         setTermuxMemInfo();
         setTermuxSysInfo();
         setTermuxJvmInfo();
         setTermuxSysFiles();
+        wakeUnLock();
+    }
+
+    /**
+     * 保持CPU唤醒
+     */
+    private void wakeLock() {
+        try {
+            Runtime.getRuntime().exec(new String[]{"termux-wake-lock"});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 解除CPU唤醒
+     */
+    private void wakeUnLock() {
+        try {
+            Runtime.getRuntime().exec(new String[]{"termux-wake-unlock"});
+        } catch (Exception e) {
+            e.printStackTrace
+        }
     }
 
     /**
